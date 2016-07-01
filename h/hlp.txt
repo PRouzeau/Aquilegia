@@ -1,0 +1,577 @@
+■hlptoc
+Aquilegia, simple web application for documentation
+Aquilegia is a pure Javascript software which can deliver on any network a consistent set of documentation pages.
+It was originally targeted to be the help system of a web application, but it occurred it could be used for embedded servers.
+It is a very lightweight system needing no resource from a server (other than flat serving files), as everything is run in the browser. 
+It could be used to build basic utility website targeting only efficiency in information delivery.
+Those willing to modify the look may adapt css file, which is  small and easy to tune.
+
+==Functionalities
+It is not modular, but basic functionalities are there:
+===Edition
+*Easy linking and page structure with simple %markup%aquilegia_syntax
+*Automatic table of content building with title anchors, deactivable on demand
+*Automatic nesting of sections based upon title level
+*Search tool among all pages, with possible page exclusion
+*Collapsible sections as needed, which can be expanded or collapsed at first opening
+*Foot list of web links (references)
+*Footnotes (written inline in the text)
+*Auto resize of images larger than viewing window.
+*Deep linking possible on any page or paragraph in a page.
+===Documentation Structure
+*Text paragraphs can be hidden based on selector keys, for adaptative documentation
+*A page can be included in another page
+*A set of directives for special pages or needs, header and footer
+===Writing 
+*Documentation may be written in an unique file, easier to handle for first implementation and for translation.
+*New pages can be added as independent text files when documentation is expanding or too large
+*Whole site aspect is handled in an unique %css file%css
+*A set of %writer tools%% to identify broken links, backlinks, etc. 
+===Installation
+*NO resource required from server other than file serving, no server configuration
+*Possible use of remote resources when Internet connection is available
+
+== A demonstration
+This site section is running Aquilegia, but is relatively small (14 pages), so a larger implementation may be seen here:
+ http://otocoup.com/DWC2 
+
+==A new tool for web sites?
+Surprisingly, while developing a Javascript web application, I did not found any tool to build the help pages associated with this application, running only on browser side.
+Having some experience of wikis and considering them as the best tool to build documentation, I decided to use wiki markup for the documentation and designed a working tiny wiki interpreter along search tool.
+The system significantly expanded when I decided to run it as the embedded help system of a 3D printer board controller, the "Duet  http://reprap.org/wiki/Duet" and "Duet WiFi https://www.duet3d.com/".
+Note that the first web application with the preliminary version of Aquilegia, made in 2014, while totally usable, was never published.
+
+==What documentation size
+First implementation had around fifteen short pages, the second implementation (3D printer documentation) is presently 3300 lines and around  twenty pages, expected to grow to 30 to 40 pages. For larger page quantity, multiple table of contents may be created, with a top button for each table of contents, making a 'tabbed' presentation. You may need to move the title above the set of tab buttons. The system will still default on the 'hlptoc' page. This presentation have 15 small pages.
+
+==Another wiki ? No
+No, while the system is using  wiki markup, there is no possibility for the user to edit the pages and there is no history tracking (which would be a very useful tool, anyway).
+This is not a wiki and it will not evolve to became one. This is a tool designed to serve a relatively static set of documents. However, an existing wiki could adopt the same markup.
+
+==A new set of wiki mark-ups
+The "Wikimatrix site  http://www.wikimatrix.org/statistics.php" list more than one hundred Wiki mark-up variations, so why designing a new one?
+All the listed wiki markup in WikiMatrix are completely un-adapted to keyboards which are not English, with no exception. It occurs that as the majority of computer users, I am not using an English keyboard and had to deal with unpractical mark-ups for more than a decade. 
+With limited legacy, I decided to design a mark-up more adapted to the world, without adding difficulties for English keyboard users.
+For details about my motivations and reasoning, see my take about %Wiki markup%% 
+The %syntax used in Aquilegia%aquilegia_syntax
+
+==On what servers
+Anything which can serve web pages with http&#58;// protocol is usable.
+You are reading this page on Aquilegia served by a quite standard Apache server with all bells and whistles associated (which are unused except index and 404 pages redirection).
+I have run aquilegia on the smallest embedded web server I know, which is the one integrated in a "3D printer firmware http://reprap.org/wiki/RepRap_Firmware" on a printer control board (the Duet), which get its files from an SD card.
+It will be implemented on the same server inside a very-low cost Wifi chip "ESP8266  http://www.esp8266.com/", while the limited memory available on chip (512 kB to 4 MB) may need  control of the whole file set size and reduction of images size. Just have a look on the page about %embedded servers%%
+
+==Resources from a remote site
+The server can be configured to get resources (text and images) from a remote web server, while activating shared resources according CORS (on an Apache server, that may be a single line in the .htaccess file). In case of unavailability of the remote resources (no Internet access), the resources will be researched locally.
+
+==Installation
+Installation is straightforward, but it needs basic understanding how a server work, see the %installation recommendations%installation
+
+==Integration in web application
+It can be integrated easily in a Javascript framework.
+The choice of full screen is linked to the difficulties to manage modal boxes on mobile equipment, as the device is lost when zooming between the underlying page and the modal page.
+It may be run as non modal by adding a simple switching system between the app and Aquilegia.
+On the Duet, it is integrated in the printer web interface built with bootstrap. However, the system does not use any Bootstrap resources (it was, but that was removed).
+JQuery is yet needed for operation.
+
+==Edition
+There is no integrated editor, so you shall use any external editor which may help you to correct orthographic and grammar errors. Swapping quickly between the browser view and your editor need %to be organised%edition.
+
+==Performance
+The interpretation time is too short to be noticeable by the user, so the overall performance depends from the server speed and the file sizes. See %performance page%speed.
+
+==Serving many users ?
+It is a pretty standard web application, so If the web server can serve multiple users, the application can. Not all embedded servers may be capable to serve multiple users. 
+
+== Internationalisation
+Accented letters for common European languages will be implemented soon, but the present implementation of the wiki mark-up is not adapted to languages using other alphabet. All system strings are handled by a function (T(string)), so you may create a set of translated strings.
+
+== Licenses
+What you write with Aquilegia remain your entire property and you retain all your rights.  
+Usage is free for everyone own work.
+However, if you redistribute Aquilegia and its documentation, you have to comply with its licenses, see next paragraph.
+Notably, you can only redistribute if it is not integrated in another ensemble or if the ensemble have same licenses (GPL for program and CC BY-SA for the documentation). Source code free distribution and crediting author is compulsory.
+
+==Where to find it
+It is published on "my GitHub account https://github.com/PRouzeau/Aquilegia". 
+I have designed a very basic tool for conversion from Wikimedia markup to Aquilegia markup, which was used to build the Duet documentation set, but it need some polishing and still have a few conversion problems.
+
+==Advices
+A few %writer advices%% 
+  
+== About
+Program and documentation (c) Pierre ROUZEAU  - My site  http://rouzeau.net   Not many things about software, anyway
+My Github account https://github.com/PRouzeau A bit more software, but mainly hardware about 3D printing
+Program licence program: "GPLv2 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html" or any later version - documentation: CC BY-SA  
+
+**Credits**
+While I started this program from a blank page, I have to give some %credits%%
+
+**Developer comments**
+I am not a professional programmer, but I anyway have comments, recommendations and rants to be vented.
+%My developer notes%developer_notes. You may also want to know how I choose %the name%name
+
+■hlpdef
+Default page - added at top of page below page title - this title will never be displayed - use for comments
+(:numtitle:)  80%%AncolieCommune120.jpg
+
+■hlpfoot
+Foot page add text at the bottom of the page, outside the title sections, inside page css class. 
+<br><small>Content copyright Pierre ROUZEAU 2016, except where credited. Licence CC BY-SA</small>   <a href="#hlp/privacy">Privacy</a>   <div class="hlpsign">delivered by <a href="http://aquilegia.blue">Aquilegia</a><div>
+
+■credits
+*Icons from "Typicons http://www.typicons.com" licensed under CC-BY-SA
+*It is (yet) using "JQuery library https://jquery.com/"
+Program and wiki markup designed from scratch but I get infos and inspiration from:
+*Directives from "pmwiki http://www.pmwiki.org/"
+*Layout from "Wikipedia https://wikipedia.org/"
+*A lot of help for details from "Stackoverflow http://stackoverflow.com/"
+*A very useful Regex simulator  "Regex101 https://regex101.com/"
+*Photo "Wikimedia Commons https://commons.wikimedia.org/wiki/File:2008_05_10_FR_Alpes_Revel_AncolieCommune_AquilegiaVulgaris.jpg"
+
+■name
+The name
+Development name was 'MiniHelp'. Obviously not very original, I quickly found that a few web sites were already using this name. In search of something symbolising the small size, I first looked at small rodents, only to find that every rodent name is already used for at least one software. The small flower named 'Aquilegia' was unused (with this English name). So , this was decided. Note that the French translation 'Ancolie' is used for software. And the photo is an Aquilegia vulgaris.
+
+■privacy
+Privacy policy
+The only information we retain from your visit will be the usual statistics kept by the web server provider tools:
+Your IP, the web address used to enter the site (with the page if defined), the time you stay and your browser and OS characteristics (if they are not kept secret).
+There is no commercial activity linked to this site and I do not search to identify or track you. The served content is entirely operated by myself and there is no publicity.
+This presentation 'site' runs entirely in your browser and did not return any information to the server. There is no cookie. 
+In addition, the whole presentation is technically an unique web page, as the content is dynamically changed based on what is in the global file  -- see the site to understand the storage philosophy--. So, I cannot know what page you did visit (except the syntax page, which is an independent file, so I can detect the loading).
+As all my Internet operations, this is un-commissioned work that I develop as a hobby. 
+In 15 years of Internet activity, I never displayed any publicity and so, never get any money, just expensed some... 
+  Pierre Rouzeau  http://rouzeau.net
+
+■hlpmenu
+help menu
+(:notoc:)(:nodef:)(:notitle:)(:nofoot:)
+==General
+"Demonstration http://otocoup.com/DWC2"
+%Installation%%
+%Embedded servers%%
+
+==Edition
+%Aquilegia syntax%%
+%Table examples%%
+%Edition%%
+%writer advices%% 
+%CSS file%css
+%Tools%hlpdiag
+
+==Development
+%Wiki markup%%
+%Developer notes%%  
+%Performance%Speed
+%known problems%%
+%Credits%%
+______________
+%About%%
+
+■writer_tools
+Writer tools
+*Tool searching internal dead links and listing backlinks (referers) 
+*Tool listing all external links 
+*Tool searching dead image links and controlling the url length (for embedded servers with short link length limits)
+
+All tools are in %this page%hlpdiag
+Run the appropriate link then reload the page to run other tools.
+
+■speed
+Aquilegia performance
+
+The wiki engine is fast and a page interpretation time may be below 50ms on the slowest devices. 
+In principle, the help pages are only requested after the main application have started, so JQuery shall already be loaded.  Aquilegia size is low. The help file size (text) may be from 100 to 400kB , depending the documentation size. On an ordinary remote web server, this got compressed 'on the fly' so the data transmitted are approximately 40% of the original size. However, embedded servers may not compress the files, so speed may be slower locally if you get your files from an SD card. If get from chip memory as on the ESP8266, that will be fast.  
+
+I have not done many tests, just basic evaluation. 
+My desktop computer is based upon an i530 processor. My phone is an old sony  Xperia Neo -Yes, my daily phone-. Not very up to date equipment, but that is good for tests.
+==The wiki engine
+While it is using Regexes ("regular expressions https://en.wikipedia.org/wiki/Regular_expression") for wiki mark-up interpretation, it runs sufficiently fast for any present device, needing approximately 3ms for interpretation of an average page on a slow desktop computer and 30 ms on a slow mobile device. Not noticeable from user.
+==The files 
+The time to display pages is mostly the time needed to serve the site files, negligible for Aquilegia (35 ko not minified), a bit more for JQuery (70 ko), and more for the help file as the main help file shall be served in totality at first page opening. The independent pages are loaded on demand, but all pages are loaded when doing a search. The 3300 lines of the help file of the Duet uses 230 kB. Note that wiki mark-up is more compact than html mark-up, so faster to transfer. Aquilegia presentation site is 12 pages, 700lines, total 65 kB with the syntax page. 
+
+==Remote server
+I experienced faster load from remote site than locally from SD card on the Duet server. That may be explained partly because a standard server compress the pages 'on the fly', while an embedded web server generally not. On a basic server, if a site is growing, it may be useful to precompress files to be served, but that need some adaptation of the web server to have it sending appropriate headers, see links. 
+Aquilegia may be installed on WiFi chips, so reducing the amount of transferred data may help on slow WiFi networks.
+On Duet 0.6 with a slow SD card , help system without app takes 1000 ms to load, while it takes 400ms when loaded after the application (Bootstrap based). App + aquilegia (so, starting on an help page ) takes 1600ms to load.
+On my web provider (OVH), the same web app plus Aquilegia takes 300ms to load, while the load of the help after application loading takes less than 100ms
+
+■embedded_servers
+Embedded servers
+(:notoc:)
+==Duet web server
+The Duet web server was designed on purpose for the Duet board and is fully integrated in the "RepRap Firmware  http://reprap.org/wiki/RepRap_Firmware". It also integrate a Telnet and FTP server. It is dedicated for the specific task of printing, so if you want to use the web server only, you will have to split it from the rest of the application. 
+The most recent RepRap Firmware code fork is the one of DC42 , "On Github  https://github.com/dc42/RepRapFirmware/tree/dev/src/Duet" On the same fork, you also have the version running on the "ESP 8266 https://github.com/dc42/RepRapFirmware/tree/dev/src/DuetNG"
+
+Before the 'official' port of the Duet  web server on the ESP8266 for the Duet WiFi https://www.duet3d.com/", there was a "test  here http://forums.reprap.org/read.php?2,582444"
+
+==Other web servers
+The  Library  "libmicrohttpd http://www.gnu.org/software/libmicrohttpd/" which have at the end of the page a list of other http servers libraries
+
+■installation
+'Flat' Installation (without integration in a web application) is very simple, just copy the content of the www directory in your server web directory.
+Test first on a local machine before installing it on a server. See %edition%%.
+The html file shall be modified with author, title, etc. and you shall write your own content. It is advisable to reuse the Aquilegia 'hlp'.txt' as a template till a real template is available.
+If installed on an apache server, you may create an .htaccess file redirecting to the page if the page is not named index.htm, this will allow direct connection without typing page name. 
+It is advisable to create your own "favicon https://en.wikipedia.org/wiki/Favicon", which will be displayed on the user bookmark.
+If you want to use cross-origin data (all resources will be redirected to the resources site), you need to copy the whole content of 'h/' directory on the remote server and define the cross-origin domain in the ad-hoc variable in aql.js. The ressources will be called with 'http://remotesite.net/h/' As you call resources from another server, the content of 'h/' directory shall be open for other sites, according to CORS (cross-origin resources) principles. The '.htaccess' ditributed with Aquilegia in 'h/' directory may work for a standard apache server (open to the whole world), but sometimes this is a bit more difficult and you may want to restrict access, please see "enable cors http://enable-cors.org/", "awesome toast https://awesometoast.com/cors/" or "Zinoui http://zinoui.com/blog/cross-domain-ajax-request", which also tells how to restrict access to known origin.
+
+If you want to precompress your text of program files, have a look on "stack overflow http://stackoverflow.com/questions/16883241/how-to-host-static-content-pre-compressed-in-apache", "Codegrill http://blog.codegrill.org/2009/07/how-to-pre-compress-static-files-in.html" or "aptivate.org http://www.aptivate.org/webguidelines/Compression.html"
+
+■developer_notes
+Aquilegia developer notes  Pierre ROUZEAU CC BY-SA
+Autonomous Wiki markup based help system
+Everything in this help module is Javascript/html, as this application is designed for web servers which does not have server-side language.
+
+==Basic description
+* An identification variable is used for selecting paragraphs, so the help can be auto-adaptive
+* Most help pages are included in one file (hlp.txt), which is easier to manage by writer and ease linking
+* Independant pages can be called, with file being mypage.txt (file is lowercase, but link don't need be) but yet: they are not searched if they are not already loaded. They are not listed. 
+* 'hlp.txt' file is loaded at first request, loading a large file on one go is proved to be faster than multi-loading (tested)
+* Text file is split in a hash table
+* A table of content page "toc" shall always be present in help file for proper operation
+* As the help file is not user modifiable, there is no safety to prevent mark-up injection
+* Manage latin accented letters  // Internationalisation/localization to be completed 
+* Manage images (jpg/png/svg) with html links to larger images or to pdf file (No javascript)
+* Directories: /hlp/ for the text, hlp/thumb/ for displayed images, /hlp/full for linked images
+  /hlp/pdf/ for linked pdf files, /js/ for javascript,  /css/ for css
+* Help page is displayed in a modal dialogue box - not easy on mobile equipment
+Any help page can be called either:
+* from a button with the parameter ‘data-hpage’ containing the page name
+* from html with  a href="javascript:window.showHlp(‘page’);"
+
+* Users newlines are respected by the wiki interpreter (with exceptions), which makes the newlines handling more complex than for other wikis.
+There is an independent web page (convertwiki.htm) to convert from mediawiki, cancel categories and templates. Not interpreting fully WikiMedia markup, text need manual intervention after conversion.
+
+==Application test
+It is very interesting to note that this app can be executed directly by Firefox locally, simply executing the reprap.htm file, while for edge and chrome, you need to use a http server and access page with http://localhost:nnnn, using by example miniweb server (which works on Windows 10).
+On Firefox, you shall install Firebug for Javascript debugging, while on edge and Chrome, Firebug clones are pre-installed. Call debug window with [F12].
+
+==Wiki engine:
+===Robustness
+The main problem identified is that in some cases, notably malformed web addresses, the regular expressions can run away, and some browsers are not protected against that. As this is not meant to be a wiki publicly accessible and as publication will only be done after validation, that may not be a major problem. A good 'crash test' is the page 'aquilegia_syntax.txt' with preformatted markup removed.
+
+===Interpretation strategy
+The wiki engine is tokenising blocks, titles and web links, with are written back in text at the end of the interpretation. This have significantly improved performance. Hence, you cannot use links or format characters in titles, but this is bad practice, anyway.
+
+==Performance
+You can have the last line of any page to indicates its own interpretation time and 'hlp.txt' loading time (or the last external page loading time) with (&#58;diag:) directive (set it in default page). 
+see another page about %speed%%
+=== Page interpretation
+On a PC with an i530 processor, the page which is the longest to interpret now is the 'release notes' page, as the longest with many links. It takes 4 ms on FireFox. The same page on a tablet Samsung Galaxy note 2014 (GT N-8013) takes from 30 to 45 ms.
+It is notable that for the link evaluation, the longest is for lines which does not have line breaks, so a small page could be much longer to evaluate than a long one if it does have one long uncut line.
+=== Page(s) loading
+Page load on the 3D printer (~240kB) takes from 500 to 700ms, this time varying by less than 10% for different SD card performance (firmware 1.13). Tested on my provider server, loading takes from 30 to 50ms.
+
+=== Mobile device scrolling
+Scrolling on mobile devices. When integrated in Bootstrap, modal windows are used. The Bootstrap libray do have problems with scrolling on modal boxes. As this is mainly related to browser bugs, there are not many possible solutions. For this reason, modal windows was set to 100%. at 100%, there may be not much point to use a modal window.
+
+==Evolution
+This can grow in capability, but I would like to preserve the simplicity of this tool, so I am questinong myself about:
+* Extension to page groups For each page, one or more group could be defined. The first one may be used to associate the page with a tab/button.
+
+==Todo
+* Make search page used as template, like pmwiki ?
+* Allow deep linking to search
+* Inserting standard icons in the text (with a sprite)
+* Load (local only) a parameter file (Json ?) which may contain: Remote domain, language and other parameters
+* Directive (:list:) to list all pages (may include 'external' pages) and (:nolist:) to exclude a page from the list.
+creates hash table to store the flags associated with the nolist markup. 
+* Have a look to add some robustness to the wiki engine
+* Finalize adaptation (accented characters) to most latin alphabet language (yet only french)
+* Look what is doable for other alphabets
+* Evaluate the possibility to precompress file and decompress in browser, with proper http headers or a library 
+* The original program (in dojo) was supplying help bullets for icons, may be reinstalled, need location of icons
+
+==History
+Aquilegia originates from a project done in Dojo (Javascript browser side framework), which while working was never published.
+For this web application (home electrical board design), I searched if there was a library available for a simple help system (< 30 pages), and did not found one.
+So, being a happy user and contributor of pmwiki since nearly ten years, I thought the most simple to build a basic help system was to use a simple wiki. 
+Some basic regular expression in Javascript for a very simple wiki were found on the Internet.
+However, as for most latin keyboard users, typing '{}', '[]' and '|' is quite difficult (I am using a french keyboard),  as all these characters needs right alt key  (Alt.Gr), so large hand extension.
+pmWiki markup is far easier than WikiMedia markup, however it still use brackets for links.
+Worried of using wrongly designed markup for a decade, as this was an app where I will be the single user, I decided to implement my own markup, the very first one really adapted to all latin keyboard users (who, beside chinese users, are the majority of us).
+So, I looked closely my keyboard (this in not an image, I actually looked at it) to find what shall be the best character for a markup. It ocurred me that the '%' char do have specific use which allow it to be reasonnably isolated from a general text. I based all links markup on this char. Other markups are more common, and the directive markup  (:directive  param:) is taken from pmwiki. 
+I implemented it with some work, with the biggest difficulties related to Dojo library itself, and with very quirky css for printing.
+
+I always thought to publish this help library as an independent one, for a more general use than Dojo. In this aim, I started some work which was never finished and ultimately lost in hard drive crash.
+
+A few years later (in June 2016), working on 3D printer RepRapFirmware documentation, one day I thought that this can be the right tool to incorporate documentation in the firmware (which include a web server without server-side language). I decided to migrate from Dojo Framework to Bootstrap library, which is the library used by the RepRap Firmware web interface. 
+The migration was relatively easy and fast (a bit more than half a day) and the Bootstrap implementation is cleaner than the Dojo one.
+
+However, while transferring the documentation text from the RepRap.org site (using MediaWiki), I found the need to somewhat expand my initially basic library.
+So as usual, this have grown larger than initially purposed, but still remain simple and compact.
+
+==Programming 'style'
+This is a small one man project, by a hobbyist, so I follow a strategy which may be partly despised by some:
+*I use relatively short variable names to limit line length and I feel that is better for readability.
+*The code is very dense, which allow it to be in a unique file of less than 1000 lines. Working on a single Javascript file (but there are css files and the interpreted text file) speed development. This is non-commissioned work and I am not paid by the line or code size...
+*For allocation with selecting variable, I use systematically the ternary operator a = (condition)? if_true : if_false ; . With practice and good spacing, I find it more readable and that improve the code compactness. I sometimes nest operators, which may not be good for readability.
+*I use short-circuiting to check strings   a = (a||''); If a is valid, it remained unchanged, if undefined it will be replaced by an empty string. 
+*Hash tables (associative arrays) are a very good structure, which often simplify code compared to flat arrays. I even used a two dimensions hash table to store the collapsed title section status. 
+
+==Notes for developers
+A few notes for other developers (as an amateur programmer).
+===Dojo
+Dojo is a quite complicated framework with steep learning curve, designed for web applications. It does have a lot of components and a complex API. Sometimes finding errors is quite difficult. It does have a huge quantity of events and parameters, all needing to refer to API documentation.
+It is, in my opinion, not really accessible for amateur programmers like me. I choose it initially because it does have something quite unique, which is a complete library for vector graphic. This was before availability of HTML5 and was to date the only free framework capable to build vector graphic web app. 
+
+===Bootstrap
+Bootstrap, on the other hand, is mostly designed for web sites, not applications and is a coherent and simple ensemble. What really helps is that it is very popular, so information is widely accessible from the web, and referring to the original developer site is rarely needed. The site StackOverflow is by far the largest resource. 
+
+===Regular expressions
+Also available today (this was not the case during my initial development) are very good regular expression simulators, notably regex101.com and regexper.com. With this help, the test and understanding of regular expression was much easier and at the end, I think that nearly nothing from the original regular expression survived.
+Testing with simulators, you shall not forget that regular expressions have some limitations in Javascript:
+*No look behind, which cannot easily be replaced
+*No 'U' parameter (ungreedy) : make individual sequences ungreedy
+*No 's' parameter (single line)  use [\s\S] as 'catch all'; [^] also work but is Javascript only, so cannot be tested with online Regex simulators
+
+===Javascript syntax
+Searching the web for Javascript, two sites got generally in the top, Mozilla  and W3Schools. W3SChools definitions are generally far less complete than Mozilla and rarely underlines the subtleness of the language. Mozilla site is notably better, with much more examples, but not always complete. 
+It is sometimes delicate to have details on particular syntax. Look this very own program on string.replace with functions, the complete list of parameters is listed nowhere in common Javascript guides, while it is fundamental to know that what follow match is what is get by capturing parenthesis of the regular expression. 
+Look also to 'short-circuiting' operators. 
+I am still in search how to get the index property of the 'match()' function.
+Also, the results of 'match()' is very different for a simple test (with global match and what is captured by capturing parenthesis) and for a global (/g) research, where the result only gives you an array of the global matches. This is not explained properly in Mozilla site.  
+
+===Jquery mobile
+Jquery mobile is a different beast than Jquery, and propose functionalities which are not present in plain Jquery (nor Bootstrap). Beware when you read suggestions on sites that the solutions are not only available in Jquery mobile.
+
+===Browser compatibility
+As most new developments, I never had a look to the compatibility with Internet explorer. IE does represent "6% http://caniuse.com/#cats=CSS" of the market, most probably on businesses ageing machines, and will disappear soon. Most browser are now making automatic update, so when functionalities are added, they are very quickly diffused worldwide, letting browser without this update capability aside the road. Compared to the situation just few years ago, this is a huge improvement and a relief for developers.
+
+I made basic colour schemes using css variables (custom properties). Two browsers don't implement them: Edge and Opera mini. Edge represent less than two percent of the market and opera mini five percent. The program will work perfectly out of the box on these browsers, the colours will only be limited to black and gray nuances. CSS variables is a functionality that a large number of developers have asked to Microsoft (this is on "their web site https://developer.microsoft.com/en-us/microsoft-edge/platform/status/cssvariables") to implement. If they don't want, why bother ? 
+
+There is a remarkable site to know what functions are implemented on browsers (and give usage statistics), the site "Can I Use http://caniuse.com/"
+
+==Rants
+Developing is sometimes quite frustrating and it appear difficult to understand the logic of the people who standardize Javascript or html as utterly basic information may sometimes not be available.
+Not sure that will be of any other use than venting my frustration but:
+*Why there is no reliable way to know that we are on a touchscreen based device ?
+*Why the user agent is not described in plain text  ?
+*Why new hash is still not set after hashchange event ? We shall practice divination ? 
+*Some standard behaviour shall be decided when a regular expression run away. Using a timeout is not quite repeatable.
+
+==My toolbox
+*Editor: Notepad++ 
+*Javascript debugger: Chrome browser debugger
+*Minifier/compiler: Google closure compiler  
+*FTP and file management: Total commander
+*Development web server: Miniweb (no need for an AMP bundle here)
+*Image viewer: Irfanview
+*Icon design and manipulation: Pixelformer
+*Schematics: Libre office draw
+*OS: Windows 10
+
+■css
+Aquilegia css structure
+
+Most stuff is in css/aql.css
+the css directory also hold bullet icon and sprites.
+
+<a href="css/aql.css">css/aql.css</a>
+
+* %CSS classes of the Aquilegia layout%Aquilegia_CSS_Layout.png
+* %CSS classes of tables%Aquilegia_CSS_Tables.png
+
+There is yet three predefined color sets: black and white, pastel blue and pastel green.
+On Edge and Opera mini, till implementation of CSS 'variables', if using the sets, user is stuck in black and white. However, having the variable list, hardcoding the colors in the css file body may be easy.
+
+There are details of the sprite management in the file
+
+■wiki_markup
+Wiki markup
+
+== Wiki mark-up history
+First Wiki was created in 1994, see "Wikipedia https://en.wikipedia.org/wiki/History_of_wikis"
+It was based on Hypertext concepts dating back to the 1980's.
+A first wiki mark-up was defined to ease the text creation with some basic presentation, links being based on WikiWords
+Then, a lot of people created their own Wiki, with different mark-ups. 
+Soon, WikiWords were considered inelegant and new wiki mark-ups were created for links.
+
+Wikipedia was launched in 2001, with its own mark-up, its engine being called WikiMedia.
+
+A lot of different mark-ups were created and no standard really emerged, while there was a more organised attempt for a basic mark-up with "Creole http://www.wikicreole.org/wiki/Creole1.0".
+Another variant often used is 'Markdown'. Wikimedia mark-up, while the most known, is not frequently used outside its own engine, as it is one of the less practical.
+
+In addition, most wikis are delivered with a very basic engine, with the possibility to add extensions. The extensions adds new commands, generally in the form of 'directives'. When the modules are created by independent volunteers, this aggravates the fragmentation.
+
+There are anyway some commands which are frequently met in the different wiki dialects.
+More than one hundred variants are listed by "WikiMatrix http://www.wikimatrix.org/statistics.php" 
+
+== The problem
+The main problem of all variants is they seems to have all been designed for English keyboards. 
+On English keyboards, Brackets '[]' , braces '{}' and pipe '|' are in direct or 'shifted' access.
+However, nearly all other keyboard types (except some Russian variant) have no direct access for these characters.
+So, for the majority of people around the world, the right alt key, named [Alt Gr], shall be typed simultaneously with one letter to obtain a third character set. Unlike Shift key, this selector key is only available on the right of the keyboard and is generally accessed simultaneously with the other key with right hand, not using two hands, so this is a slow and tiring movement. This makes all the available Wiki dialects un-practical for most people. 
+Programmers which are intensely using these characters find some help with program editors. Wiki authors did not have same help.
+Not surprisingly, the language 'Python' which does not use braces to group commands have been created by an Italian programmer.
+
+== My proposal
+I have used a wiki named pmwiki for more than ten years, which have a mark-up set easier than Wikimedia, while still using brackets and pipes.
+Having decided to create a small help system for a program I was designing, I had no legacy to handle for something which was mainly aimed to be a single user (me) wiki mark-up. 
+So, I decided to create one more wiki dialect, adapted to my very own needs (which actually match the needs of the majority).
+I began to look (actually) very closely my keyboard (French) and make a few decisions.
+While designed for other keyboard than the English one, my whole set may fit well on it. 
+
+And %here it is%aquilegia_syntax.
+The biggest decision is to use '%' symbol for links and images, as a directly accessible character and due to very specific common use, easy to discriminate. The only limit associated with this choice is that a link text cannot end by a decimal. 
+
+=== Evaluating wiki mark-ups
+* "WikiMatrix http://www.wikimatrix.org"
+* Have a look at an evaluation of "table mark-up on Wikimedia https://meta.wikimedia.org/wiki/Wiki_markup_tables"
+
+==Does wiki markup makes sense in 2016?
+With more Wysiwyg editors available, wiki markup use is declining. However, coding markup is still widely used in forum for emoticons or character formatting, so remains common practice.
+Using any markup need some learning, but allow much faster writing and text structuring than any mouse clicking editor. For an help system, with large text to be written, it does makes sense. Less alternating between keyboard and mouse is also a lot less tiring. This may help to reduce musculoskeletal problems. Automatic link research may be helpful, but is delicate to implement without integrated editor.
+
+==Whose fault ? 
+===Ethnocentrism
+Most wikis were created by volunteers on non-commissioned work. When you are working for your own pleasure, you tend to work for yourself or for the environment you are familiar with, and rarely aim to fulfil very general needs (I am no exception). In that regard, commercial companies are more dedicated to target a general public, but wikis are relatively aside the commercial world.
+
+===Conservatism
+Even while creating new mark-up, programmers have a look on what exists, and change only a few sets which doesn't please them. So evolution is generally slow, if any.
+Even my proposal, which part itself significantly from common wiki practice, still use common markup for the lists, character formatting or directives (similar to pmwiki). That also help user adaptation.
+
+===Legacy
+When you are targeting an existing audience (which was not really my case), you may want to give your users tools which they can be familiar with, so with limited differences with what they know. While typing this note (in Aquilegia mark-up), I catches myself typing brackets, as I am so familiar with them and also pmwiki title headers (!!, !!!, !!!!).
+
+===Performance
+Wiki mark-ups are old, and they were designed in times where available computer power was a few hundred times lower than nowadays, so in addition to be easy for the user, the syntax shall be simple to interpret by the wiki engine. Some mark-ups are very discriminant for a computer and so the engine use very low computing power to interpret them. The double brackets of the Wikimedia links or the triple brace of their directives are not nice for most authors, but they are very discriminant and can be interpreted quickly. Some wiki dialects are using a simple star aside group of words to select strong font. This is easy to type and visually very neat. However, distinguishing the simple star '*' mark-up from the time operator in calculation became much more difficult, if always possible. If not designed properly, a delicate markup interpretation may multiply evaluation time by tenths. For sites like Wikipedia, where millions pages are seen every day, served by resources which shall have minimal cost, this can be very critical.  
+
+=== Robustness
+Often (not always) Wiki engines are using a particular tool which is named 'regular expression' (RegEx). This is something which can perform complex transformation relatively efficiently and this is one of the basic tool which have contributed to Internet emergence by easing data exchange between different formats.
+However, when not carefully designed (which is a delicate and mind-boggling task), regular expressions may sometimes loop many times (by the thousands) without finding a solution. Some programs shut down automatically after a given time (a time-out), but others may be indefinitely stuck (I have crashed the browser Chrome that way). Again, simplicity of interpretation by the computer is important.
+
+===Programmer laziness/competence 
+Writing a wiki interpreter is a very specific task, which is not that easy, particularly for amateurs like me.
+Few programmers have the deep computer language knowledge that the author of pmWiki have (he is also working on Perl compiler). 
+Also, complex programming may be difficult to maintain.
+If the programmer is the one who decides the mark-up syntax, he/she may understandably want to help self to the task. That is why I had not retained the simple star mark-up for strong characters while as a user, I think it is the best. 
+
+===Existing engines
+My need was for a very basic wiki engine in Javascript. There are not many out there, the only autonomous engine I know being TiddlyWiki. Others are mix between different languages or are using Javascript on server side.
+There was however some 'programmers exercises' at tiny engines :
+"ParseWiki.js http://randomactsofcoding.blogspot.fr/2009/08/parsewikijs-javascript-wiki-parsing.html" at Random acts of coding, written in 2009. 
+"WikiTohtml https://remysharp.com/2008/04/01/wiki-to-html-using-javascript" at Remy Sharp sites
+"Wiky.js https://github.com/tanin47/wiky.js" 
+"jscreole https://github.com/codeholic/jscreole" by Codeholic
+I don't remember well(that was two year ago), but I think I started looking the last link, while my present code share nothing with it. 
+
+■writer_advices
+Writer advices
+
+I am not a professional, but have created five web sites in nearly fifteen years. Not that many, but sufficient to gain some experience. The first is lost at sea but the others are still online. 
+You can take my advices as they are worth, those of an experienced hobbyist, who always try to do quality work, but don't care much about fanciness. 
+ ===Links, Links, Links
+I wrote web technical documentation as a hobby  for around twelve years. I wrote two sites (in French) about hobby CNC (computer controlled machines), one after the other. First was  http://otocoup.com, a plain flat html site, then I used the wiki pmwiki for http://cncloisirs.com.  While CncLoisirs was initially reusing a big part of the content of Otocoup.com, its success and usability was immediate and much higher than its predecessor. The average depth of visit and time expensed on site by reader was three to four time better. A few reasons: shorter pages with good structure and a lot of interlinks between pages. You shall propose a new read at every corner, to capture interest of reader. Also, we all follow different intellectual paths depending our knowledge, experience and interest. User shall be free to follow own mind. So one of the key in documentation is links, links, links.  Aquilegia don't have categories, but I may design a system proposing "thematic trails http://www.pmwiki.org/wiki/PmWiki/WikiTrails", as exists in a lot of wikis. This is user built, so the order can be more logical than automatically assembled categories. 
+
+===Referers (backlinks)
+Aquilegia propose a %basic tool%hlpdiag which list the pages with their referers (backlinks). This is very important, you shall target at the very minimum 3 links from other pages for each page of your documentation. However, applied on this very short presentation page set, it does not make a lot of sense. The same tool on the Duet documentation will be more explicit. To use it on your site, copy the page 'hlpdiag' as is. It call Aquilegia internal dedicated function. 
+
+===Diagrams and schematics
+ A serious weakness of my sites was the lack of schematics and somewhat insufficient iconography. Schematics needs a lot of work, but they can carry information much better than a few pages of explanations. Find a designer who have the mindset to transform concepts and technical structure in visual paths.
+ 
+ ===File size
+ Use independant compressors for all images, as they generally perform better than general purpose image software. In your software, save preferably in lossless format or with the highest quality available, then use compressor to get the best compromise.
+ A big advantage of schematics and diagrams is their very low file size if properly recorded. This can be important on an embedded server with limited memory.  
+For ".png" images, it is important to not resize schematics in a viewer tool but to export the images  at the resolution (dpi) which will be used in your site. A .png schematic exported directly at the given resolution may have a file size multiple times smaller than the same reduced by a viewer, due to anti aliasing perturbation. What is important here is the resolution, not the image size, you will crop the image after export if your design software don't allow it.
+ 
+■edition
+ Text edition
+ As there is no incorporated editor in Aquilegia, you shall organise a bit to ease your work and check quickly the result of your typing.
+ 
+==  What editor to use
+All editors can work on '.txt' files, so you choice will generally be on something already available on your machine. Nothing sophisticated is required, but you shall use a software with orthographic AND grammar correction. 
+===Visual aspect
+By default, most editors open '.txt' documents in 'preformatted' style, which means they are using a fixed width font. This is hideous, so you may want to change that.
+The processus may depend from your editor, but you may want to use your own template for model/style. You have to create a preformatted style with a non fixed width font, then record it in your own template. You may or may not set this template as your default.
+
+===Quick save
+The second point is as you will swap between your browser and your editor to check the viewing, you want to save your file without being annoyed by a screen asking you confirmation of the file format. Often, on the saving window, you have to untick the saving option to not be asked every time the extension is not the default.
+
+===Quick opening
+Then, you shall choose on your operating system the editor which will open by default on '.txt' files.
+
+==  How to proceed for edition
+Open your browser on the help page you are editing. 
+===Run directly in local
+Firefox have the advantage that Aquilegia can be run directly as a file without any server, by clicking the 'myapp.htm' file. 
+===Use a http server for local and remote test
+Other browsers need the installation of a simple http server. I recommend "miniweb https://sourceforge.net/projects/miniweb/", which works on Windows 10. You may install it in your website directory and start from there (configure a batch for that). However, it don't start on the default 80 channel, but on channel 8000, so you may access your web page with http://localhost:8000 This also allow tests of other devices on your network, typically typing a local network address : http://192.168.0.12:8000
+===Process
+Typically the processus will be [Ctrl][S] to save your file, then swapping to your browser with [alt][Tab], reload the page on your browser with [ctrl][R] or [Alt][Ctrl][R] (Chrome), and you see the result of your edition. If you have closed all others windows than browser and editor, the whole process will need less than three seconds.
+
+■known_problems
+Known problems
+*Some troubles with zoom and scrolling on mobile. No real web standard on that and some browser bugs.
+*Malformed web links can crash browser. Left in place for diagnostic of wrong links. 
+*Some light servers don't cope well with svg files and they are not displayed. May be solved by not using 'img' markup.
+*Some light servers don't work properly with target="_blank" on same domain and download images instead of displaying them
+*Deep linking to search page prevent loading
+
+
+■table_examples
+Table examples
+see %Aquilegia syntax%% 
+
+<<
+/:L Left floating table
+=head left :::= cell joined after first column :: anything here won't be displayed
+= head cent :: right align too large::left align :: right align::left 
+= head right:: centered ::* center bold :: center :: right invisible
+::
+= head centered :: fxklmkmlk :: cjkvlhjknlm ::* boldboldbold :: *center* ::
+:/ In the table, empty line collapse but you can prefix with '::' to join cells
+>> 
+/:L Left floating table
+=head left :::= cell joined after first column :: anything here won't be displayed
+= head cent :: right align too large::left align :: right align::left 
+= head right:: centered ::* center bold :: center :: right invisible
+::
+= head centered :: fxklmkmlk :: cjkvlhjknlm ::* boldboldbold :: *center* ::
+:/
+In the table, empty line collapse but you can prefix with '::' to join cells
+This text is just there to show that the table is floating.
+(:clear:)  <<(:clear:) directive to separate below text from table >>
+<<
+altstrip is a predefined class to alternate color background
+You can create own class and write css on demand. See the end of aql.css.
+/:Raltstrip Table caption is centered by CSS rule	
+::= full width comment :: anything here won't be displayed
+= head:: 1rst line one color ::
+= head:: 2nd line other color ::table row continue _
+ :: on next line::4xxx
+= head:: 3rd line swap color ::* vvdddddddddvvvvvv :: iiiiiiiiiiiiii ::
+= header:: 4th swap color again :: cjkvlhjknlm ::* iiiiiiiigjhkbli :: ylùmlù* ::
+:/ 
+>>
+/:Raltstrip Table caption is centered by CSS rule	
+::= full width comment :: anything here won't be displayed
+= head:: 1rst line one color ::
+= head:: 2nd line other color ::table row continue _
+ :: on next line::4xxx
+= head:: 3rd line swap color ::* vvdddddddddvvvvvv :: iiiiiiiiiiiiii ::
+= header:: 4th swap color again :: cjkvlhjknlm ::* iiiiiiiigjhkbli :: ylùmlù* ::
+:/
+This text is just there to show that the table is floating.
+(:clear:)  <<(:clear:) directive to separate below text from table >>
+<<
+/:
+un  :: deux ::trois
+uno :: due ::tre
+:/
+>>
+/:
+un  :: deux ::trois
+uno :: due ::tre
+:/
+
+■hlpdiag
+Writer tool box
+<a href="javascript:hlpLoadAll('hlpList');">List all pages (after loading external pages)</a>
+
+<a href="javascript:hlpLoadAll('hlpAllWeblnk');">List all web links (after loading external pages)</a> 
+Links open in new window, so you can test one after the other while closing test window with [Ctrl]W.
+
+<a href="javascript:hlpLoadAll('hlpAllImglnk');">Check linked images (after loading external pages)</a> 

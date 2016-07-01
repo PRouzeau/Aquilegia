@@ -1,0 +1,88 @@
+html, body {
+    height: 100%;
+    min-height: 100%;
+}
+
+/*-- Whole help window --------------------*/
+@media (min-width: 768px) { /* any use ?? */
+  .modal-fullscreen-touch .modal-dialog {
+     width: 750px;
+  }
+}
+
+.modal-fullscreen-touch, 
+.modal-fullscreen {
+	font-size: 17px;
+}
+
+.modal-fullscreen {
+	height: 100%; 
+}
+
+.modal-fullscreen .modal-dialog {
+    position: fixed;  
+	top: 0; 
+	margin: 0 auto;
+	width: 100vw;
+}
+
+.modal-fullscreen 
+	.modal-content, 
+	.modal-dialog, 
+	.modal-body { 
+		height: inherit; 
+		min-height: 100%; 
+}
+
+.modal-fullscreen .modal-header {
+	padding:6px;
+}
+
+.modal-fullscreen .modal-body {
+	padding-top: 4px;
+	margin-top: 0px;
+	overflow-y: auto; 
+}
+
+/*-- Touchscreen specific stuff ------------------- */
+
+.modal-fullscreen-touch {
+/*	height: 100%;  NO to have the windows viewport not rising*/ 
+}
+
+.modal-fullscreen-touch 
+	.modal-content, 
+	.modal-dialog, 
+	.modal-body { 
+	height: inherit; 
+	min-height: 100%; 
+	margin:0 auto;
+}
+
+.modal-fullscreen-touch .modal-dialog { 
+	position: absolute;
+	top: 0; 
+	width: 100%;	
+	margin:0 auto;
+}
+
+.modal-fullscreen-touch .modal-header {
+	padding:6px;
+}
+.modal-fullscreen-touch .modal-body {
+	padding-top: 4px;
+	margin-top: 0px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

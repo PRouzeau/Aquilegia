@@ -1,0 +1,248 @@
+aquilegia_syntax
+Aquilegia syntax
+(:nosearch:)
+Revision - 26 June 2016 
+Encoding UTF-8 is imperative for program and pages. 
+Generally, most pages are in the file 'hlp.txt', but this is not compulsory. In 'hlp.txt' file page can be written in any order. 
+Independant pages are in text files with name 'mypage.txt' (file name is lowercase only, upper case are allowed in links). They work as other pages, the only difference is they are loaded only when you open them. 
+
+== Call a page
+Any help page can be called either:
+* from a button with the parameter ‘data-hpage’ containing the page name
+* from html with  a href="javascript:window.showHlp('page');"
+* from html with a href on address, but this is not recommended
+
+== Markup
+in hlp.txt , first page character (Alt-254, unicode 0x25A0) is used for pages separation. 
+Reserved names are : 'hlptoc','hlpsearch','all','hlplast','hlptest','prtall','hlpdef',
+'hlphead','hlpfoot','hlpmenu'
+
+== Structure in files
+- look the example supplied
+<<
+in main file 'hlp.txt' 
+■pagename   Separator char (on Windows alt-254) + Single word, '_' and '-' accepted, nothing else on line.
+First line is page title   -Leading '=' are removed if present. Compulsory content.
+>>
+Table of content name is 'hlptoc'. Compulsory page in 'hlp.txt', as it indicate help file existence and allow start.
+
+In an independant page file 'mypage.txt', link name is not written and the first line is the title.
+For independant pages, file names shall be lowercase, e.g. text1%my_Page and %Text 2%my_page both link to my_page.txt
+
+==Links and images
+links shall end by a space, end of line or double quote (where applicable):
+<<
+  aWord%a_link
+  %internal link%another_link   //'internal link' Max 10 words in the link text - NO SPACE between '%' and text
+  %other link%Another_link!A_title_in_page  // link to a title within the page
+  %This page%%   // 'This page' text link to this_page
+  "Text of a web link http://mysite.org/index.htm?lang=fr"
+  "# Referenced link http://othersite.net/"  '#' as first char transfer the link in the reference foot list and the local link is a serialised number which refer to the reference list
+  "http://nakedsitelink.org/mapage.htm" for a web link without text, address displayed
+  System recognize web links without ", but this is not recommended, as it conflicts with punctuation.
+  
+  "# An inline note which will be displayed in the footnotes list"  first '#' defines inline note.
+     Notes are listed separately from referenced links (n1, n2, etc.). They shall be written inline without newlines (or with continuation '_'). 
+  
+  Images .jpg/.png/.svg (lowercase only) thumbnails in /hlp/thumb/, full size in /hlp/full/
+  400%image.png  //  400 pixels image linking to full size image, default float right
+  180L%image.jpg  // L float image on left - uppercase only
+  280C%image.svg  // C center the image, no float - uppercase only
+  45%pdf%image.png  //  Thumbnail Images linking to pdf file  in .hlp/pdf/
+  %a text%image4.png // a text linking to an image (like 'Media:' in wikimedia) 
+and no link
+  480%%myimage.png   // display images '''without''' linking to a larger image
+>>
+
+== Common markup
+<<---->>  horizontal line - shall start at first column
+----
+<< /* simple or multiline comment, not displayed */ >>
+
+<<**text strong**>> **text strong**
+
+<<// emphasized text (often italic) //>>  // emphasized text //
+
+<<__text underlined__>> &nbsp; __text underlined__ use whitespace at end of line, as last '_' is continuation markup
+
+<<__**//combined//**__>> &nbsp; __**//combined//**__ 
+
+<<^^Hightlighted text (color is browser default)^^>>  ^^Hightlighted text (color is browser default)^^
+
+<<lightblue^^ Text highlighted in lightblue^^ >> lightblue^^ Text highlighted in lightblue^^
+<< 
+Bullet list - '*' shall be first line char - one level only
+* list element 1
+* list element 2
+
+Numbered list - '#' shall be first line char - one level only
+# list element 1
+# list element 2
+New list start new numbering - separate with one line
+# list 2 element 1
+# list 2 element 2
+>>
+
+== HTML markup of interest
+&lt;sub>Subscript&lt;/sub>  <sub>Subscript</sub>  
+&lt;sup>Superscript&lt;/sup>  <sup>Superscript</sup>
+&lt;del>Deleted text&lt;/sup> <del>Deleted text</del>  
+&lt;q>quoted text or section&lt;/q> html is modified to also work on section quote (&lt;blockquote>)
+
+== Titles and sections
+Text before first title is considered an introduction and set aside the table of content.
+It can contains images. it have own css class .hlpintro, different from the rest of the text which have css class .hlpbody. 
+<<
+Titles: 
+== First level title   Shall start at this level for proper numbering
+=== Second level title  No links neither character formatting in titles
+==== Third level title  
+
+The titles automatically creates sections, which are indented one after the other, the class for section content is .hlpsec
+Title is html markup h1 to h4. h1 is for page title, h2 is first level page title.
+An anchor is created for each title, which can be linked from the page or from outside.
+Links or character formatting in titles will not be interpreted.
+
+Collapsible sections (associated with titles, available for all levels)
+==>    Collapsible section, expanded  when page first open
+==<    Collapsible section, collapsed when page first open
+The collapse toggling is memorized as such when you come back to any page, it looks identical as when you leave it.
+You can nest collapsible sections but this not a good design. Collapsible title class is .hlptt  
+
+Table of content is created automatically, but this can be prevented by the local or global (in 'hlpdef' page) directive (&#58;notoc:).
+>>
+
+== Other markup
+<<
+'_' as last character of a line indicate that next line shall be merged with the current line
+: as first line char, indent whole paragraph (a line without newlines or with line continuation markup)
+
+<&zwnj;< inline or multiline block of preformatted code text. Shall not be too large, it may fool the mark-up engine >&zwnj;>
+Wiki markup is not interpreted in preformatted block, but **html is** interpreted.
+
+SelectName/= This is a text which is displayed if the identifier variable is equal to 'SelectName' or empty. If identifier defined, other selecting text are not displayed.
+Name shall start at first column. no space. Alphanumeric with underscore dot and dash only =/
+
+Line feeds (\n) are taken into account (became <br> and spacer lines) except at start and end of sections. 
+However the vertical spacing is adapted, two newlines giving approximately 1.5 line interval, and three new lines approximately 2 line intervals.
+
+html markup can be used, provided you don't add tags already taken into account by the wiki markup (e.g. &#60;hn> or &#60;li> markups).
+They are not filtered so use caution as this may easily destroy the page and prevent its loading.
+>>
+
+==What you cannot do
+*No markup for embedding external images, this is bad practice (can be done in html anyway)
+*No smileys or standards icons
+*No user identification for different access levels
+
+==Directives
+<<
+Directive syntax is (&#58;dir:) or (&#58;dir param1 paramn:), all character lower case, any number of parameters.
+There is no error if a directive is not recognised and it will be removed from text.
+General directives:
+(&#58;numtitle:) // number the titles, also in table of content - not numbered by default
+(&#58;hlpdiag:) // add line to page indicating some timing and a link to test page
+(&#58;allweb:)  // list all externals links (use (&#58;reflist:) directive location), used notably for printing
+(&#58;hlphead:) //Add a header atop title - parameter is header page, no parameter use 'hlphead' page. No wiki interpretation
+(&#58;hlpfoot:) //Add a footer in scrollable area - parameter is footer page, no parameter use 'hlpfoot' page. No wiki interpretation
+(&#58;class mycssclass1 mycssclass2:) //page is in a container with defined class(es)
+Neutralising directives have priority on others (whatever the order), as they are there to stop general configuration for specific pages
+(&#58;nodef:)   // don't load the default page (directives, logo, etc.) - for menu & special pages
+				// by default, content of 'hlpdef' page is automatically placed after the title.
+(&#58;nosearch:) // prevent page to be searched (development pages)
+(&#58;notoc:)   // don't display the table of content - (displayed by default) 
+(&#58;nonum:)   // remove title number (if numtitle active, used in menu, toc page, etc.)
+(&#58;notitle:) // remove the page title
+(&#58;nohead:)  // don't load the page header 'hlphead'  
+(&#58;nofoot:)  // don't load the page footer 'hlpfoot'
+
+First encounter with a general directive trigger the action, so a repeat will have no effect.
+Directives placed in 'hlpdef' page will have effect on all pages, however numtitle directive can be overriden by nonum.
+General directives shall be better placed in the first line, after title, without any other element. Spaces and newlines will be removed automatically. They can be grouped. 
+
+Local directives, to be set alone in line.
+(&#58;clear:)  // clear floating images and floating blocks (tables), so everything after the directive will be below the image
+(&#58;reflist:) //list all referenced external links - shall be placed where the list have to be displayed
+				// if there are referenced links and this directive is absent, list goes at page end.
+(&#58;notes:) //list all inline notes - shall be placed where the list have to be displayed
+
+General directives of included pages will not be taken into account, but local directives will be.
+>>
+
+==Standard pages
+Pages with standard names could be used for specific function. They shall be in 'hlp.txt' file.
+Do not forget that standard pages are ordinary pages which shall have a title, even if  this title will never be displayed. Lack of title may be the reason why your standard pages have no effect.
+===Table of content 'hlptoc'
+The button "table of content" call this page. Without this page, your documentation will never show. 
+This does not need to be the start page, as you can start Aquilegia on any page but the system will default to it when in trouble.
+===Default page 'hlpdef'
+If you want to include systematically something at the start of all your pages, you can write it in the default page 'hlpdef', which is added, if existing, at the start of every page, after the title. It will be processed as the rest of the page.
+This is the place where you want to set the general directives, like (&#58;numtitle:) if you want to number automatically all your titles. This can be deactivated on individual pages by the directive (&#58;nonum:), which have precedence. You may deactivate all tables of content by setting  (&#58;notoc:), or you can deactivate them individually for some pages like, typically, the table of content page...
+===Foot page  'hlpfoot'
+Included at the bottom of the page, after the title sections, but within the page class. Wiki markup is NOT interpreted, so the content shall be plain html.
+===Search page  'hlpsearch'
+This page is not a static page, it is filled with the result of the search
+===Printed page header 'hlpprinthead'
+If this page exists, it replaces default print directives (no table of content, all web links). Goes after the hlpdef page, so below title. It can contains anything you want, wiki markup is taken into account. 
+===prtall page
+Page 'prtall' list all pages to be printed in a global help printing, comma separated, no quotes - not used yet??
+
+==Deep linking 
+You can make deep linking to a page or title in a page for direct access from an internet address
+The page and title names are in the section of the URL after #, prefixed by 'hlp/' - this prefix is modifiable
+Non alphanumeric characters are escaped in page title anchors (including '.'), so it may be easier to copy links from table of content.  
+In an help page, a title '==This is a title !' Will have an anchor This_is_a_title_.21 
+<<
+http://mySite.com/mySite.htm#hlp/myPage
+http://mySite.com/reprap.htm#hlp/myPage!a_title_in_page
+>>
+
+==Table markup
+<<
+table floating left 'L', 'R' right(default) or 'C' centered
+/:L  table caption
+::Cell using whole table width left aligned
+=header text left aligned ::= text centered ::= other header centered text ::
+= Header text centered ::* bold text right aligned::other text left aligned
+= text centered  ::*bold left aligned ::_
+ text right aligned:: row on two lines ::
+:/  
+ 
+col msg :::row msg    give one cell + common cells on other columns (to title first column and all others)
+ 
+First line may also be
+/:Ltableclass  select a css class for the table. Classes shall be prefixed by the centering char selector, and shall be lowercase
+It exist a standard class 'altstrip' which alternate row background color. You can create your own css classes, see 'aql.css'.
+The continue to next line markup  ('_' as last character) may help for large tables
+css sub classes for rows and columns may be defined, eg. hlptrow1, hlptrow2, etc. hlptcol1, 2 etc. for columns. Combined with specific table class, this allow easy personalisation.
+ 
+the final '::' are optional for last column if text is left aligned. It is recommended for centered  and right aligned text as the last space is invisible on most editors.
+
+Tables cannot be nested.
+>>	
+See %table examples%% and %table CSS classes%Aquilegia_CSS_Tables.png 
+
+Image position and a most other markup display is controlled via css in /css/aql.css.
+
+== Included pages
+The pages code is included 'as is' before interpretation, so the title headers and all other markups became part of the host page and numbered as such. 
+If the included page does have an introduction text (text before first title header), you may add an appropriate title **before** the include.
+In the included page if you links to anchors (header titles) within the page, you may not want to define the page name, so the anchors will default to host page. General directives in included pages are NOT taken into account (but (&#58;clear:) directives are).
+
+== Known bugs/constraints: 
+* You shall have a space or newline after a web link without double quotes, beware parenthesis and dots. Setting web address within double quotes correct this.
+* Faulty web links may prevent page opening or even crash browser, notably a site without domain e.g. http://reprap/org/wiki (instead of reprap.org) crash Chrome.
+* A message that 'http' is not a valid (internal) link indicate a malformed web link.
+
+==What editor to use
+There is no integrated editor, so you shall use an independent editor and you have to organise yourself for %fast edition%edition.
+
+== Licenses
+What you write with Aquilegia remain your entire property and you retain all your rights with no requirements.  
+Usage is free for everyone own work.
+However, if you redistribute Aquilegia and its documentation, you have to comply with its licenses, see next paragraph.
+Notably, you can only redistribute if it is not integrated in another ensemble or if the ensemble have same licenses (GPL for program and CC BY-SA for the documentation). Source code free distribution and crediting author is compulsory.
+  
+== About
+Program and documentation (c) Pierre ROUZEAU 
+Program licence program: "GPLv2 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html" or any later version - documentation: CC BY-SA  

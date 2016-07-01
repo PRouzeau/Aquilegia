@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!-- Aquilegia (c) Pierre ROUZEAU - License: GPLV2 or any later version - CC BY-SA 3.0 -->
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width">
+		<meta name="description" content="Documentation of RepRap Firmware, Web Interface and Duet Electronics">
+		<meta name="author" content="Pierre Rouzeau">
+		<title id="title">RepRap Firmware, Duet and web interface</title>
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="favicon.ico">
+		<!-- CSS -->
+		<link href="css/hlpflat.css" rel="stylesheet"> <!-- !!! help system -->
+		<link href="css/aql.css" rel="stylesheet"> <!-- !!! help system -->
+	</head>
+	<body>
+		<div id="aql_cont"> <!-- Main container height shall be less than 100% to avoid general scroll bar -->
+		    <!-- Here shall be your general header ---------------------------------------- -->
+			<div id="aql_page"> <!--A physical height shall be defined -- substract the expected top bar height -->
+				<div id ="aql_header"> <!-- A header < div> is required No parameter needed -->
+					<form  id="hform" method="get" autocomplete="on" >
+						<div style ="float:right;">
+							<button type="button" id="btn_hlp_vW"><span class="hicon h-zoom-in" title="Zoom"></span></button>  
+						<!-- <button type="button" title="Close"><span class="hicon h-close" aria-hidden="true"></span></button>  -->
+						</div>
+						<button type="button" id="btn_hlp_back" title="Previous page"><span class="hicon h-back"></span></button>
+						<button type="button" id="btn_hlp_print" title="Print current page">
+							<span class="hicon h-print"></span></button>						
+						<button type="button" id="btn_hlp_toc" title="Table of content">Table of content</button>
+						<div style="display:inline-block;"> <!-- to have the button moved with the input -->
+							<input  style="display:inline;" type="text" placeholder="Search" id="hsearch">
+							<button style="display:inline;" type="submit" id="btn_hlp_search" title="Search"><span class="hicon h-search"></span></button>
+						</div>	
+						<label id="tthlplbl">RepRap Firmware Help</label>
+					</form>
+				</div>
+				<div id ="aql_menu" class="hlpmenu" role="navigation" >
+					Menu text 1234 1234 1234<br>default
+				</div>
+				<div id ="aql_body" role="main"> 
+					<p>Default help text in help window</p>
+				</div>
+			</div>
+		</div>
+		<div id="aql_alert">
+			<div id="halert"><span class="hicon h-warning"></span> Aquilegia (help module) alert</div>
+			<div id="halertext">Alert !</div>
+		</div>
+		<!-- Scripts placed at the end of the document so the pages load faster -->
+		<script src="js/jquery-2.2.1.min.js"></script>
+		<script src="js/flat.js"></script>
+		<script src="js/aql.js"></script>
+	</body>
+</html>
+

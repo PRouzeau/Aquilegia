@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<!--written by Pierre ROUZEAU
+	licensed under the terms of the GPL v2 or any later version
+	see http://www.gnu.org/licenses/gpl-2.0.html
+-->
+<html lang="en">
+<head>	<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+		<meta name="description" content="wiki translator">
+		<meta name="author" content="Pierre ROUZEAU">
+		<title id="title">Wiki translator</title>
+</head>
+<body onload="startx()">
+<script src="convert_wkm.js"></script>
+<script src="FileSaver.js"></script><!--Eli grey library for saving blobs -->
+<script src="Blob.js"></script><!--Eli grey library for blob creation for browser not having it -->
+<form role="form">
+    <label>File name</label>
+    <input type="text" id="input-fileName" value="source" placeholder="Enter file name">.txt
+	<button id="btn-save" type="submit">Save to file</button>
+</form>
+</body>
