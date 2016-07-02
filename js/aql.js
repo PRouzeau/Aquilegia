@@ -34,17 +34,20 @@ aqlO.domain		= ""; // name of cross-origin domain from files are got - fallback 
 aqlO.url		= "";  //page url base set by the first showHlp, which loads file and check availability
 aqlO.linkbase	= ""; //page Url WITHOUT hash code
 aqlO.lastP 		= 'hlptoc'; //hlp_toc; //at startup  there is no last page-> will go on toc - shall be blank to initialize events
+aqlO.nFound		= []; // pages which are not found
+aqlO.nValid		= []; // pages which are found but not valid
 aqlO.loadTime 	= 0; // page loading + splitting time, ms
 aqlO.listAll 	= false; // flag when we run a search all pages to not build toc, preformatted blocks, etc.
 aqlO.isModal  = true;
 aqlO.dispMenu = false; //?? set all flags in a hash table ?
 aqlO.zoom = 1.35; // only on touchscreen equipment
 
-var hlpRefP=[], hlpExtP=[], hlpNoP=[]; //arrays of referenced pages,  external and not found
 var htextnohlp = T("There is no available help page for this element")+"<br>";
 //pages with same identity and hide others. If this is empty, all paragraph are shown
 var hlpSelId = ""; //e.g. "Duet_0.85"; Chars allowed:[\w-.] select paragraphs identifier to display 
 var is_touch_device = 'ontouchstart' in document.documentElement; // may be not reliable, but simple
+
+//TODO: define a standard to execute utility non static pages: Search,  display list, print list with showHlp()  instead of specialised functions
 
 //var hlpSetvW = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 /* var hlpT, hlptc; // debugging execution time (for regular expressions)
@@ -58,11 +61,11 @@ hlpAccents="";// lowercase accent set for localisation These are the char allowe
 //const hlpAccents='àáâãéêíóôõúüç';  // Portuguese
 //const hlpAccents='åäö';  // Swedish + finnish
 //const hlpAccents='æåœø';  //Danish + Norwegian
-//money char '€$£'
+//money char '€$£';
 const hlpAUp = hlpAccents.toUpperCase(); 
 
-var debugt = (typeof performance.now === 'function');// performance.now() crashes Android browser -> set false
-function hlptimenow() {return (debugt)?performance.now():0}; 
+aqlO.debugT = (typeof performance.now === 'function');// performance.now() crashes Android browser -> set false
+function hlptimenow() {return (aqlO.debugT)?performance.now():0}; 
 
 function hlp_open() { //at first call to showHlp, after file load. Will never trigger without file.
 	if (aqlO.isModal) {
@@ -99,7 +102,7 @@ $(document).ready(function(){
 			$("#aql_body").css("top", "0");  /* needed by Firefox*/
 			$("#aql_body").css("position", "relative"); 
 		}
-	/*	else 	 {  // fail to have whole window scrolling while having Bootstrap modal.. Look the minihelp general scroll
+	/*	else 	 {  // fail to have whole window scrolling while having Bootstrap modal.. Look  general scroll
 			$('.modal-fullscreen').css("overflow", "auto"); 
 			$('.modal-fullscreen').css("height", "inherit"); 
 			$('.modal-content').css("height", "inherit");  
@@ -192,7 +195,7 @@ var lines, hlpLoading, lnk=arguments[0];
 	var openWin = arguments[1]; //if true we are opening help window. sent after text load
 	var stateChange = arguments[2]; // if true, we shall not do again a hash change
 	var mt = lnk.match (/(.[^!]*)!?(.*)/); // with '!' as anchor char
-	hlpLoading=mt[1].trim().toLowerCase(); // this is the page which was requested before loading
+	hlpLoading=mt[1].trim().toLowerCase(); // page without anchor
 	if (hlpLoading=='hlplast') // if call for last page
 		hlpLoading = aqlO.lastP;
     if (!tabHlp['hlptoc']) { // test if 'toc' page which always exist is loaded
@@ -230,14 +233,22 @@ var lines, hlpLoading, lnk=arguments[0];
 			dataType: "text",
 			global: false,
 			success: function(response, status) { // callback function while page loaded
-				if (response.substr(0,5)=="<!DOC") //if no page DWC DO answer with a 404 page and success!
+				if (response.substr(0,5)=="<!DOC") { //if no page DWC DO answer with a 404 page and success!
+					arrayAdd (aqlO.nFound, hlpLoading);
 					hlpnoload(aqlO.url+hlpLoading, "", "");
+				}	
 				else {	
 					hlpStore (response, hlpLoading);
-					showHlp(lnk, openWin); //rerun after load 'lnk' contain anchor
+					if(tabHlp[hlpLoading]) { // page may not be created if empty, not format compliant, etc.
+						tabHlp[hlpLoading].ext="(ext)";
+						showHlp(lnk, openWin); //rerun after load 'lnk' contain anchor
+					}
+					else
+						hlpnoload(aqlO.url+hlpLoading, "Page empty or corrupted", "");
 				}
 			},
 			error: function(xhr, status, error) { // callback function while page NOT loaded
+				arrayAdd (aqlO.nFound, hlpLoading);
 				hlpnoload(aqlO.url+hlpLoading, xhr.responseText, (aqlO.domain) ? error :'');  // error shown if call from cross origin
 			}
 		});
@@ -280,7 +291,8 @@ function hlpStore(page, index) { //Store in hash table.  index exists only for i
 			tabHlp[index2].p = page.replace(/(.*\n)/,""); // 1rst line is title, removed
 		tabHlp[index2].title=lines[1].replace(/^\s*=*\s*(.+?)\s*$/, '$1'); // second line is title line
 		return true;
-	}
+	} 
+	arrayAdd (aqlO.nValid, index);
 	return false;	
 }
 
@@ -298,6 +310,9 @@ function hlpalert(txt) { // not recursive, not dynamic, last alert wins
 
 function hlpSendSearch() { // Run the search from text field data
 	var stext = document.getElementById("hsearch").value; // search key
+	if (tabHlp['hlpsearch']==undefined) // create object as needed
+		tabHlp['hlpsearch']={};
+	tabHlp['hlpsearch'].search=false; // don't search search page		
 	if (stext) {
 		tabHlp['hlpsearch'].title = accentsNorm(stext.toLowerCase()); // accented letters normalised and everything in lowercase
      	hlpLoadAll("hlpShowSearch"); //load all pages before searching
@@ -305,8 +320,6 @@ function hlpSendSearch() { // Run the search from text field data
 }
 
 function hlpShowSearch() {
-	if (tabHlp['hlpsearch']==undefined) // create object as needed
-		tabHlp['hlpsearch']={};
 	tabHlp['hlpsearch'].p=searchHlp(); // fill in search page
 	showHlp('hlpsearch');
 }
@@ -663,9 +676,9 @@ var i, j, tab="", tabtot=[], row=[], ncol=0, ncol1, val, mt, calign, tdh, alt, c
 function hlpSetContent (hpage) {
 	var dpage, htext="", n="", idx, len, str,i, xlnk=[];
 	idx = (hpage=='hlplast') ? aqlO.lastP : hpage; // if call for last page
-	if (idx == 'hlpall') { // all pages in one go - for printing
-		str = z(zo(tabHlp["prtall"]).p); // contains a list of pages to print
-		str = str.replace(/[\n\r\s\t]/g,'').toLowerCase();
+	if (idx == 'hlpall') { // all pages in one go - for printing - modify to print any list ?? Integrate with HlpPrint function
+		str = z(zo(tabHlp["hlpprtall"]).p); // contains a list of pages to print - pass as parameter (in anchor ?)
+		str = str.replace(/[\n\r\s\t]/g,'').toLowerCase(); // also remove directive (for nosearch) ?
 		var allHlp = str.split(",");
 		for (i=0; i<allHlp.length; i++) {
 			if (i)
@@ -728,7 +741,7 @@ function searchHlp() { // Search a text in all help file
 	var stext = tabHlp['hlpsearch'].title; // title used to store search word 
 	for (var id in tabHlp) {
 		if (tabHlp[id]&&tabHlp[id].search&&(tabHlp[id].p.substr(0,2)!='->') //exclude nosearch, empty and redirect pages
-			&&id!='hlpsearch' && id!='prtall') { // check search flag - set in load all pages
+			&& id!='prtall') { // check search flag - set in load all pages
 			title = accentsNorm(tabHlp[id].title).toLowerCase(); 
 			page  = accentsNorm(tabHlp[id].p).toLowerCase(); //all search in lowercase 
 			if (title.indexOf(stext)>-1) // search first in titles
@@ -745,9 +758,8 @@ function searchHlp() { // Search a text in all help file
 		for (i=0; i<idxTb; i++)
 			fText+="%"+tabHlp[tbFound[i]].title+"%"+tbFound[i]+'\n';
 	}
-	else {
+	else 
 		fText = "----  "+T("<b>{0}</b> was not found", stext)+"\n----";
-	}
 	return fText; // return a html text with links list
 }
 
@@ -765,10 +777,11 @@ function hlpPrint() { // print the body of the help windows - reinterpret with o
 };
 
 //-- Loading external pages --------------------------------------------------------------
-window.hlpLoadAll= function() {
-	var runFunc = arguments[0]; // function started at the end of loading
-	hlpLoadAll.Eidx = 0; // index of not found pages
-	hlpChklnk(hlpAllIntPages(), "");
+window.hlpLoadAll= function() { // used for search and disgnostics
+	var runFunc = arguments[0]; // function started when loading complete
+	hlpLoadAll.refP = []; // store pages referenced as not in hash table (and not already searched)
+	hlpLoadAll.Eidx = 0; // index of not in hash table pages
+	hlpChklnk(hlpAllIntPages(), ""); 
 	hlpLoadExt(runFunc); // load all pages in reference list, add new references as needed
 }	
 
@@ -789,22 +802,24 @@ var dpage, lnk, htext="", time = hlptimenow();
 
 function hlpLoadExt(runFunc)  {
 var lnk;
-	if (hlpLoadAll.Eidx==hlpRefP.length) 
+	if (hlpLoadAll.Eidx==hlpLoadAll.refP.length) 
 		window[runFunc]();	
 	else { 	// load file one after the other, less trouble than multiple runs
-		lnk = hlpRefP [hlpLoadAll.Eidx];
+		lnk = hlpLoadAll.refP [hlpLoadAll.Eidx];
 		$.ajax(aqlO.url + lnk +'.txt', {  // load help content
 			dataType: "text",
 			global: false,
 			success: function(response) { // callback function while page loaded
-				hlpExtP.push(lnk); // this is a valid external page
 				hlpStore (response,lnk);
-				hlpChklnk(hlpTrans(z(zo(tabHlp[lnk]).p),lnk), lnk); // add new links of this page
+				if(tabHlp[lnk]) { // page may not be created if empty, not format compliant, etc.
+					tabHlp[lnk].ext="(ext)";
+					hlpChklnk(hlpTrans(z(tabHlp[lnk].p),lnk), lnk); // add new links of this page		
+				}
 				hlpLoadAll.Eidx++;
 				hlpLoadExt(runFunc); 
 			},
 			error: function(xhr, status, error) { 
-				hlpNoP.push (lnk);  // not found stack
+				arrayAdd (aqlO.nFound, lnk);
 				hlpLoadAll.Eidx++;
 				hlpLoadExt(runFunc); 
 			}
@@ -822,7 +837,8 @@ function hlpChklnk(htext, id) { // stack pages not found in the hash table ( not
 			if (id) alert (T('Link "{0}" length exceed {1} in page {2}', lnk, aqlC.linkMaxLength, id)); // give some context, please!!
 		}	
 		else if (!tabHlp[lnk]) //not loaded page added on Ref stack
-			if (hlpRefP.indexOf(lnk)<0) hlpRefP.push(lnk); // stack link as referenced (if not already referenced)
+			if ((aqlO.nFound.indexOf(lnk)<0) && (aqlO.nValid.indexOf(lnk)<0))
+				arrayAdd (hlpLoadAll.refP, lnk); // stack link as referenced (if not already referenced)
 	}
 } 
 
@@ -865,29 +881,33 @@ function accentsNorm(s) { // found on stackoverflow website
 function insertStr (source, index, string) {// insertion of a string within another - index CAN BE undef
     return (index) ? source.substr(0, index) + string + source.substr(index) : source;
 }
+function arrayAdd (arr, val) {  // add only if not existing
+	if (arr.indexOf(val)==-1) arr.push(val);
+}
 	
 //== Writer tools == from this line to the end, can be removed on user program ===================
 function hlpList() { // list all pages on current window - called by hlpLoadAll
-var lnk, i, tabTrans = {};	
+var i, tabTrans = {};	
 	aqlO.listAll = true; // unactivate toc and pre block
+	var text = '<div style="margin:12px;"><strong>Internal & External pages with backlinks (referers) and link quantity per backlink</strong><br>';
 	for (id in tabHlp)  // create hash table of converted markup
 		tabTrans[id] = (tabHlp[id]) ? hlpTrans(z(tabHlp[id].p), id):"";
-	var text = '<div style="margin:12px;"><strong>Internal & External pages with backlinks (referers) and link quantity per backlink</strong><br>';
 	for (lnk in tabHlp)  // tabHlp is a hash table, so 'in' works
 		text += backlinks(tabTrans,lnk); //lnk +'<br>';
-	text+='<hr><strong>External pages</strong><br>'
-	for (i=0; i < hlpExtP.length; i++)  //for..of may work, but compatibility is delicate
-		text += backlinks(tabTrans, hlpExtP[i]);
-	text+='<hr><strong>Not found pages</strong><br>'	
-    for (i=0; i < hlpNoP.length; i++) 
-		text += backlinks(tabTrans, hlpNoP[i]);
-	text+='</div><br><br><br><br>';	
+	text+='<hr><strong>Not found pages:</strong><br>'
+	for (i=0; i < aqlO.nFound.length; i++) //for..of may work, but compatibility is delicate
+		text += backlinks(tabTrans, aqlO.nFound[i]);
+	text+='<hr><strong>Not valid pages:</strong><br>'	
+    for (i=0; i < aqlO.nValid.length; i++) 
+		text += backlinks(tabTrans, aqlO.nValid[i]);
+	text+='</div><br><br><br><br><br><br>';	
 	$('#aql_body').html(text); 
 	aqlO.listAll = false; // re-allow normal interpretation
 }	
 
 function backlinks(tabH, link) {
-var backlnk, i, hpage, nblink, text = '<strong>'+link+' :</strong>';	
+var backlnk, i, hpage, nblink, text;
+    text = '<strong>'+z(zo(tabHlp[link]).ext)+link+' :</strong>';	
 	for (id in tabHlp) {
 		hpage = tabH[id];
 		if (hpage) {
@@ -908,7 +928,7 @@ var backlnk, i, hpage, nblink, text = '<strong>'+link+' :</strong>';
 	return (text +'<br>');
 }
 
-function hlpAllWeblnk() { // list all links for all pages 
+function hlpAllWeblnk() { // list all links for all pages - DO NOT search identical links
 var count=0, text="", page, m, re=/(<a href="htt.*?<\/a>)/g;	
 	for (id in tabHlp) { 
 		text+="<br>Page:"+id+":<br>";
