@@ -1,0 +1,97 @@
+9 July 2016 (c) Pierre ROUZEAU  CC BY-SA  - some pages by others - credited
+Aquilegia help file.
+You can write any comments before the first page.
+
+■home
+Home page for tabbed presentation
+/*Avoid 'table of content' as title, as will be used elsewhere as general title*/(:notoc:)(:nonum:)
+
+Default home page
+jmlkmlùm ùmlùm ùmlùml ùmlùml lù
+ùmlùmlmùlh jhkljhkh 
+
+■aqlgroups
+Groups for tabbed presentation
+*Group1
+*Group2
+*Group 3
+
+■home_group2, group2
+Home page for tab group 2
+/*Avoid 'table of content' as title, as will be used elsewhere as general title*/(:notoc:)(:nonum:)
+
+Tab 2 home page
+jmlkmlùm ùmlùm ùmlùml ùmlùml lù
+ùmlùmlmùlh jhkljhkh 
+
+■home_group_3, group_3
+Home page for tab group 3
+/*Avoid 'table of content' as title, as will be used elsewhere as general title*/(:nonum:)
+
+Tab 3 home page
+jmlkmlùm ùmlùm ùmlùml ùmlùml lù
+ùmlùmlmùlh jhkljhkh 
+%Page NoGroup%%
+%Page Group1%%
+
+==Title 1
+kmlkml
+mlkmk
+mlkml
+==Title 2
+lùml
+stdtdtr
+ojhjhjk
+==Title 3
+
+■menu
+Default menu
+(:nodef:)(:notitle:)(:notoc:)
+default menu
+%Page Group1%%
+%Page Group2%%
+%Page Group3%%
+
+■menu_group2
+Menu group2
+(:nodef:)(:notitle:)(:notoc:)
+Menu group2
+cccc
+vvvv
+bbbb
+
+■hlpdef
+Default page add directives or text at start of any page.
+(:numtitle:)(:hlpdiag:)(:hlpfoot:)(:hlphead:)
+
+■page_nogroup
+Page without group
+
+Page without group
+
+■page_group1, group1
+Page with group 1
+Page with group 1
+
+■page_group2, group2
+Page with group 2
+Page with group 2
+
+■page_group3, group_3
+Page with group 3
+Page with group 3
+
+
+■hlpfoot
+Foot page add text at the bottom of the page, outside the title section, inside the page css class.
+ <div class="hlpsign" role="contentinfo">delivered by <a href="http://aquilegia.blue" target=\"_blank\">Aquilegia</a> &nbsp; <div>
+
+■hlpdiag
+Writer tool box
+<a href="javascript:hlpLoadAll('hlpListAll');">List all pages (after loading external pages)</a>
+
+<a href="javascript:hlpLoadAll('hlpAllWeblnk');">List all web links (after loading external pages)</a> 
+Links open in new window, so you can test one after the other while closing test window with [Ctrl]W.
+
+<a href="javascript:hlpLoadAll('hlpAllImglnk');">Check linked images (after loading external pages)</a>
+

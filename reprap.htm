@@ -22,14 +22,14 @@
 		<link href="css/bootstrap-theme.min.css" rel="stylesheet">
 		<link href="css/bootstrap-slider.min.css" rel="stylesheet">
 		<link href="css/defaults.css" rel="stylesheet">
-		<link href="css/hlpmodal.css" rel="stylesheet"> <!-- !!! help system -->
+		<!--<link href="css/hlpmodal.css" rel="stylesheet"> <!-- !!! help system -->
 		<link href="css/aql.css" rel="stylesheet"> <!-- !!! help system -->
 		<link href="css/perso.css" rel="stylesheet"> <!-- to personalize DWC -->
 	</head>
 
 	<body>
 		<!-- Navigation Bar -->
-		<nav class="navbar navbar-default">
+		<nav class="navbar navbar-default mainapp">
 			<div class="container-fluid">
 				<!-- Grouping for better mobile display -->
 				<div class="navbar-header collapsed">
@@ -142,7 +142,7 @@
 		</nav>
 
 		<!-- Main Content -->
-		<div class="container-fluid">
+		<div class="container-fluid mainapp">
 			<!-- Info Panels -->
 			<div class="row" id="row_info">
 				<!-- Heater Temperatures -->
@@ -1723,42 +1723,38 @@
 
 		<div id="layer_tooltip"></div>
 		<!-- Help window Modal -->
-		<div id="aql_page" class="modal modal-fullscreen fade" role="dialog">
-			<div class="modal-dialog">
-			<!-- Modal content -->
-				<div class="modal-content">
-					<div id="aql_header" class="modal-header">
-						<form id="hform" method="get" autocomplete="on" >
-							<div style ="float:right;">
-								<button type="button" id="btn_hlp_vW"><span class="hicon h-zoom-in" title="Zoom"></span></button>  
-								<button type="button" data-dismiss="modal" aria-label="Close"><span class="hicon h-close" aria-hidden="true"></span></button>  
-							</div>
-							<button type="button" id="btn_hlp_back" title="Previous page"><span class="hicon h-back"></span></button>
-							<button type="button" id="btn_hlp_print" title="Print current page">
-								<span class="hicon h-print"></span></button>
-							<button type="button" id="btn_hlp_toc" title="Table of content">Table of content</button>
-							<div style="display:inline-block;">
-								<input  type="text" placeholder="Search" id="hsearch" role="search">
-								<button type="submit" title="Search"><span class="hicon h-search"></span></span></button>
-							</div>
-							
-							<label id="tthlplbl">RepRap Firmware Help</label>
-						</form>
-					</div>
-					<div id ="aql_menu" class="hlpmenu" role="navigation">
-						Menu text 1234 1234 1234<br>default
-					</div>
-					<div id="aql_body" class="modal-body" role="main">
-						<p>Default help text in the modal.</p>
-					</div>
+		<!-- <div id="aql_page" class="modal modal-fullscreen fade" role="dialog"> -->
+		<div id="aql_cont" style="display:none;">
+			<div id="aql_page">
+				<div id="aql_header">
+					<form id="hform" method="get" autocomplete="on" >
+						<div style ="float:right;">
+							<button type="button" id="btn_hlp_vW"><span class="hicon aqi zoom-in" title="Zoom"></span></button> 
+							<button type="button" id="btn_hlp_close" aria-label="Close"><span class="hicon aqi close" aria-hidden="true"></span></button>  
+						</div>
+						<button type="button" id="btn_hlp_back" title="Previous page"><span class="hicon aqi back"></span></button>
+						<button type="button" id="btn_hlp_print" title="Print current page">
+							<span class="hicon aqi print"></span></button>
+						<button type="button" id="btn_hlp_toc" title="Table of content">Table of content</button>
+						<div style="display:inline-block;">
+							<input  type="text" placeholder="Search" id="hsearch" role="search">
+							<button type="submit" title="Search"><span class="hicon aqi search"></span></span></button>
+						</div>
+						<label id="tthlplbl">RepRap Firmware Help</label>
+					</form>
+				</div>
+				<div id ="aql_menu" class="hlpmenu" role="navigation">
+					Menu text 1234 1234 1234<br>default
+				</div>
+				<div id="aql_body" role="main">
+					<p>Default help text in the modal.</p>
 				</div>
 			</div>
-		  </div>
 		</div><!-- End Help modal window -->
-		<div id="aql_alert"> <!-- specific alert window -->
-			<div id="halert"><span class="hicon h-warning"></span> Aquilegia (help module) alert</div>
+		<div id="aql_alert">
+			<div id="halert"><span class="hicon aqi warning"></span>&nbsp; &nbsp; &nbsp; Aquilegia (help module) alert</div>
 			<div id="halertext">Alert !</div>
-		</div>	
+		</div>
 		<!-- Bootstrap core JavaScript
 	  ================================================== -->
 	  <!-- Placed at the end of the document so the pages load faster -->

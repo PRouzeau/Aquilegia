@@ -1,4 +1,4 @@
-■hlptoc
+■home
 Aquilegia, simple web application for documentation
 Aquilegia is a pure Javascript software which can deliver on any network a consistent set of documentation pages.
 It was originally targeted to be the help system of a web application, but it occurred it could be used for embedded servers.
@@ -14,14 +14,19 @@ It is not modular, but basic functionalities are there:
 *Automatic nesting of sections based upon title level
 *Search tool among all pages, with possible page exclusion
 *Collapsible sections as needed, which can be expanded or collapsed at first opening
-*Foot list of web links (references)
+*Optional side menu with collapsible sections (not presented on small screens).
+*Tabbed presentation (optional)
+*Foot list of web links (link references)
 *Footnotes (written inline in the text)
+*Wiki trails (jump from page to page according an ordered list)
 *Auto resize of images larger than viewing window.
-*Deep linking possible on any page or paragraph in a page.
+*Deep linking possible on any page or paragraph in a page and on search.
+*Formatting printed page
 ===Documentation Structure
 *Text paragraphs can be hidden based on selector keys, for adaptative documentation
 *A page can be included in another page
-*A set of directives for special pages or needs, header and footer
+*Standard header and footer can be defined
+*A set of directives for special pages or needs
 ===Writing 
 *Documentation may be written in an unique file, easier to handle for first implementation and for translation.
 *New pages can be added as independent text files when documentation is expanding or too large
@@ -33,7 +38,7 @@ It is not modular, but basic functionalities are there:
 
 == A demonstration
 This site section is running Aquilegia, but is relatively small (14 pages), so a larger implementation may be seen here:
- http://otocoup.com/DWC2 
+ http://otocoup.com/DWC2 . A small demo for tabbed presentation can be seen on http://aquilegia.blue/tabbed
 
 ==A new tool for web sites?
 Surprisingly, while developing a Javascript web application, I did not found any tool to build the help pages associated with this application, running only on browser side.
@@ -42,11 +47,13 @@ The system significantly expanded when I decided to run it as the embedded help 
 Note that the first web application with the preliminary version of Aquilegia, made in 2014, while totally usable, was never published.
 
 ==What documentation size
-First implementation had around fifteen short pages, the second implementation (3D printer documentation) is presently 3300 lines and around  twenty pages, expected to grow to 30 to 40 pages. For larger page quantity, multiple table of contents may be created, with a top button for each table of contents, making a 'tabbed' presentation. You may need to move the title above the set of tab buttons. The system will still default on the 'hlptoc' page. This presentation have 15 small pages.
+First implementation had around fifteen short pages, the second implementation (3D printer documentation) is presently 3300 lines and around  twenty pages, expected to grow to 30 to 40 pages. For larger page quantity, you can use a tabbed presentation with multiple home pages and menus, one for each tab, each page being attached to a tab. The system will default on the first tab 'home' page. 
+This presentation have 15 small pages.
 
 ==Another wiki ? No
 No, while the system is using  wiki markup, there is no possibility for the user to edit the pages and there is no history tracking (which would be a very useful tool, anyway).
-This is not a wiki and it will not evolve to became one. This is a tool designed to serve a relatively static set of documents. However, an existing wiki could adopt the same markup.
+This is not a wiki and it will not evolve to became one. This is a tool designed to serve a relatively static set of documents. But an existing wiki could adopt the same markup. 
+Though, to ease edition, an existing online editor may be integrated, probably "markitUp! http://markitup.jaysalvat.com/home/"
 
 ==A new set of wiki mark-ups
 The "Wikimatrix site  http://www.wikimatrix.org/statistics.php" list more than one hundred Wiki mark-up variations, so why designing a new one?
@@ -144,7 +151,7 @@ As all my Internet operations, this is un-commissioned work that I develop as a 
 In 15 years of Internet activity, I never displayed any publicity and so, never get any money, just expensed some... 
   Pierre Rouzeau  http://rouzeau.net
 
-■hlpmenu
+■menu
 help menu
 (:notoc:)(:nodef:)(:notitle:)(:nofoot:)
 ==General
@@ -166,7 +173,7 @@ help menu
 %Performance%Speed
 %known problems%%
 %Credits%%
-______________
+==________________ 
 %About%%
 
 ■writer_tools
@@ -204,19 +211,36 @@ Embedded servers
 The Duet web server was designed on purpose for the Duet board and is fully integrated in the "RepRap Firmware  http://reprap.org/wiki/RepRap_Firmware". It also integrate a Telnet and FTP server. It is dedicated for the specific task of printing, so if you want to use the web server only, you will have to split it from the rest of the application. 
 The most recent RepRap Firmware code fork is the one of DC42 , "On Github  https://github.com/dc42/RepRapFirmware/tree/dev/src/Duet" On the same fork, you also have the version running on the "ESP 8266 https://github.com/dc42/RepRapFirmware/tree/dev/src/DuetNG"
 
-Before the 'official' port of the Duet  web server on the ESP8266 for the Duet WiFi https://www.duet3d.com/", there was a "test  here http://forums.reprap.org/read.php?2,582444"
-
 ==Other web servers
 The  Library  "libmicrohttpd http://www.gnu.org/software/libmicrohttpd/" which have at the end of the page a list of other http servers libraries
 
 ■installation
-'Flat' Installation (without integration in a web application) is very simple, just copy the content of the www directory in your server web directory.
+Installation of Aquilegia
+
+=='Flat' mode
+'Flat' Installation (without integration in a web application) is very simple, just copy the content of the www directory in your server web directory. html page is 'a.htm'
 Test first on a local machine before installing it on a server. See %edition%%.
 The html file shall be modified with author, title, etc. and you shall write your own content. It is advisable to reuse the Aquilegia 'hlp'.txt' as a template till a real template is available.
-If installed on an apache server, you may create an .htaccess file redirecting to the page if the page is not named index.htm, this will allow direct connection without typing page name. 
-It is advisable to create your own "favicon https://en.wikipedia.org/wiki/Favicon", which will be displayed on the user bookmark.
-If you want to use cross-origin data (all resources will be redirected to the resources site), you need to copy the whole content of 'h/' directory on the remote server and define the cross-origin domain in the ad-hoc variable in aql.js. The ressources will be called with 'http://remotesite.net/h/' As you call resources from another server, the content of 'h/' directory shall be open for other sites, according to CORS (cross-origin resources) principles. The '.htaccess' ditributed with Aquilegia in 'h/' directory may work for a standard apache server (open to the whole world), but sometimes this is a bit more difficult and you may want to restrict access, please see "enable cors http://enable-cors.org/", "awesome toast https://awesometoast.com/cors/" or "Zinoui http://zinoui.com/blog/cross-domain-ajax-request", which also tells how to restrict access to known origin.
+If installed on an apache server, you may create an .htaccess file redirecting to the 'a.htm' page, else name the page index.htm, this will allow direct connection without typing page name. 
+If used as an autonomous appllication, it is advisable to create your own "favicon https://en.wikipedia.org/wiki/Favicon", which will be displayed on the user bookmark. You are free to use Aquilegia Favicon if you want. 
+You may modify directories names in aql.js if you want.
 
+==Extension of a web application
+To install Aquilegia as an help of a web application, you shall indicate to Aquilegia what elements it shall close to display own element. This is simply done by defining the class 'mainapp' in the elements to be closed by Aquilegia for its own opening.
+The html template of the Web Application is nearly identical to the 'flat' version, but you shall add a 'close' button, see the example template. It may be set at the end of your web application.
+You shall also create one or more buttons calling Aquilegia, this is done by giving buttons the class 'hlpstart'. 
+The Javascript is identical to the 'flat' version, Aquilegia know that is works aside a web application by detecting the 'mainapp' classes. 
+Note that Aquilegia open as a full size window, as attempts to make Aquilegia a part size modal window were failing with mobile browser zoom.
+Aquilegia need JQuery 2.2.1. 
+Aquilegia need a function managing Text strings 'T()', see the file 'flat.js'. This function came from DWC where it handle translation, however string translation is not implemented in Aquilegia.
+You also need to normalize css to homogeneize behaviour between browsers. If using Bootstrap framework, this normalisation is incorporated, else include the 'normalise.css' file from Necolas (supplied with Aquilegia distribution).
+Note that if the web application is called with a deep link to an Aquilegia help page, the main application will be closed automatically and the requested Aquilegia help page will open directly. 
+Have a look how Aquilegia is integrated in 'Duet Web Control'.
+
+==Cross origin data (for embedded web servers)
+If you want to use cross-origin data (all resources will be taken from another resources site), you need to copy the whole content of 'h/' directory on the remote server and define the cross-origin domain in the ad-hoc variable in aql.js. The ressources will be called with 'http://remotesite.net/h/' As you call resources from another server, the content of 'h/' directory shall be open for other sites, according to CORS (cross-origin resources) principles. The '.htaccess' ditributed with Aquilegia in 'h/' directory may work for a standard apache server (open to the whole world), but sometimes this is a bit more difficult and you may want to restrict access, please see "enable cors http://enable-cors.org/", "awesome toast https://awesometoast.com/cors/" or "Zinoui http://zinoui.com/blog/cross-domain-ajax-request", which also tells how to restrict access to known origin.
+
+==Other installation details
 If you want to precompress your text of program files, have a look on "stack overflow http://stackoverflow.com/questions/16883241/how-to-host-static-content-pre-compressed-in-apache", "Codegrill http://blog.codegrill.org/2009/07/how-to-pre-compress-static-files-in.html" or "aptivate.org http://www.aptivate.org/webguidelines/Compression.html"
 
 ■developer_notes
@@ -230,7 +254,7 @@ Everything in this help module is Javascript/html, as this application is design
 * Independant pages can be called, with file being mypage.txt (file is lowercase, but link don't need be) but yet: they are not searched if they are not already loaded. They are not listed. 
 * 'hlp.txt' file is loaded at first request, loading a large file on one go is proved to be faster than multi-loading (tested)
 * Text file is split in a hash table
-* A table of content page "toc" shall always be present in help file for proper operation
+* A table of content page "home" shall always be present in help file for proper operation
 * As the help file is not user modifiable, there is no safety to prevent mark-up injection
 * Manage latin accented letters  // Internationalisation/localization to be completed 
 * Manage images (jpg/png/svg) with html links to larger images or to pdf file (No javascript)
@@ -273,7 +297,6 @@ This can grow in capability, but I would like to preserve the simplicity of this
 
 ==Todo
 * Make search page used as template, like pmwiki ?
-* Allow deep linking to search
 * Inserting standard icons in the text (with a sprite)
 * Load (local only) a parameter file (Json ?) which may contain: Remote domain, language and other parameters
 * Directive (:list:) to list all pages (may include 'external' pages) and (:nolist:) to exclude a page from the list.
@@ -349,7 +372,7 @@ Developing is sometimes quite frustrating and it appear difficult to understand 
 Not sure that will be of any other use than venting my frustration but:
 *Why there is no reliable way to know that we are on a touchscreen based device ?
 *Why the user agent is not described in plain text  ?
-*Why new hash is still not set after hashchange event ? We shall practice divination ? 
+*Why new url hash is still not set after hashchange event ? We shall practice divination ? 
 *Some standard behaviour shall be decided when a regular expression run away. Using a timeout is not quite repeatable.
 
 ==My toolbox
@@ -415,7 +438,8 @@ I began to look (actually) very closely my keyboard (French) and make a few deci
 While designed for other keyboard than the English one, my whole set may fit well on it. 
 
 And %here it is%aquilegia_syntax.
-The biggest decision is to use '%' symbol for links and images, as a directly accessible character and due to very specific common use, easy to discriminate. The only limit associated with this choice is that a link text cannot end by a decimal. 
+The biggest decision is to use '%' symbol for links and images, as a directly accessible character and due to very specific common use, easy to discriminate. The only limit associated with this choice is that a link text cannot end by a decimal.
+It is difficult to escape to [Alt Gr] characters and this markup is using the symbol '#' for footnotes and numbered lists.  This is the only difficult to reach character of the whole syntax. 
 
 === Evaluating wiki mark-ups
 * "WikiMatrix http://www.wikimatrix.org"
@@ -508,8 +532,6 @@ Known problems
 *Malformed web links can crash browser. Left in place for diagnostic of wrong links. 
 *Some light servers don't cope well with svg files and they are not displayed. May be solved by not using 'img' markup.
 *Some light servers don't work properly with target="_blank" on same domain and download images instead of displaying them
-*Deep linking to search page prevent loading
-
 
 ■table_examples
 Table examples
@@ -569,7 +591,7 @@ uno :: due ::tre
 
 ■hlpdiag
 Writer tool box
-<a href="javascript:hlpLoadAll('hlpList');">List all pages (after loading external pages)</a>
+<a href="javascript:hlpLoadAll('hlpListAll');">List all pages (after loading external pages)</a>
 
 <a href="javascript:hlpLoadAll('hlpAllWeblnk');">List all web links (after loading external pages)</a> 
 Links open in new window, so you can test one after the other while closing test window with [Ctrl]W.

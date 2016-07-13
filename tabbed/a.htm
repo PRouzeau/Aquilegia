@@ -15,30 +15,34 @@
 		<link href="css/aql.css" rel="stylesheet"> <!-- !!! help system -->
 	</head>
 	<body>
-		<div id="aql_cont"> <!-- Main container height shall be less than 100% to avoid general scroll bar -->
+		<div id="aql_cont"> <!-- Main container height and width shall be less than 100% to avoid general scroll bar -->
 		    <!-- Here shall be your general header ---------------------------------------- -->
 			<div id="aql_page"> <!--A physical height shall be defined -- substract the expected top bar height -->
 				<div id ="aql_header"> <!-- A header < div> is required No parameter needed -->
-					<form  id="hform" method="get" autocomplete="on" >
-						<div style ="float:right;">
+					<form  id="hform" method="get" autocomplete="on"  style="">
+						<div style ="float:right; vertical-align:top;">
 							<button type="button" id="btn_hlp_vW"><span class="hicon aqi zoom-in" title="Zoom"></span></button>  
-						<!-- <button type="button" title="Close"><span class="hicon aqi close" aria-hidden="true"></span></button> -->
+						<!-- <button type="button" id="btn_hlp_close" title="Close"><span class="hicon aqi close" aria-hidden="true"></span></button>  -->
 						</div>
 						<button type="button" id="btn_hlp_back" title="Previous page"><span class="hicon aqi back"></span></button>
 						<button type="button" id="btn_hlp_print" title="Print current page">
-							<span class="hicon aqi print"></span></button>		
-						<button type="button" id="btn_hlp_toc" title="Table of content" class="">Table of content</button>
-						<div style="display:inline-block;"> <!-- to have the button moved with the input -->
+							<span class="hicon aqi print"></span></button>
+						<div style="display:inline-block; vertical-align:top;"> <!-- to have the button moved with the input -->
 							<input  style="display:inline;" type="text" placeholder="Search" id="hsearch">
 							<button style="display:inline;" type="submit" id="btn_hlp_search" title="Search"><span class="hicon aqi search"></span></button>
-						</div>	
-						<label id="tthlplbl">RepRap Firmware Help</label>
+						</div>&nbsp;&nbsp;		
+						<div class="aqltab"> <!--This div and its class is what defines a tabbed presentation --> 			
+							<button type="button" title="Table of content" class="aqlsel">Tab 1</button>
+							<button type="button" title="Table of content 2" style="width:120px;" >Tab 2</button>
+							<button type="button" title="Table of content 3">Tab 3</button>
+						</div> <!-- containers are reorganised to have the page title over tabs --> 			
+						<label id="tthlplbl" style="position:absolute; top:0px; left:270px; height:18px; overflow:hidden; text-overflow: ellipsis;" >RepRap Firmware Help</label>
 					</form>
 				</div>
 				<div id ="aql_menu" class="hlpmenu" role="navigation" >
 					Menu text 1234 1234 1234<br>default
 				</div>
-				<div id ="aql_body" role="main" style="top:45px;"> 
+				<div id ="aql_body" role="main" style="top:56px;"> 
 					<p>Default help text in help window</p>
 				</div>
 			</div>
