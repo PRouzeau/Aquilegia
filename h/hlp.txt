@@ -32,13 +32,14 @@ It is not modular, but basic functionalities are there:
 *New pages can be added as independent text files when documentation is expanding or too large
 *Whole site aspect is handled in an unique %css file%css
 *A set of %writer tools%% to identify broken links, backlinks, etc. 
+*Possibility to use a dedicated %web editor%edition with history tracking on a shared server.
 ===Installation
 *NO resource required from server other than file serving, no server configuration
 *Possible use of remote resources when Internet connection is available
 
 == A demonstration
 This site section is running Aquilegia, but is relatively small (14 pages), so a larger implementation may be seen here:
- http://otocoup.com/DWC2 . A small demo for tabbed presentation can be seen on http://aquilegia.blue/tabbed
+ "http://otocoup.com/DWC2". A small demo for tabbed presentation can be seen on "http://aquilegia.blue/tabbed"
 
 ==A new tool for web sites?
 Surprisingly, while developing a Javascript web application, I did not found any tool to build the help pages associated with this application, running only on browser side.
@@ -55,43 +56,45 @@ No, while the system is using  wiki markup, there is no possibility for the user
 This is not a wiki and it will not evolve to became one. This is a tool designed to serve a relatively static set of documents. But an existing wiki could adopt the same markup. 
 Though, to ease edition, an existing online editor may be integrated, probably "markitUp! http://markitup.jaysalvat.com/home/"
 
-==A new set of wiki mark-ups
+== A new set of wiki mark-ups
 The "Wikimatrix site  http://www.wikimatrix.org/statistics.php" list more than one hundred Wiki mark-up variations, so why designing a new one?
 All the listed wiki markup in WikiMatrix are completely un-adapted to keyboards which are not English, with no exception. It occurs that as the majority of computer users, I am not using an English keyboard and had to deal with unpractical mark-ups for more than a decade. 
 With limited legacy, I decided to design a mark-up more adapted to the world, without adding difficulties for English keyboard users.
-For details about my motivations and reasoning, see my take about %Wiki markup%% 
+For details about my motivations and reasoning, see my take about %Wiki markup%% .
 The %syntax used in Aquilegia%aquilegia_syntax
 
-==On what servers
+== On what servers
 Anything which can serve web pages with http&#58;// protocol is usable.
 You are reading this page on Aquilegia served by a quite standard Apache server with all bells and whistles associated (which are unused except index and 404 pages redirection).
 I have run aquilegia on the smallest embedded web server I know, which is the one integrated in a "3D printer firmware http://reprap.org/wiki/RepRap_Firmware" on a printer control board (the Duet), which get its files from an SD card.
 It will be implemented on the same server inside a very-low cost Wifi chip "ESP8266  http://www.esp8266.com/", while the limited memory available on chip (512 kB to 4 MB) may need  control of the whole file set size and reduction of images size. Just have a look on the page about %embedded servers%%
 
-==Resources from a remote site
+== Resources from a remote site
 The server can be configured to get resources (text and images) from a remote web server, while activating shared resources according CORS (on an Apache server, that may be a single line in the .htaccess file). In case of unavailability of the remote resources (no Internet access), the resources will be researched locally.
 
-==Installation
+== Installation
 Installation is straightforward, but it needs basic understanding how a server work, see the %installation recommendations%installation
 
-==Integration in web application
+== Integration in web application
 It can be integrated easily in a Javascript framework.
 The choice of full screen is linked to the difficulties to manage modal boxes on mobile equipment, as the device is lost when zooming between the underlying page and the modal page.
 It may be run as non modal by adding a simple switching system between the app and Aquilegia.
 On the Duet, it is integrated in the printer web interface built with bootstrap. However, the system does not use any Bootstrap resources (it was, but that was removed).
 JQuery is yet needed for operation.
 
-==Edition
+== Edition
 There is no integrated editor, so you shall use any external editor which may help you to correct orthographic and grammar errors. Swapping quickly between the browser view and your editor need %to be organised%edition.
+Alternatively, you can use a dedicated shared web editor with history tracking.
 
-==Performance
+== Performance
 The interpretation time is too short to be noticeable by the user, so the overall performance depends from the server speed and the file sizes. See %performance page%speed.
 
-==Serving many users ?
+== Serving many users ?
 It is a pretty standard web application, so If the web server can serve multiple users, the application can. Not all embedded servers may be capable to serve multiple users. 
 
 == Internationalisation
-Accented letters for common European languages will be implemented soon, but the present implementation of the wiki mark-up is not adapted to languages using other alphabet. All system strings are handled by a function (T(string)), so you may create a set of translated strings.
+Accented letters for common European languages is accepted for page names, but the present implementation of the wiki mark-up is not adapted to languages using other alphabet. You can use most characters for text of links.
+All system strings are handled by a function (T(string)), so you may create a set of translated strings.
 
 == Licenses
 What you write with Aquilegia remain your entire property and you retain all your rights.  
@@ -99,11 +102,11 @@ Usage is free for everyone own work.
 However, if you redistribute Aquilegia and its documentation, you have to comply with its licenses, see next paragraph.
 Notably, you can only redistribute if it is not integrated in another ensemble or if the ensemble have same licenses (GPL for program and CC BY-SA for the documentation). Source code free distribution and crediting author is compulsory.
 
-==Where to find it
+== Where to find it
 It is published on "my GitHub account https://github.com/PRouzeau/Aquilegia". 
 I have designed a very basic tool for conversion from Wikimedia markup to Aquilegia markup, which was used to build the Duet documentation set, but it need some polishing and still have a few conversion problems.
 
-==Advices
+== Advices
 A few %writer advices%% 
   
 == About
@@ -262,8 +265,8 @@ Everything in this help module is Javascript/html, as this application is design
   /hlp/pdf/ for linked pdf files, /js/ for javascript,  /css/ for css
 * Help page is displayed in a modal dialogue box - not easy on mobile equipment
 Any help page can be called either:
-* from a button with the parameter ‘data-hpage’ containing the page name
-* from html with  a href="javascript:window.showHlp(‘page’);"
+* from a button with the parameter 'data-hpage' containing the page name
+* from html with  a href="javascript:window.showHlp('page');"
 
 * Users newlines are respected by the wiki interpreter (with exceptions), which makes the newlines handling more complex than for other wikis.
 There is an independent web page (convertwiki.htm) to convert from mediawiki, cancel categories and templates. Not interpreting fully WikiMedia markup, text need manual intervention after conversion.
@@ -277,7 +280,7 @@ On Firefox, you shall install Firebug for Javascript debugging, while on edge an
 The main problem identified is that in some cases, notably malformed web addresses, the regular expressions can run away, and some browsers are not protected against that. As this is not meant to be a wiki publicly accessible and as publication will only be done after validation, that may not be a major problem. A good 'crash test' is the page 'aquilegia_syntax.txt' with preformatted markup removed.
 
 ===Interpretation strategy
-The wiki engine is tokenising blocks, titles and web links, with are written back in text at the end of the interpretation. This have significantly improved performance. Hence, you cannot use links or format characters in titles, but this is bad practice, anyway.
+The wiki engine is tokenising blocks, titles and web links, with are written back in text at the end of the interpretation. This have significantly improved performance. Hence, you **cannot** use links in titles, but this is not very good practice as links tend to be hidden by title formatting.
 
 ==Performance
 You can have the last line of any page to indicates its own interpretation time and 'hlp.txt' loading time (or the last external page loading time) with (&#58;diag:) directive (set it in default page). 
@@ -291,11 +294,10 @@ Page load on the 3D printer (~240kB) takes from 500 to 700ms, this time varying 
 === Mobile device scrolling
 Scrolling on mobile devices. When integrated in Bootstrap, modal windows are used. The Bootstrap libray do have problems with scrolling on modal boxes. As this is mainly related to browser bugs, there are not many possible solutions. For this reason, modal windows was set to 100%. at 100%, there may be not much point to use a modal window.
 
-==Evolution
-This can grow in capability, but I would like to preserve the simplicity of this tool, so I am questinong myself about:
-* Extension to page groups For each page, one or more group could be defined. The first one may be used to associate the page with a tab/button.
+== Evolution
+As for now (July 2016), I consider this application have reached a relatively mature state and do not intend to add many functionalities. Time and users will tell if there are needs. However, the web editor lack finition and can be improved.
 
-==Todo
+== Perspectives
 * Make search page used as template, like pmwiki ?
 * Inserting standard icons in the text (with a sprite)
 * Load (local only) a parameter file (Json ?) which may contain: Remote domain, language and other parameters
@@ -321,7 +323,7 @@ I implemented it with some work, with the biggest difficulties related to Dojo l
 I always thought to publish this help library as an independent one, for a more general use than Dojo. In this aim, I started some work which was never finished and ultimately lost in hard drive crash.
 
 A few years later (in June 2016), working on 3D printer RepRapFirmware documentation, one day I thought that this can be the right tool to incorporate documentation in the firmware (which include a web server without server-side language). I decided to migrate from Dojo Framework to Bootstrap library, which is the library used by the RepRap Firmware web interface. 
-The migration was relatively easy and fast (a bit more than half a day) and the Bootstrap implementation is cleaner than the Dojo one.
+The migration was relatively easy and fast (a bit more than half a day). Later, I removed all Bootstrap calls and stay to basic Jquery use.
 
 However, while transferring the documentation text from the RepRap.org site (using MediaWiki), I found the need to somewhat expand my initially basic library.
 So as usual, this have grown larger than initially purposed, but still remain simple and compact.
@@ -351,10 +353,9 @@ Testing with simulators, you shall not forget that regular expressions have some
 *No 's' parameter (single line)  use [\s\S] as 'catch all'; [^] also work but is Javascript only, so cannot be tested with online Regex simulators
 
 ===Javascript syntax
-Searching the web for Javascript, two sites got generally in the top, Mozilla  and W3Schools. W3SChools definitions are generally far less complete than Mozilla and rarely underlines the subtleness of the language. Mozilla site is notably better, with much more examples, but not always complete. 
+Searching the web for Javascript, two sites got generally in the top, Mozilla and W3Schools. W3SChools definitions are generally far less complete than Mozilla and rarely underlines the subtleness of the language. Mozilla site is notably better, with much more examples, but not always complete. 
 It is sometimes delicate to have details on particular syntax. Look this very own program on string.replace with functions, the complete list of parameters is listed nowhere in common Javascript guides, while it is fundamental to know that what follow match is what is get by capturing parenthesis of the regular expression. 
 Look also to 'short-circuiting' operators. 
-I am still in search how to get the index property of the 'match()' function.
 Also, the results of 'match()' is very different for a simple test (with global match and what is captured by capturing parenthesis) and for a global (/g) research, where the result only gives you an array of the global matches. This is not explained properly in Mozilla site.  
 
 ===Jquery mobile
@@ -374,17 +375,24 @@ Not sure that will be of any other use than venting my frustration but:
 *Why the user agent is not described in plain text  ?
 *Why new url hash is still not set after hashchange event ? We shall practice divination ? 
 *Some standard behaviour shall be decided when a regular expression run away. Using a timeout is not quite repeatable.
+*Why the need to normalize default CSS values? This shall be part of the standard.
+*Why no coherent Javascript zoom function on mobile? viewport behaviour differ for every browser. 
+*css calculation syntax is really picky (spaces around operator, no space before parenthesis).
+*css configuration for scrolling is really tricky, notably on mobile. Surprisingly, that was the most frustrating part of this development and I wasted way too hours on it.
+*Scrolling on textarea element did not work properly and what is used is a trick (cut the text at scrolled point, then readd it...)
 
 ==My toolbox
 *Editor: Notepad++ 
 *Javascript debugger: Chrome browser debugger
+*PHP debugger (for the editor): none (Duh!)
 *Minifier/compiler: Google closure compiler  
 *FTP and file management: Total commander
 *Development web server: Miniweb (no need for an AMP bundle here)
-*Image viewer: Irfanview
-*Icon design and manipulation: Pixelformer
+*Image viewer/manipulation: Irfanview
+*Icon design and manipulation: Pixelformer and IconFx
 *Schematics: Libre office draw
 *OS: Windows 10
+*Browser simulations: Edge (not very reliable...)
 
 ■css
 Aquilegia css structure
@@ -487,7 +495,7 @@ Writer advices
 
 I am not a professional, but have created five web sites in nearly fifteen years. Not that many, but sufficient to gain some experience. The first is lost at sea but the others are still online. 
 You can take my advices as they are worth, those of an experienced hobbyist, who always try to do quality work, but don't care much about fanciness. 
- ===Links, Links, Links
+===Links, Links, Links
 I wrote web technical documentation as a hobby  for around twelve years. I wrote two sites (in French) about hobby CNC (computer controlled machines), one after the other. First was  http://otocoup.com, a plain flat html site, then I used the wiki pmwiki for http://cncloisirs.com.  While CncLoisirs was initially reusing a big part of the content of Otocoup.com, its success and usability was immediate and much higher than its predecessor. The average depth of visit and time expensed on site by reader was three to four time better. A few reasons: shorter pages with good structure and a lot of interlinks between pages. You shall propose a new read at every corner, to capture interest of reader. Also, we all follow different intellectual paths depending our knowledge, experience and interest. User shall be free to follow own mind. So one of the key in documentation is links, links, links.  Aquilegia don't have categories, but I may design a system proposing "thematic trails http://www.pmwiki.org/wiki/PmWiki/WikiTrails", as exists in a lot of wikis. This is user built, so the order can be more logical than automatically assembled categories. 
 
 ===Referers (backlinks)
@@ -496,34 +504,94 @@ Aquilegia propose a %basic tool%hlpdiag which list the pages with their referers
 ===Diagrams and schematics
  A serious weakness of my sites was the lack of schematics and somewhat insufficient iconography. Schematics needs a lot of work, but they can carry information much better than a few pages of explanations. Find a designer who have the mindset to transform concepts and technical structure in visual paths.
  
- ===File size
- Use independant compressors for all images, as they generally perform better than general purpose image software. In your software, save preferably in lossless format or with the highest quality available, then use compressor to get the best compromise.
- A big advantage of schematics and diagrams is their very low file size if properly recorded. This can be important on an embedded server with limited memory.  
+===File size
+Use independant compressors for all images, as they generally perform better than general purpose image software. In your software, save preferably in lossless format or with the highest quality available, then use compressor to get the best compromise.
+A big advantage of schematics and diagrams is their very low file size if properly recorded. This can be important on an embedded server with limited memory.  
 For ".png" images, it is important to not resize schematics in a viewer tool but to export the images  at the resolution (dpi) which will be used in your site. A .png schematic exported directly at the given resolution may have a file size multiple times smaller than the same reduced by a viewer, due to anti aliasing perturbation. What is important here is the resolution, not the image size, you will crop the image after export if your design software don't allow it.
  
 ■edition
- Text edition
- As there is no incorporated editor in Aquilegia, you shall organise a bit to ease your work and check quickly the result of your typing.
+Text edition
+You have two options to edit Aquilegia help files:
+*Develop locally on one machine and use a standard editor
+*Use the Aquilegia editor for shared edition, on a web server (which need php)
  
-==  What editor to use
+Editing locally have the advantage that you can use editor of choice and benefit from advanced functions of a modern editor.
+Using the web server editor need some installation but you will benefit of the history tracking and the possibility to share editions with others and some dedicated helping commands.
+ 
+== Aquilegia editor
+===Presentation
+Aquilegia editor is a separated application, but it starts the viewer when you ask a preview. It is installed in a directory '/edx' along other Aquilegia directories. 
+===Functionalities
+The Aquilegia editor is similar to what you can find on most Wikis, with some added functionalities:
+*Quick jump on a page (by list) if you are editing 'hlp.txt' file
+*Easy preview of the page under the cursor
+*List of all pages to easily create page links
+*List of all images with preview in tooltip to easily create image links - not yet list for sub-directories
+*Search and replace function
+*Jump to modified parts in history window.
+
+===Concurrent editions 
+Concurrent editions (multiple persons editing same file at the same moment) are detected but there is no proposal for the file differences. The history of the concurrent edition is available and one author can decide to supersede the concurrent edition with his/her own (if it is minor). As history of all editions are available, differences can be recovered later by copy/paste of the history text.
+
+===Reverting an edition
+There is not yet the possibility to automatically revert an edition (this is not a wiki and you are not supposed to be exposed to spammers), but if needed, you can get the whole/part text of any revision in the bottom windows and paste it back in the editor.
+
+===Editing externally and copying by FTP on the web server.
+You can edit externally and copy your file on the server for others to check or comments.
+While opening a page, the editor look to the last saved file and detect differences with the new pasted file and **store the differences in the history**. That can be useful if you are editing externally as it allow to track history if you update the server regularly. Note that the file history difference is stored **only** when you load the modified file in the Aquilegia editor.
+
+===Images
+There is not yet any utility to upload images to the server through a web interface. Images shall be resized first then uploaded by FTP. Overall, this take less time but need some organisation. Using an image viewer which allow "batch https://en.wikipedia.org/wiki/Batch_processing" image conversions as "Irfanview http://www.wikihow.com/Batch-Convert-Images-Using-IrfanView" ("video https://www.youtube.com/watch?v=h49naM9aI-A") is very useful. Note that IrfanView can also 'batch' rename files. Use reasonnably short file names.
+ 
+===Access control
+You can (and preferably shall) install a login/password control to the editor directory. Yet this is not directly part of aquilegia editor. This need an apache server and is done by a '.htpasswd' type file, along with '.htaccess' file configuration. This file is named '.aqlpass' and there is an example in the distribution. You have an utility 'crypt.php' to get the real directory path (required) and crypt your password on your server, as crypting functions did not give same results on all servers.
+
+===Using Aquilegia editor locally
+Install a "Wamp https://en.wikipedia.org/wiki/LAMP_(software_bundle)" or 'Lamp' distribution on your computer. These are heavy packages and you don't need the database, but there is no distribution without a database. This will install a pretty standard web distribution which could be configured like most remote servers.
+
+===Line ending
+The application is designed to use LineFeed only character at line ends, so you may configure your editor for that (in Notepad ++, see [edit][EOL Conversion][Unix format] to change actual status). If not done, when pasting file on web site, your history will be full of end of line conversions (you can see that on the example...). 
+
+=== Production
+The web editor create in /h directory a 'mypage.bak' and a 'mypage.dif' (history) files for each page it worked on. These files shall not be copied on the production site. The 'mypage.txt' file contain the full text. 
+
+===Saving your files
+As any computer, a web server can crash or be compromised. If your provider don't do automatic saving, you may want to save your work from time to time. Save only the content of /h directory, which is the only one modified.
+
+===Editor installation
+* Deploy the /edx directory on your aquilegia server branch
+* Run crypt.php (preferably install it in another directory than /edx, as the access will be locked till configuration is finalised)
+* Adapt the '.htaccess' and '.aqlpass' file according crypt results
+* Install the 'aquilegia_syntax.txt' in '/h' directory to have an help (will be removed in production server). 
+* A working template of 'hlp.txt' shall exist (in '/h' directory) to have a preview
+
+===Credits
+Instead of the main application, this is not a completely original work and it reuse some components:
+*"Fine diff http://www.raymondhill.net/finediff/viewdiff-ex.php" excellent PHP library from Raymond Hill for the history building
+*"MarkItUp! http://markitup.jaysalvat.com/home/" simple Javascript editor from Jay Salvat with some modifications and addenda
+ 
+== Local editor
+ For local edition, you shall organise a bit to ease your work and check quickly the result of your typing.
+ 
+===  What editor to use
 All editors can work on '.txt' files, so you choice will generally be on something already available on your machine. Nothing sophisticated is required, but you shall use a software with orthographic AND grammar correction. 
-===Visual aspect
+====Visual aspect
 By default, most editors open '.txt' documents in 'preformatted' style, which means they are using a fixed width font. This is hideous, so you may want to change that.
 The processus may depend from your editor, but you may want to use your own template for model/style. You have to create a preformatted style with a non fixed width font, then record it in your own template. You may or may not set this template as your default.
 
-===Quick save
+====Quick save
 The second point is as you will swap between your browser and your editor to check the viewing, you want to save your file without being annoyed by a screen asking you confirmation of the file format. Often, on the saving window, you have to untick the saving option to not be asked every time the extension is not the default.
 
-===Quick opening
+====Quick opening
 Then, you shall choose on your operating system the editor which will open by default on '.txt' files.
 
-==  How to proceed for edition
+===  How to proceed for edition
 Open your browser on the help page you are editing. 
-===Run directly in local
-Firefox have the advantage that Aquilegia can be run directly as a file without any server, by clicking the 'myapp.htm' file. 
-===Use a http server for local and remote test
-Other browsers need the installation of a simple http server. I recommend "miniweb https://sourceforge.net/projects/miniweb/", which works on Windows 10. You may install it in your website directory and start from there (configure a batch for that). However, it don't start on the default 80 channel, but on channel 8000, so you may access your web page with http://localhost:8000 This also allow tests of other devices on your network, typically typing a local network address : http://192.168.0.12:8000
-===Process
+====Run directly in local
+Firefox have the advantage that Aquilegia can be run directly as a file without any server, by clicking the 'a.htm' file. 
+====Use a http server for local and remote test
+Other browsers need the installation of a simple http server. I recommend "miniweb https://sourceforge.net/projects/miniweb/", which works on Windows 10. You may install it in your website directory and start from there (configure a batch for that). However, it don't start on the default 80 channel, but on channel 8000, so you may access your web page with http://localhost:8000 This also allow tests of other devices (mobiles) on your network, typically typing a local network address : http://192.168.0.12:8000
+====Process
 Typically the processus will be [Ctrl][S] to save your file, then swapping to your browser with [alt][Tab], reload the page on your browser with [ctrl][R] or [Alt][Ctrl][R] (Chrome), and you see the result of your edition. If you have closed all others windows than browser and editor, the whole process will need less than three seconds.
 
 ■known_problems

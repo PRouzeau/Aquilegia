@@ -254,7 +254,9 @@ buttons with 28px sprites -> 28/48*570=332px, space 33px (=28/48*58)*/
 	padding-left: 6px;
 }
 
-#btn_hlp_vW { /*--zoom button only for mobile - and for Chrome ---*/
+#btn_aql_zo,
+#btn_aql_zi
+{ /*--zoom button only for mobile - and for Chrome ---*/
 	display:none; 
 }
 
@@ -418,7 +420,6 @@ buttons with 28px sprites -> 28/48*570=332px, space 33px (=28/48*58)*/
 }
 
 /* -------------------------------------------------*/
-
 #aql_page ul { /* whole list */
 	list-style-position: inside; /*bullets within the margin */
 	list-style-type: circle;
@@ -497,37 +498,33 @@ div.spacer2 {
 	margin-left:auto;  /* auto on left/right margin required for proper centering */
 	margin-right:auto;
 } 
-#aql_page table caption { text-align:center;}
- 
+#aql_page table caption { 
+	text-align:center;
+}
 #aql_page table {
-	border:2px solid #b0b0b0;
+	border:1px solid #b0b0b0;
 	border-radius:2px;
 	border-collapse: collapse; 
-	color:#d1d1d1; 
+	color:#a0a0a0; 
 	box-shadow: 0 1px 2px; /* box-shadow will use color by default*/
 	color:black;  /* to get the final color */
 	margin: 8px;
 }
-
 #aql_page th {
 	font-size: 1.12em;
 	border: 1px solid #b0b0b0; 	
-	background: #e6e6e6; 
+	background: #eaeaea; 
 }
-
 #aql_page th, 
 #aql_page td { 
 	padding: 3px 3px; 
 }
-
 #aql_page tr {
 	background: #f9f9f9;
 }
-
 #aql_page table.altstrip tr.tbalt {   /* NO SPACE between tr and class */
  	background: #efefef; /* alternate row background color */
 }
-
 #aql_page td {
 	border: 1px solid #d0d0d0; 
 }

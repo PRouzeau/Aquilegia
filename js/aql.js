@@ -115,7 +115,7 @@ $(document).ready(function(){
 		$('#aql_body').css('width',		 (nomenu) ? '99.5%': 'calc(100% - 172px)');
 	}
 	$(document).click(function(e){ // to avoid header folding when going to an anchor
-		var target = e.target || e.srcElement;
+		var target = e.target;
 		if (target.tagName === 'A') {
 			var href = target.getAttribute('href');
 			if (href[0] == "#") {
@@ -129,12 +129,16 @@ $(document).ready(function(){
 		var hm = (idx) ? "home_"+aqlO.groups[idx] : "home";
 		showHlp(hm);	
 	});
-	$("#btn_hlp_vW").click(function(){ // Zooming button - work only on Chrome mobile
+	$("#btn_aql_zi").click(function(){ // Zooming button - work only on Chrome/Edge mobile
 		aqlO.zoom = aqlO.zoom*1.15; //abandoned: hlpSetvW = hlpSetvW*0.925;
-		//$('meta[name=viewport]').attr('content', "width="+hlpSetvW+", initial-scale=1");
 		$('meta[name=viewport]').attr('content', "initial-scale="+aqlO.zoom);
 		$(document).trigger('create');
-    }); 
+    });
+	$("#btn_aql_zo").click(function(){ // Zooming button 
+		aqlO.zoom = aqlO.zoom*0.87;
+		$('meta[name=viewport]').attr('content', "initial-scale="+aqlO.zoom);
+		$(document).trigger('create');
+    });	
 	$(".hlpstart").click(function(e){ //APPLICATION  call widget  set class '.hlpstart' in widget
 		var hpage =  $(e.target).data('hpage'); 
 		showHlp(hpage, true);
@@ -265,7 +269,7 @@ var lines, hlpLoading, lnk=arguments[0], itab=0;
 		}	
 		if ((hlpLoading!=aqlO.lastP)||openWin||hlpLoading=='aqlsearch') //stop reloading of page (if calling a local anchor, notably)
 			hlpSetContent (hlpLoading, mt[2], stateChange);  // change content as needed
-		if  (openWin) // Help window first opening
+		if (openWin) // Help window first opening
 			hlp_open();
 		if (mt[2])	// Scroll to anchor if required
 			aqlScrollAnchor ('#'+aqlC.prefix+hlpLoading+'!'+mt[2].toLowerCase());
@@ -302,7 +306,8 @@ function hlpStore(page, index) { //Store in hash table.  index exists only for i
 		}	
 		var index2 = names[0]; //names [1], names[2] .. will be groups
 		if (index && index!=index2) {
-			hlpalert ("Page name:"+index2+" not the same as file name:"+index+" Check first file line");
+			if (index!="aqlpreview")
+				hlpalert ("Page name:"+index2+" not the same as file name:"+index+" Check first file line");
 			index2=index; // to avoid looping indefinitely
 		}	
 		if (tabHlp[index2]==undefined) // create object as needed
