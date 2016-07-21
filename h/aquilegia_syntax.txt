@@ -49,12 +49,14 @@ links shall end by a space, end of line or double quote (where applicable):
   
   Images .jpg/.png/.svg (lowercase only) thumbnails in /hlp/thumb/, full size in /hlp/full/
   400%image.png  //  400 pixels image linking to full size image, default float right
+  120%sub/image.png  // 120 pixels image in '/h/d/sub/' directory linking to full size image in '/h/f/sub/'
   180L%image.jpg  // L float image on left - uppercase only
   280C%image.svg  // C center the image, no float - uppercase only
   45%pdf%image.png  //  Thumbnail Images linking to pdf file  in .hlp/pdf/
   %a text%image4.png // a text linking to an image (like 'Media:' in wikimedia) 
 and no link
   480%%myimage.png   // display images '''without''' linking to a larger image
+  '.jpeg' extension is NOT accepted.
 >>
 
 == Common markup
@@ -89,7 +91,7 @@ New list start new numbering - separate with one line
 == HTML markup of interest
 &lt;sub>Subscript&lt;/sub>  <sub>Subscript</sub>  
 &lt;sup>Superscript&lt;/sup>  <sup>Superscript</sup>
-&lt;del>Deleted text&lt;/sup> <del>Deleted text</del>  
+&lt;del>Deleted text&lt;/del> <del>Deleted text</del>  
 &lt;q>quoted text or section&lt;/q> html is modified to also work on section quote (&lt;blockquote>)
 
 == Titles and sections
@@ -220,8 +222,10 @@ Default footer page, called by directive 'hlpfoot' after the title sections, but
 This page is not a static page, it is filled with the result of the search
 ===Printed page header 'printheader'
 If this page exists, it replaces default print directives (no table of content, all web links). Added after the hlpdef page, so below title. It can contains anything you want, wiki markup IS taken into account. 
-===aqlprtall page
+=== 'aqlprtall' page
 Page 'aqlprtall' list all pages to be printed in a global help printing, comma separated, no quotes - not tested yet??
+=== 'imglist' page (external file)
+This contain the image data (author, descriptions, instructions) See %Images list%%
 
 ==Deep linking 
 You can make deep linking to a page or title in a page for direct access from an internet address

@@ -27,6 +27,7 @@ It is not modular, but basic functionalities are there:
 *A page can be included in another page
 *Standard header and footer can be defined
 *A set of directives for special pages or needs
+*%List of images%images_list with all labels, description and copyright.
 ===Writing 
 *Documentation may be written in an unique file, easier to handle for first implementation and for translation.
 *New pages can be added as independent text files when documentation is expanding or too large
@@ -139,6 +140,23 @@ Program and wiki markup designed from scratch but I get infos and inspiration fr
 *A very useful Regex simulator  "Regex101 https://regex101.com/"
 *Photo "Wikimedia Commons https://commons.wikimedia.org/wiki/File:2008_05_10_FR_Alpes_Revel_AncolieCommune_AquilegiaVulgaris.jpg"
 
+■images_list
+List of images
+A file named "imglist.txt" shall be written to store all images descriptions, licences, author and instructions.
+The beginning of this file (page) starts with directive (&#58;nosearch:), to not be visited by the search engine.
+You can write anything before the first image (detected by its file extension).
+Then you shall have for each file:
+*its name (including sub-directory as needed), typically myimage.png or sub/myimage.jpg, without quotes
+*A text describing the content, which can be on multiple lines (they will be concatenated). The text CANNOT contain comma ',' or colon ':'.
+*Then the fields 'fieldname: field content' in any order, separated by line feeds OR commas
+auth:author , copyright:copyright holder (if different from author)
+desc: short description, if different from the long description
+licence: one or multiple licences, use semi-colon for separation, not commas
+instructions: If owner do have specific requests, address, etc.
+fields can contain ':' chars after the first one (for web addresses).
+
+You can create a fictive image 'default.png', which contain default values.
+
 ■name
 The name
 Development name was 'MiniHelp'. Obviously not very original, I quickly found that a few web sites were already using this name. In search of something symbolising the small size, I first looked at small rodents, only to find that every rodent name is already used for at least one software. The small flower named 'Aquilegia' was unused (with this English name). So , this was decided. Note that the French translation 'Ancolie' is used for software. And the photo is an Aquilegia vulgaris.
@@ -169,6 +187,7 @@ help menu
 %writer advices%% 
 %CSS file%css
 %Tools%hlpdiag
+%Images list%%
 
 ==Development
 %Wiki markup%%
@@ -377,6 +396,7 @@ Not sure that will be of any other use than venting my frustration but:
 *Some standard behaviour shall be decided when a regular expression run away. Using a timeout is not quite repeatable.
 *Why the need to normalize default CSS values? This shall be part of the standard.
 *Why no coherent Javascript zoom function on mobile? viewport behaviour differ for every browser. 
+*Why no simple way to know the position of an element ? 
 *css calculation syntax is really picky (spaces around operator, no space before parenthesis).
 *css configuration for scrolling is really tricky, notably on mobile. Surprisingly, that was the most frustrating part of this development and I wasted way too hours on it.
 *Scrolling on textarea element did not work properly and what is used is a trick (cut the text at scrolled point, then readd it...)
@@ -534,7 +554,7 @@ The Aquilegia editor is similar to what you can find on most Wikis, with some ad
 Concurrent editions (multiple persons editing same file at the same moment) are detected but there is no proposal for the file differences. The history of the concurrent edition is available and one author can decide to supersede the concurrent edition with his/her own (if it is minor). As history of all editions are available, differences can be recovered later by copy/paste of the history text.
 
 ===Reverting an edition
-There is not yet the possibility to automatically revert an edition (this is not a wiki and you are not supposed to be exposed to spammers), but if needed, you can get the whole/part text of any revision in the bottom windows and paste it back in the editor.
+There is not yet the possibility to automatically revert an edition (this is not a wiki and you are not supposed to be exposed to spammers), but if needed, you can get the whole/part text of any revision in the bottom windows of history view and paste it back in the editor.
 
 ===Editing externally and copying by FTP on the web server.
 You can edit externally and copy your file on the server for others to check or comments.
@@ -542,6 +562,9 @@ While opening a page, the editor look to the last saved file and detect differen
 
 ===Images
 There is not yet any utility to upload images to the server through a web interface. Images shall be resized first then uploaded by FTP. Overall, this take less time but need some organisation. Using an image viewer which allow "batch https://en.wikipedia.org/wiki/Batch_processing" image conversions as "Irfanview http://www.wikihow.com/Batch-Convert-Images-Using-IrfanView" ("video https://www.youtube.com/watch?v=h49naM9aI-A") is very useful. Note that IrfanView can also 'batch' rename files. Use reasonnably short file names.
+ 
+=== Preview
+The preview button call Aquilegia to visualize the page where the cursor is located. Note that this trigger the anti-popup system and you shall allow popups for your development site.  
  
 ===Access control
 You can (and preferably shall) install a login/password control to the editor directory. Yet this is not directly part of aquilegia editor. This need an apache server and is done by a '.htpasswd' type file, along with '.htaccess' file configuration. This file is named '.aqlpass' and there is an example in the distribution. You have an utility 'crypt.php' to get the real directory path (required) and crypt your password on your server, as crypting functions did not give same results on all servers.
@@ -554,6 +577,7 @@ The application is designed to use LineFeed only character at line ends, so you 
 
 === Production
 The web editor create in /h directory a 'mypage.bak' and a 'mypage.dif' (history) files for each page it worked on. These files shall not be copied on the production site. The 'mypage.txt' file contain the full text. 
+Files /h/aqlpreview.txt and /h/aquilegia_syntax.txt will not be used in production.
 
 ===Saving your files
 As any computer, a web server can crash or be compromised. If your provider don't do automatic saving, you may want to save your work from time to time. Save only the content of /h directory, which is the only one modified.

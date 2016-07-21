@@ -26,6 +26,8 @@ var aqlC = {}; // object for constant parameters
 /** @private */
 var aqlO = {}; // object for variable parameters
 /** @private */
+var aqlImg = {}; // object for image parameters
+/** @private */
 var tabHlp={}; // storage of pages, groups, titles, search authorisation and title section toggle
 aqlC.version = "Beta1";
 aqlC.linkMaxLength = 24; // maximum number of character for a link name (due to file length limitation= 30-2 for 'h/'-4 for'.txt')
@@ -37,7 +39,7 @@ aqlC.prefix   	= "hlp/"; // Used for hash writing and deep linking - discriminat
 aqlC.dir      	= "h/"; // directory where the help file is located
 aqlC.imgLocalDir= "f/"; // sub-directory of h/ for images when the resources are local - may be identical to thumbnail images to limit file size
 aqlC.dispDir 	= "d/"; // sub-directory of h/ for **displayed** images (they shall have same name as full images)
-aqlC.anchorOffset = 40; // offset when scrolling to anchor (in desktop mode) - this is the position from top
+aqlC.anchorOffset = $0("aql_body").getBoundingClientRect().top; // offset when scrolling to anchor (in desktop mode) - position from top
 //-------------------------------------------
 aqlO.imagesDir	= "f/"; // sub-directory of h/ for linked images  ('full' images) use imgLocalDir if resources are local
 //aqlO.domain  = "http://otocoup.com/DWC/"; // define domain for remote help loading. Need CORS activated on directory
@@ -56,17 +58,29 @@ aqlO.loadTime 	= 0; // page loading + splitting time, ms
 aqlO.listAll	= false; // flag when we run a search all pages to not build toc, preformatted blocks, etc.
 aqlO.dispMenu	= false; 
 aqlO.zoom		= 1.35; // initial zoom on touchscreen device
+aqlO.perf		= typeof performance.now === 'function'; // also used to detect android browser
+//aqlO.isFirefox	= navigator.userAgent.toLowerCase().indexOf('firefox') > -1;
 //-------------------------------------------
 var htextnohlp = T("There is no available help page for this element")+"<br>";
 var hlpSelId = ""; //e.g. "Duet_0.85"; Chars allowed:[\w-.] select paragraphs identifier to display 
 //pages with same identity and hide others. If this is empty, all paragraph are shown
 var is_touch_device = 'ontouchstart' in document.documentElement; // may be not reliable, but simple
+//is_touch_device = true; // test
+if (is_touch_device) {
+	var viewp = document.createElement("meta");
+	viewp.name = 'viewport';
+	viewp.content = aqlzoom();
+	$T("head")[0].appendChild(viewp);
+}
+
+function aqlzoom() { // work on Chrome, need some dezoom/zoom on Firefox/Android browser
+	return "width="+1080/aqlO.zoom+", initial-scale="+aqlO.zoom;
+}
 //TODO: define a standard to execute utility non static pages: Search,  display list, print list with showHlp()  instead of specialised functions
-//var hlpSetvW = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 /* var hlpT, hlptc; // debugging execution time (for regular expressions)
 function t(init) { //Send time to console. t(1); initialise, successives t(); gives time from initialisation
 	if (init) { hlpT=hlptimenow(); hlptc=0} console.log('point: ', (hlptc++)," :",Math.round(hlptimenow()-hlpT)); } //*/
-function hlptimenow() {return (typeof performance.now === 'function')? performance.now() : 0}; 
+function hlptimenow() {return aqlO.perf? performance.now() : 0}; 
 
 function hlp_open() { //at first call to showHlp, after file load. Will never trigger without file.
 	if (aqlO.inApp) {
@@ -74,21 +88,21 @@ function hlp_open() { //at first call to showHlp, after file load. Will never tr
 			aqlO.mainApp[i] = $(".mainapp").eq(i).css('display');
 			$(".mainapp").eq(i).css('display','none');
 		}	
-		$("#aql_cont").css('display','block');	
+		$0("aql_cont").style.display = 'block';	
 	}
-	aqlO.overflow = $("body").css('overflow');	
-	$("body").css('overflow',(is_touch_device) ? "auto" :"hidden");	
+	aqlO.overflow = document.body.style.overflow;	
+	document.body.style.overflow = (is_touch_device) ? "auto" :"hidden";	
 	if (!is_touch_device) 
-		$("#hsearch").focus();	
+		$0("hsearch").focus();	
 }
 function hlp_is_open() { //detect help windows is open 
-	return ($("#aql_cont").css('display') != 'none');
+	return ($0("aql_cont").style.display != 'none');
 }
 function hlp_close() { //occurs when back button didn't get proper hash (no aqlC.prefix)
 	for (var i=0, l=$(".mainapp").length; i<l; i++) 
 		$(".mainapp").eq(i).css('display',aqlO.mainApp[i]);
-	$("#aql_cont").css('display','none');	
-	$("body").css('overflow',aqlO.overflow);		
+	$0("aql_cont").style.display = 'none';	
+	document.body.style.overflow = aqlO.overflow;		
 }
 
 function z(val) {return (val||'');} // Make empty strings of undefined
@@ -100,21 +114,19 @@ $(document).ready(function(){
 	if ($(".mainapp").length) 
 		aqlO.inApp	= true; 
 	if (is_touch_device) {
-		$("#btn_hlp_vW").css('display','inline'); // work only on chrome
-		$('head').append('<meta name="viewport" content="initial-scale=1">');
-		$('head').append('<meta name="viewport" content="initial-scale='+aqlO.zoom+'">');
-		$(document).trigger('create');
-		// 2nd run on viewport readjust margins with Chrome browser, if run first, page is zoomed
-		$("#aql_body").css("overflow", "hidden");
-		$("#aql_body, #aql_menu").css("height", "auto"); 
+		$0("btn_aql_zi").style.display = 'inline'; // work only on chrome
+		$0("btn_aql_zo").style.display = 'inline'; 
+		$0("aql_body").style.overflow = "hidden";
+		$0("aql_body").style.height = "auto";
+		$0("aql_menu").style.height = "auto";
 	}
 	window.onresize = function() { // also run by the openWin
 		var nomenu = (window.innerWidth<780)||!aqlO.dispMenu;
-		$('#aql_menu').css('display',    (nomenu) ? 'none' : "inline");
-		$('#aql_body').css('margin-left',(nomenu) ?    0   : "165px");
-		$('#aql_body').css('width',		 (nomenu) ? '99.5%': 'calc(100% - 172px)');
+		$0('aql_menu').style.display =	  (nomenu) ? 'none' : "inline";
+		$0('aql_body').style.marginLeft = (nomenu) ?    0   : "165px";
+		$0('aql_body').style.width =	  (nomenu) ? '99.5%': 'calc(100% - 172px)';
 	}
-	$(document).click(function(e){ // to avoid header folding when going to an anchor
+	document.onclick = function(e){ // to avoid header folding when going to an anchor
 		var target = e.target;
 		if (target.tagName === 'A') {
 			var href = target.getAttribute('href');
@@ -123,36 +135,34 @@ $(document).ready(function(){
 				aqlScrollAnchor (href);
 			} 
 		}	
-	});  
+	};  
 	$(".aqltab>button").click(function(){ //click on a tab
 		var idx = $(this).index();
 		var hm = (idx) ? "home_"+aqlO.groups[idx] : "home";
 		showHlp(hm);	
 	});
-	$("#btn_aql_zi").click(function(){ // Zooming button - work only on Chrome/Edge mobile
+	$0("btn_aql_zi").onclick = function(){ // Zooming button - work only on Chrome/Edge mobile
 		aqlO.zoom = aqlO.zoom*1.15; //abandoned: hlpSetvW = hlpSetvW*0.925;
-		$('meta[name=viewport]').attr('content', "initial-scale="+aqlO.zoom);
-		$(document).trigger('create');
-    });
-	$("#btn_aql_zo").click(function(){ // Zooming button 
+		document.head.querySelector("[name=viewport]").content = aqlzoom();
+    };
+	$0("btn_aql_zo").onclick = function(){ // Zooming button 
 		aqlO.zoom = aqlO.zoom*0.87;
-		$('meta[name=viewport]').attr('content', "initial-scale="+aqlO.zoom);
-		$(document).trigger('create');
-    });	
+		document.head.querySelector("[name=viewport]").content = aqlzoom();
+    };	
 	$(".hlpstart").click(function(e){ //APPLICATION  call widget  set class '.hlpstart' in widget
 		var hpage =  $(e.target).data('hpage'); 
 		showHlp(hpage, true);
     }); 
-	$("#aql_alert").click(function(){ $(this).css('display', "none"); }); // Alert window - will it trigger the popup blocker ?
-	$("#btn_hlp_back").click(function(){ history.back(); }); 
-	$("#btn_hlp_toc").click(function(){	showHlp('home'); }); //only for non-tabbed page 
-	$("#btn_hlp_print").click(function(){ hlpPrint(); }); 
-	$("#btn_hlp_close").click(function(){ hlp_close(); }); 
-	$("#hform").on('submit',function(e){ 
+	$0("btn_hlp_back").onclick = function(){ history.back(); }; 
+	$0("btn_hlp_toc").onclick = function(){	showHlp('home'); }; //only for non-tabbed page 
+	$0("btn_hlp_print").onclick = function(){ hlpPrint(); }; 
+	if ($0("btn_hlp_close", true)) // only for in-application
+		$0("btn_hlp_close").onclick = function(){ hlp_close(); }; 
+	$0("hform").onsubmit = function(e){ 
 		e.preventDefault(); //prevent submission of search, treated within Javascript 
-		var stext = document.getElementById("hsearch").value; // search key
+		var stext = $0("hsearch").value; // search key
 		aqlSendSearch(stext);
-	});
+	};
 	$(window).bind("popstate", function(){ //back or forward button activated
 		var u = window.location.hash.split('#'+aqlC.prefix)[1]; // don't do anything of address not compliant
 		if (u)
@@ -230,35 +240,12 @@ var lines, hlpLoading, lnk=arguments[0], itab=0;
 					hlpnoload(aqlO.url+'hlp.txt', xhr.responseText, error); 
 			} 
 		});
-	} else if (!tabHlp[hlpLoading] && hlpLoading!='aqlsearch') { // page not in hash table, so load as external attempt
-		$.ajax(aqlO.url + hlpLoading +'.txt', {  // load help content
-			dataType: "text",
-			global: false,
-			success: function(response, status) { // callback function while page loaded
-				if (response.substr(0,5)=="<!DOC") { //if no page DWC DO answer with a 404 page and success!
-					arrayAdd (aqlO.nFound, hlpLoading);
-					hlpnoload(aqlO.url+hlpLoading, "", "");
-				}	
-				else {	
-					hlpStore (response, hlpLoading);
-					if(tabHlp[hlpLoading]) { // page may not be created if empty, not format compliant, etc.
-						tabHlp[hlpLoading].ext="(ext)";
-						showHlp(lnk, openWin); //rerun after load 'lnk' contain anchor
-					}
-					else
-						hlpnoload(aqlO.url+hlpLoading, "Page empty or corrupted", "");
-				}
-			},
-			error: function(xhr, status, error) { // callback function while page NOT loaded
-				arrayAdd (aqlO.nFound, hlpLoading);
-				hlpnoload(aqlO.url+hlpLoading, xhr.responseText, (aqlO.domain) ? error :'');  // error shown if call from cross origin
-			}
-		});
-	}
+	} else if (!tabHlp[hlpLoading] && hlpLoading!='aqlsearch') 
+		aqlLoadExt(hlpLoading, showHlp, lnk, openWin) // page not in hash table, so load as external attempt
 	else { // help already loaded
 		if (openWin) {// Before setContent to have events defined for collapsing sections in menu
 			if (tabHlp['menu']) {
-				$('#aql_menu').html(aqlTrans(z(tabHlp['menu'].p), 'menu'));
+				$0('aql_menu').innerHTML = aqlTrans(z(tabHlp['menu'].p), 'menu');
 				aqlO.dispMenu=true;
 			}
 			window.onresize(); // to define properties at start, according  aqlO.dispMenu
@@ -274,17 +261,109 @@ var lines, hlpLoading, lnk=arguments[0], itab=0;
 		if (mt[2])	// Scroll to anchor if required
 			aqlScrollAnchor ('#'+aqlC.prefix+hlpLoading+'!'+mt[2].toLowerCase());
 		else // if anchor empty, go to top
-			$('#aql_body').scrollTop(0);
+			$0("aql_body").scrollTop =0;
 	}		
 }
 
+function aqlLoadExt (hlpLoading, runFunc, lnk, openWin) { // load external page
+	$.ajax(aqlO.url + hlpLoading +'.txt', {  // load help content
+		dataType: "text",
+		global: false,
+		success: function(response, status) { // callback function while page loaded
+			if (response.substr(0,5)=="<!DOC") { //if no page DWC DO answer with a 404 page and success!
+				arrayAdd (aqlO.nFound, hlpLoading);
+				hlpnoload(aqlO.url+hlpLoading, "", "");
+			}	
+			else {	
+				hlpStore (response, hlpLoading);
+				if(tabHlp[hlpLoading]) { // page may not be created if empty, not format compliant, etc.
+					tabHlp[hlpLoading].ext="(ext)";
+					runFunc(lnk, openWin); //rerun after load 'lnk' contain anchor
+				}
+				else
+					hlpnoload(aqlO.url+hlpLoading, "Page empty or corrupted", "");
+			}
+		},
+		error: function(xhr, status, error) { // callback function while page NOT loaded
+			arrayAdd (aqlO.nFound, hlpLoading);
+			hlpnoload(aqlO.url+hlpLoading, xhr.responseText, (aqlO.domain) ? error :'');  // error shown if call from cross origin
+		}
+	});
+}
+
 //==== Other functions =====================================================================================
+function aqlimg (imgname) {
+	$0("aql_img_b").aqlimgfile = imgname; //this is a global... 
+	if (Object.getOwnPropertyNames(aqlImg).length == 0)
+		aqlLoadExt ("imglist", aqllabelimg); // will run load function after page loading
+	else // if image documentation exists, load directly
+		aqldispimg();
+}
+
+function aqldispimg() {
+	var imgn = $0("aql_img_b").aqlimgfile ;
+	var legend = imgn.replace(/_/g,' '); // default value
+	if (z(zo(aqlImg)[imgn]))
+		if (z(aqlImg[imgn].desc)) // if there is a short description
+			legend = aqlImg[imgn].desc;
+		else 
+			legend = (z(aqlImg[imgn].longdesc)) ? aqlImg[imgn].longdesc : legend;
+	$0("aql_img_b").innerHTML = legend;
+	$0("aql_img0").onload = function() { 
+		var legendht=24; //var legendht = $0("aql_img_b").offsetHeight;
+		var w = window.innerWidth-19;
+		var h = window.innerHeight-19-legendht; //bottom height will change with wrap??
+		var ratio = Math.max (this.naturalWidth/w,this.naturalHeight/h);
+		this.width = this.naturalWidth/ratio;
+		this.height = this.naturalHeight/ratio;
+		this.style.paddingTop = Math.floor((h-this.height+1)/2+8)+"px";
+		this.style.paddingLeft = Math.floor((w-this.width+1)/2+8)+"px";
+		$0("aql_img").style.display = "block";	
+	}
+	$0("aql_img0").src= aqlO.url+aqlO.imagesDir+imgn; // start image loading
+}
+
+function aqllabelimg() { // fill in the image objects
+	var val, ext, idx="", t, arr, page = z(zo(tabHlp['imglist']).p);
+	arr = page.replace(/[\r*#]/g,'').replace(/[\n]/g,',').split(','); // eliminate CR, bullet/numbered list prefix - newline is separator
+	for (var i=0; i<arr.length; i++) {
+		if (val=arr[i].trim()) {
+			ext = val.substr(-4).toLowerCase();
+			if (ext==".png"||ext==".svg"||ext==".jpg") 
+				aqlImg[idx=val] = {}; // new image object
+			else if (idx) { // what set before first image is only comments
+				if (val.indexOf (":")==-1)
+					aqlImg[idx].longdesc = aqlImg[idx].longdesc ? aqlImg[idx].longdesc + val +" ": val+" ";
+				else {	
+					t = val.indexOf(":");
+					aqlImg[idx][val.substr(0, t)] = val.substr(t+1);
+				}	
+			}
+		}
+	}
+	aqldispimg();
+}
+
+function aqlimgdesc (event) {
+	event.stopPropagation(); // to not close the main window
+	function sel (param, text) {
+		var res =  z(obj[param]) ? obj[param] : z(def[param]) ? def[param] :"";
+		return (res) ? text+res :"";
+	}
+	var obj = aqlImg[$0("aql_img_b").aqlimgfile];
+	var def = zo(aqlImg["default.png"]);
+	var copy = z(obj.copyright) ? " Copyright: "+obj.copyright : z(obj.auth) ? " Copyright: "+obj.auth : "";
+	var txt = sel ("longdesc", "Description: ")+sel ("auth", "<br>Author: ") +copy;
+	txt += sel ("license", "<br>Licence(s): ")+ sel ("instructions", "<br>Instructions: ");
+	hlpalert (txt, "I"); 
+}	
+
 function aqlScrollAnchor (href) { // scroll to anchor
 	if (is_touch_device) // use normal move
 		location.hash=href;
 	else { // scroll page body
-		var anch = document.getElementById(href.replace("#", ''));
-		$("#aql_body").scrollTop(anch.offsetTop-aqlC.anchorOffset);
+		var anch = $0(href.substr(1)); // remove first '#'
+		$0("aql_body").scrollTop = anch.offsetTop - aqlC.anchorOffset; // calculate offset ??
 	}	
 }
 
@@ -337,8 +416,19 @@ function hlpnoload(page, xhra, err) { //message if page cannot load
 }
 
 function hlpalert(txt) { // not recursive, not dynamic, last alert wins
-	$("#halertext").html(txt);
-	$("#aql_alert").css("display","block"); //display alert window
+	if ((arguments[1]=='I' && $0("aql_alert").classList.contains("warning")) || 
+		(!arguments[1] && $0("aql_alert").classList.contains("info")) )
+		aqltoggleclass ($0("aql_alert"), "warning", "info");	
+	$0("halert").innerHTML = (arguments[1]=='I')? 
+		"<span class='hicon aqi info'></span> &emsp;&emsp; Information" :
+		"<span class='hicon aqi warning'> &emsp;&emsp; Aquilegia (help module) alert";
+	$0("halertext").innerHTML = txt;
+	$0("aql_alert").style.display = "block"; //display alert window
+}
+
+function aqltoggleclass (el, class1, class2) {
+	el.classList.toggle (class1);
+	el.classList.toggle (class2);
 }
 
 function aqlSendSearch(stext) { // Run the search from text field data
@@ -464,23 +554,23 @@ imgtg = '">'; //Target:  on Duet, opening another window makes like if it was ex
 		return '♦';  //U+2666
 	}); 
 	//-- External links and image markup --- no link within titles  ---------------
-	var repdf = /(\d+)([LC]{0,1})%pdf%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //capture image
+	var repdf = /(\d+)([LC]{0,1})%pdf%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //capture image->pdf
 	data=data.replace(repdf, function(m, p1,p2,p3,p4,p5) {
 		return '<a href="'+aqlO.url+aqlC.docDir+z(p3)+z(p2)+imgtg+ 
 		'<img class="hlpimg'+z(p2)+'" src="'+aqlO.url+aqlC.dispDir+z(p3)+z(p5)+imgwd(p1)+
 		'</a>';
 	});
-	rgximg  = /(\d+)([LC]{0,1})%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //capture image
+	rgximg  = /(\d+)([LC]{0,1})%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //capture image ->bigger image
 	data=data.replace(rgximg, function(m, p1,p2,p3,p4,p5) { 
-		return '<a href="'+aqlO.url+aqlO.imagesDir+z(p3)+z(p5)+imgtg+
+		return '<a href="javascript:aqlimg(\''+z(p3)+z(p5)+'\');">'+
 		'<img class="hlpimg'+z(p2)+'" src="'+aqlO.url+aqlC.dispDir+z(p3)+z(p5)+imgwd(p1)+
 		"</a>";
-	});	
+	});
 	rgximg = /(\d+)([LC]{0,1})%%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //capture image without link	
 	data=data.replace(rgximg, function(m, p1,p2,p3,p4,p5) {
 		return '<img class="hlpimg'+z(p2)+'" src="'+aqlO.url+aqlC.dispDir+z(p3)+z(p5)+imgwd(p1);
 	});
-	rgximglnk = /%([^%\n]*)%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //word link to image	
+	rgximglnk = /%([^%\n]*)%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //word -> image	
 	data=data.replace(rgximglnk,'<a href="'+aqlO.url+aqlO.imagesDir+'$2$4'+imgtg+'$1</a>'); // link to local image (= 'Media:' markup on wikimedia)
 	//alert (data);	
 	//-- Web links ------------------------------------------------------------------------------------------
@@ -755,7 +845,7 @@ var i, j, tab="", tabtot=[], row=[], ncol=0, ncol1, val, mt, calign, tdh, alt, c
 function aqlList (idx) { // return an array from a page list, comma or line separated, with name conditioning
 	var arr, arr2=[], page = z(zo(tabHlp[idx]).p);
 	arr = page.replace(/[\r*#]/g,'') // eliminate CR and bullet/numbered list prefix
-			.replace(/\(:[\w- \t]*?:\)/,'') // remove directives (notoc, nosearch, etc.)
+			.replace(/\(:[\w- \t]*?:\)/g,'') // remove directives (notoc, nosearch, etc.)
 			.replace(/[\n]/g,',') //newline is a separator
 			.split(',');
 	for (var i=0; i<z(arr).length; i++)
@@ -824,10 +914,10 @@ function hlpSetContent (hpage, x, stateCh) {
 		if (!tabHlp[mnu]) 
 			mnu ="menu";
 		if (aqlO.dispMenu)
-			$('#aql_menu').html(aqlTrans(z(tabHlp[mnu].p), mnu));
+			$0('aql_menu').innerHTML= aqlTrans(z(tabHlp[mnu].p), mnu);
 	}
-	$('#aql_body').html(htext); //replace html content - modify header ?? (hd)
-	$("#tthlplbl").html(tabHlp[idx].title); //set title in top banner
+	$0('aql_body').innerHTML = htext; //replace html content - modify header ?? (hd)
+	$0("tthlplbl").innerHTML = tabHlp[idx].title; //set title in top banner
 	aqlO.lastP = idx;				
 	hlpCreEvents(); // We have new html components with events (toggled sections), reloading delete events
 	//console.log (aqlO.linkbase+'#'+aqlC.prefix+idx); // block android
@@ -865,7 +955,7 @@ function searchHlp() { // Search a text in all help file
 }
 
 function hlpPrint() { // print the body of the help windows - reinterpret with options
-	var $printSection = document.getElementById("printSection"); // defined in CSS 
+	var $printSection = $0("printSection"); // defined in CSS 
 	if (!$printSection) {
 		$printSection = document.createElement("div");
 		$printSection.id = "printSection";
@@ -943,7 +1033,19 @@ function hlpChklnk(htext, id) { // stack pages not found in the hash table ( not
 } 
 
 //== Utilities ===================================================================
-
+function $0(id) { // Search DOM by Id
+	var r = document.getElementById(id); 
+	if (!r) {
+		if (!arguments[1]) alert ("element "+id+ " not found"); // can stop the error if 2nd param =true;
+		return null;
+	}
+	else 
+		return  r;
+} //return a DOM element
+function $T(id) {  // return a node list, second parameter is the root element, default document
+	var el = arguments[1]? arguments[1] :document;
+	return el.getElementsByTagName(id);
+}
 function accentsNorm(s, full) { // found on stackoverflow, for most latin language. 
 // transform accented letters in plain letters (uppercase AND lowercase) (for search or other purpose)
     var map = [    //["\\s", ""],  We left spaces in place as they are counted in index - for highlighting
@@ -992,7 +1094,7 @@ var i, id, tabTrans = {};
 	text+='<hr><strong>Not valid pages:</strong><br>'	
     for (i=0; i<aqlO.nValid.length; i++) 
 		text += backlinks(tabTrans, aqlO.nValid[i]);
-	$('#aql_body').html(text+'</div><br><br><br><br><br><br>'); 
+	$0('aql_body').innerHTML = text+'</div><br><br><br><br><br><br>'; 
 	aqlO.listAll = false; // re-allow normal interpretation
 }	
 
@@ -1031,13 +1133,13 @@ var count=0, text="", page, id, m, re=/(<a href="htt.*?<\/a>)/g;
 			}	
 	}
 	text = T("<strong>There is {0} external links<strong><br> {1}", count , text); 
-	$('#aql_body').html(text); 
+	$0('aql_body').innerHTML = text; 
 } 
 
 function hlpAllImglnk() { // check image links
 var count=0, page, id, m, re = /<img class=.+?src="(.*?)"/g;	
 var re2 = /href="([^"]*?\.([pP][nN][gG]|[jJ][pP][gG]|[sS][vV][gG]))"/g; //No external images
-	$('#aql_body').html('<br><strong>Images not found: </strong><br><br>'); 
+	$0('aql_body').innerHTML = '<br><strong>Images not found: </strong><br><br>'; 
 	for (id in tabHlp) { 
 		page = aqlTrans(z(tabHlp[id].p), id);
 		while (m=re.exec(page))		hlpcheckImg(m[1], id);
@@ -1049,14 +1151,14 @@ function hlpcheckImg(url, id) {
 	var img = new Image(), msg;
 	if (url.length > (aqlC.linkMaxLength+aqlC.dir.length)) {
 		msg = T("Link '{0}' length {1} exceed {2} in page {3}",url,url.length,(aqlC.linkMaxLength+aqlC.dir.length), id)+"<br>";
-		$('#aql_body').append(msg);
+		$0('aql_body').innerHTML+=msg;
 	}	
 /*	if (url!=url.toLowerCase()) // ok, too many warnings, we shall change 
 		hlpalert (T('Image or document name {0} shall be lowercase in page {1}', url, id)); */		
 	img.id = id+'_'+img.unique_ID;
 	img.onerror = function() { // store image name in id to recover when function end task
 		var txt = T("Page : {0}<br>{1} not found", this.id.split('_')[0], this.src)+"<br><br>";
-		$('#aql_body').append(txt); 
+		$0('aql_body').innerHTML+=txt; 
 	}
 	img.src = url; // start loading
 }
