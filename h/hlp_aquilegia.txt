@@ -19,33 +19,33 @@ It is not modular, but basic functionalities are there:
 *Automatic table of content building with title anchors, deactivable on demand
 *Automatic nesting of sections based upon title level
 *Search tool among all pages, with possible page exclusion
-*Collapsible sections as needed, which can be expanded or collapsed at first opening
+*%Collapsible sections%aquilegia_syntax!titles_and_sections as needed, which can be expanded or collapsed at first opening
 *Optional side menu with collapsible sections (not presented on small screens).
-*Tabbed presentation (optional)
+*%Tabbed presentation%aquilegia_syntax!tabbed_presentation (optional)
 *Foot list of web links (link references)
 *Footnotes (written inline in the text)
 *%Wiki trails%aquilegia_syntax!wiki_trails (jump from page to page according an ordered list)
 *Auto resize of images larger than viewing window.
-*Deep linking possible on any page or paragraph in a page and on search.
-*Formatting printed page
+*%Deep linking%aquilegia_syntax!deep_linking possible on any page or paragraph in a page and on search.
+*Formatting %printed page%aquilegia_syntax!printed_page_header_.27printheader.27
 ===Documentation Structure
-*Text paragraphs can be hidden based on selector keys, for adaptative documentation
+*Text paragraphs %can be hidden%%aquilegia_syntax!selected_paragraph based on selector keys, for adaptative documentation
 *A page can be included in another page
-*Standard header and footer can be defined
-*A set of directives for special pages or needs
+*Standard %header and footer%aquilegia_syntax!header_page_.27hlphead.27 can be defined
+*A set of %directives%aquilegia_syntax!directives for special pages or needs
 ===Writing 
 *Documentation may be written in an unique file, easier to handle for first implementation and for translation.
 *New pages can be added as independent text files when documentation is expanding or too large
 *Whole site aspect is handled in an unique %css file%css
 *A set of %writer tools%% to identify broken links, backlinks, etc. 
-*Possibility to use a dedicated %web editor%edition with history tracking on a shared server.
+*Possibility to use a dedicated %web editor%aquilegia_editor with history tracking on a shared server.
 *Managing %images%% and %images metadata%images_list
 ===Installation
 *NO resource required from server other than file serving, no server configuration
 *Possible use of remote resources when Internet connection is available
 
 == A demonstration
-This site section is running Aquilegia, but is relatively small (16 pages), so a larger implementation may be seen here:
+This presentation is running Aquilegia, but is relatively small (17 pages), so a larger implementation may be seen here:
  "http://otocoup.com/DWC2". A small demo for tabbed presentation can be seen on "http://aquilegia.blue/tabbed"
 
 ==A new tool for web sites?
@@ -90,8 +90,7 @@ On the Duet, it is integrated in the printer web interface built with bootstrap.
 JQuery is yet needed for operation.
 
 == Edition
-There is no integrated editor, so for development you shall use an external editor or install the "aquilegia editor https://github.com/PRouzeau/Aquilegia-Editor". An external editor may help you to correct orthographic and grammar errors. Swapping quickly between the browser view and your editor need %to be organised%edition.
-Alternatively, you can use a dedicated shared web editor with history tracking.
+There is no integrated editor, so for development you shall use an external editor or install the %aquilegia editor%% for shared development with history tracking. An external editor may help you to correct orthographic and grammar errors. Swapping quickly between the browser view and your editor need %to be organised%edition.
 
 == Performance
 The interpretation time is too short to be noticeable by the user, so the overall performance depends from the server speed and the file sizes. See %performance page%speed.
@@ -119,10 +118,9 @@ A few %writer advices%%
 == About
 Program and documentation (c) Pierre ROUZEAU  - My site  http://rouzeau.net   Not many things about software, anyway
 My Github account https://github.com/PRouzeau A bit more software, but mainly hardware about 3D printing
-Program licence program: "GPLv2 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html" or any later version - documentation: CC BY-SA  
+Program licence program: "GPLv2 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html" or any later version - documentation: CC BY-SA 3.0
 
-**Credits**
-While I started this program from a blank page, I have to give some %credits%%
+%Credits%%
 
 **Developer comments**
 I am not a professional programmer, but I anyway have comments, recommendations and rants to be vented.
@@ -130,7 +128,7 @@ I am not a professional programmer, but I anyway have comments, recommendations 
 
 ■hlpdef
 Default page - added at top of page below page title - this title will never be displayed - use for comments
-(:numtitle:)(:hlpfoot:)  80%%AncolieCommune120.jpg
+(:numtitle:)(:hlpfoot:)  56%%mylogo.jpg
 
 ■hlpfoot
 Foot page add text at the bottom of the page, outside the title sections, inside page css class. 
@@ -138,6 +136,7 @@ Foot page add text at the bottom of the page, outside the title sections, inside
 
 ■credits
 Credits
+This program was started from a blank page, but I have to give some credits:
 *Icons from "Typicons http://www.typicons.com" licensed under CC-BY-SA
 *It is (yet) using "JQuery library https://jquery.com/"
 Program and wiki markup designed from scratch but I get infos and inspiration from:
@@ -169,14 +168,14 @@ There is a function in the editor page which add automatically newly uploaded im
 
 ■name
 The name
-Development name was 'MiniHelp'. Obviously not very original, I quickly found that a few web sites were already using this name. In search of something symbolising the small size, I first looked at small rodents, only to find that every rodent name is already used for at least one software. The small flower named 'Aquilegia' was unused (with this English name). So , this was decided. Note that the French translation 'Ancolie' is used for software. And the photo is an Aquilegia vulgaris.
+Development name was 'MiniHelp'. Obviously not very original, I quickly found that a few web sites were already using this name. In search of something symbolising the small size, I first looked at small rodents, only to find that every rodent name is already used for at least one software. The small flower named 'Aquilegia' was unused (with this English name). So, this was decided. Note that the French translation 'Ancolie' is already used for software. The photo is an "Aquilegia vulgaris https://en.wikipedia.org/wiki/Aquilegia". 
 
 ■privacy
 Privacy policy
-The only information we retain from your visit will be the usual statistics kept by the web server provider tools:
+The only information I retain from your visit will be the usual statistics kept by the web server provider tools:
 Your IP, the web address used to enter the site (with the page if defined), the time you stay and your browser and OS characteristics (if they are not kept secret).
 There is no commercial activity linked to this site and I do not search to identify or track you. The served content is entirely operated by myself and there is no publicity.
-This presentation 'site' runs entirely in your browser and did not return any information to the server. There is no cookie. 
+This presentation runs entirely in your browser and did not return any information to the server. There is no cookie. 
 In addition, the whole presentation is technically an unique web page, as the content is dynamically changed based on what is in the global file  -- see the site to understand the storage philosophy--. So, I cannot know what page you did visit (except the syntax page, which is an independent file, so I can detect the loading).
 As all my Internet operations, this is un-commissioned work that I develop as a hobby. 
 In 15 years of Internet activity, I never displayed any publicity and so, never get any money, just expensed some... 
@@ -184,7 +183,7 @@ In 15 years of Internet activity, I never displayed any publicity and so, never 
 
 ■menu
 help menu
-(:notoc:)(:nodef:)(:notitle:)(:nofoot:)
+(:notoc:)(:nodef:)(:notitle:)
 ==General
 "Demonstration http://otocoup.com/DWC2"
 "Editor demo http://aquilegia.blue/edit"
@@ -195,7 +194,8 @@ help menu
 %Aquilegia syntax%%
 %Table examples%%
 %Edition%%
-%writer advices%% 
+%Aquilegia editor%%
+%Writer advices%% 
 %CSS file%css
 %Tools%hlpdiag
 %Images%%
@@ -545,76 +545,13 @@ For ".png" images, it is important to not resize schematics in a viewer tool but
 Text edition
 You have two options to edit Aquilegia help files:
 *Develop locally on one machine and use a standard editor
-*Use the Aquilegia editor for shared edition, on a web server (which need php)
+*Use the %Aquilegia editor%% for shared edition, on a web server (which need php)
  
 Editing locally have the advantage that you can use editor of choice and benefit from advanced functions of a modern editor.
 Using the web server editor need some installation but you will benefit of the history tracking and the possibility to share editions with others and some dedicated helping commands.
- 
-== Aquilegia editor
-600%editor.png
-===Presentation
-Aquilegia editor is a separated application, but it starts the viewer when you ask a preview. It is installed in a directory '/edx' along other Aquilegia directories. 
-===Functionalities
-The Aquilegia editor is similar to what you can find on most Wikis, with some added functionalities:
-*Quick jump on a page (by list) if you are editing 'hlp.txt' file
-*Easy preview of the page under the cursor
-*List of all pages to easily create page links
-*List of all images with preview in tooltip to easily create image links - not yet list for sub-directories
-*Search and replace function
-*Jump to modified parts in history window.
 
-===Demonstration
-http://aquilegia.blue/edit This demonstration does not allow you to save anything but you can preview your work.
-
-===Concurrent editions 
-Concurrent editions (multiple persons editing same file at the same moment) are detected but there is no proposal for the file differences. The history of the concurrent edition is available and one author can decide to supersede the concurrent edition with his/her own (if it is minor). As history of all editions are available, differences can be recovered later by copy/paste of the history text.
-
-===Reverting an edition
-There is not yet the possibility to automatically revert an edition (this is not a wiki and you are not supposed to be exposed to spammers), but if needed, you can get the whole/part text of any revision in the bottom windows of history view and paste it back in the editor.
-
-===Editing externally and copying by FTP on the web server.
-You can edit externally and copy your file on the server for others to check or comments.
-While opening a page, the editor look to the last saved file and detect differences with the new pasted file and **store the differences in the history**. That can be useful if you are editing externally as it allow to track history if you update the server regularly. Note that the file history difference is stored **only** when you load the modified file in the Aquilegia editor.
-
-===Images
-480%editor_im.png
-See the %dedicated page%images for image management.
- 
-=== Preview
-The preview button call Aquilegia to visualize the page where the cursor is located. Note that this trigger the anti-popup system and you shall allow popups for your development site.  
- 
-===Access control
-You can (and preferably shall) install a login/password control to the editor directory. Yet this is not directly part of aquilegia editor. This need an apache server and is done by a '.htpasswd' type file, along with '.htaccess' file configuration. This file is named '.aqlpass' and there is an example in the distribution. You have an utility 'crypt.php' to get the real directory path (required) and crypt your password on your server, as crypting functions did not give same results on all servers.
-
-===Using Aquilegia editor locally
-Install a "Wamp https://en.wikipedia.org/wiki/LAMP_(software_bundle)" or 'Lamp' distribution on your computer. These are heavy packages and you don't need the database, but there is no distribution without a database. This will install a pretty standard web distribution which could be configured like most remote servers.
-
-===Line ending
-The application is designed to use LineFeed only character at line ends, so you may configure your editor for that (in Notepad ++, see [edit][EOL Conversion][Unix format] to change actual status). If not done, when pasting file on web site, your history will be full of end of line conversions (you can see that on the example...). 
-
-=== Production
-The web editor create in /h directory a 'mypage.bak' and a 'mypage.dif' (history) files for each page it worked on. These files shall not be copied on the production site. The 'mypage.txt' file contain the full text. 
-Files /h/aqlpreview.txt and /h/aquilegia_syntax.txt will not be used in production.
-
-===Saving your files
-As any computer, a web server can crash or be compromised. If your provider don't do automatic saving, you may want to save your work from time to time. Save only the content of /h directory, which is the only one modified.
-
-===Editor installation
-* Deploy the /edx directory on your aquilegia server branch (this directory can have any name you want without config).
-* Run crypt.php (preferably install it in another directory than /edx, as the access will be locked till configuration is finalised), this will give you the real path of your web install and a crypted password.
-* Adapt the '.htaccess' and '.aqlpass' file according crypt results
-* Install the 'aquilegia_syntax.txt' in '/h' directory to have an help (will be removed in production server). 
-* A working template of 'hlp.txt' shall exist (in '/h' directory) to have a preview.
-By default, it edit text files in '../h/' directory and upload images in '../h/d' and '../h/f' directories (relative to own position).
-The image upload page is independant from the editor.
-
-===Credits
-Instead of the main application, this is not a completely original work and it reuse some components:
-*"Fine diff http://www.raymondhill.net/finediff/viewdiff-ex.php" excellent PHP library from Raymond Hill for the history building
-*"MarkItUp! http://markitup.jaysalvat.com/home/" simple Javascript editor from Jay Salvat with some modifications and addenda
- 
 == Local editor
- For local edition, you shall organise a bit to ease your work and check quickly the result of your typing.
+For local edition, you shall organise a bit to ease your work and check quickly the result of your typing.
  
 ===  What editor to use
 All editors can work on '.txt' files, so you choice will generally be on something already available on your machine. Nothing sophisticated is required, but you shall use a software with orthographic AND grammar correction. 
@@ -636,11 +573,99 @@ Firefox have the advantage that Aquilegia can be run directly as a file without 
 Other browsers need the installation of a simple http server. I recommend "miniweb https://sourceforge.net/projects/miniweb/", which works on Windows 10. You may install it in your website directory and start from there (configure a batch for that). However, it don't start on the default 80 channel, but on channel 8000, so you may access your web page with http://localhost:8000 This also allow tests of other devices (mobiles) on your network, typically typing a local network address : http://192.168.0.12:8000
 ====Process
 Typically the processus will be [Ctrl][S] to save your file, then swapping to your browser with [alt][Tab], reload the page on your browser with [ctrl][R] or [Alt][Ctrl][R] (Chrome), and you see the result of your edition. If you have closed all others windows than browser and editor, the whole process will need less than three seconds.
+ 
+■Aquilegia editor 
+Aquilegia editor
+Aquilegia editor is a separated application for shared edition with history tracking of page files. It can upload images. It starts Aquilegia when you ask a preview. It is installed in a directory '/edx' along other Aquilegia directories. It is using php and shall run on a standard web installation.
+
+==Functionalities
+600%editor.png
+The Aquilegia editor is similar to what you can find on most Wikis, with some added functionalities:
+*Quick jump on a page (by list) if you are editing 'hlp.txt' file
+*Easy preview of the page under the cursor
+*List of all pages to easily create page links
+*List of all images with preview in tooltip to easily create image links - not yet list for sub-directories
+*Search and replace function
+*Jump to modified parts in history window.
+
+==Demonstration
+http://aquilegia.blue/edit This demonstration does not allow you to save anything but you can preview your work.
+
+==Edition process
+=== Access control
+You can (shall) install a login/password control to the editor directory. Yet this is not directly part of aquilegia editor. This need an apache server and is done by a '.htpasswd' type file, along with '.htaccess' file configuration. The password file is renamed '.aqlpass' and there is an example in the distribution. You have an utility 'crypt.php' to get the real directory path (required) and crypt your password on your server, as crypting functions did not give same results on all servers.
+
+===Concurrent editions 
+Concurrent editions (multiple persons editing same file at the same moment) are detected but there is no proposal for the file differences. The history of the concurrent edition is available and one author can decide to supersede the concurrent edition with his/her own (if it is minor). As history of all editions are available, differences can be recovered later by copy/paste of the history text.
+
+===Reverting an edition
+There is not yet the possibility to automatically revert an edition (this is not a wiki and you are not supposed to be exposed to spammers), but if needed, you can get the whole/part text of any revision in the bottom windows of history view and paste it back in the editor./*beware of html entities*/
+
+===Editing externally and copying by FTP on the web server.
+You can edit externally and copy your file on the server for others to check or comments.
+While opening a page, the editor look to the last saved file and detect differences with the new pasted file and **store the differences in the history**. That can be useful if you are editing externally as it allow to track history if you update the server regularly. Note that the file history difference is stored **only** when you load the modified file in the Aquilegia editor.
+
+==Images
+480%editor_im.png
+There is an utility for image uploading.
+See the %dedicated page%images for image management.
+ 
+== Preview
+The preview button call Aquilegia to visualize the page where the cursor is located. Note that this trigger the anti-popup system and you shall allow popups for your development site.  
+
+==Line ending
+The application is designed to use LineFeed only character at line ends, so you may configure your editor for that (in Notepad ++, see [edit][EOL Conversion][Unix format] to change actual status). If not done, when pasting file on web site, your history will be full of end of line conversions (you can see that on the example...). 
+
+== Safety and production site
+The web editor create in /edx/hist directory a 'mypage.bak' and a 'mypage.dif' (history) files for each page it worked on.
+This allow some recovery in case of big trouble. Deleting the ".dif" file does not cause harm, but you will loose all the history.
+The editor directory 'edx' shall not be copied on the production site. All 'mypage.txt' files in /h directory contain whole text. 
+Files /h/aqlpreview.txt and /h/aquilegia_syntax.txt will not be used in production.
+
+== Saving your files
+As any computer, a web server can crash or be compromised. If your provider don't do automatic saving, you may want to save your work from time to time. Save only the content of /h directory, which is the only one modified.
+
+== Using the editor
+*Open the editor with "http&#58;//yoursite.org/edx" and fill in name and password as required.
+*Load an existing page while typing file name and clicking 'load' or hovering in the name field which will propose existing files links.
+*List windows could be closed by clicking on them (outside a link area).
+*To create a new page, just give it a name and save. Remember first line is page name (shall be identical to the file name for independent pages) and second line is page title.
+*If you are in 'hlp.txt' file, there are multiple pages and you can jump to one by selecting it in the list opened by the button 'page list'. 
+*You can insert an internal link by selecting a page in the list opened by the button "link" (Ctrl-L).
+*You can insert an image by selecting one in the list opened by the button "Picture" (Ctrl-P). Hovering one list link will open an image preview tooltip.
+*You can actually modify the cursor position when an insert link/image list is open. 
+*Applying a style is done by selecting a text (double click for simple words) and clicking the style button.
+*There is a "preview" button, which open Aquilegia in a separated window previewing the page under the cursor. Don't forget to save after you checked the preview.
+*When creating a new site, it is wise to create all pages entries with title before writing content. That way, you will benefit from the page list to create links without any risk of fault. Anyway, you still have a utility to check internal links (opening the pae 'hlpdiag').
+
+== history
+You can see the history of any modification, including the modifications done externally to the editor. 
+The history page have one main window highlighting differences (added parts in green, removed one in red). You have buttons which jump back and forth between the editions. Below this main window, you find two windows with native text (no highlighting) of the 'before' and 'after' update. You can copy the text from these windows to recover any information. 
+ 
+== Editor installation
+===How to proceed
+* Find it "on Github https://github.com/PRouzeau/Aquilegia-Editor".
+* Deploy the /edx directory on your aquilegia server branch.
+* Run crypt.php (preferably install it in another directory than /edx, as the access will be locked till configuration is finalised), this will give you the real path of your web install and crypted passwords.
+* Adapt the '.htaccess' and '.aqlpass' file according crypt results
+* Install the 'aquilegia_syntax.txt' in '/h' directory to have the help (will be removed in production server). 
+* A working template of 'hlp.txt' shall exist (in '/h' directory) to have a preview.
+By default, the editor work on text files in '../h/' directory and upload images in '../h/d' and '../h/f' directories (relative to own position).
+The image upload page is independant from the editor.
+
+=== Using Aquilegia editor locally
+Install a "Wamp https://en.wikipedia.org/wiki/LAMP_(software_bundle)" or 'Lamp' distribution on your computer. These are heavy packages and you don't need the database, but there is no distribution without a database. This will install a pretty standard web distribution which could be configured like most remote servers.
+
+== Credits
+Instead of the main viewer, this is not a completely original work and it reuse some components:
+*"Fine diff http://www.raymondhill.net/finediff/viewdiff-ex.php" excellent PHP library from Raymond Hill for the history building
+*"MarkItUp! http://markitup.jaysalvat.com/home/" simple Javascript editor from Jay Salvat with some modifications and addenda
+*"This post http://www.htmlgoodies.com/html5/javascript/drag-files-into-the-browser-from-the-desktop-HTML5.html" for the image file drop box
 
 ■images
 Images in Aquilegia
 
-In principle, external images cannot be embedded in Aquilegia. This is possible by directly writing html in pages, but not recommended.
+In principle, external images shall not be embedded in Aquilegia. This is possible by directly writing html in pages, but not recommended.
 The image management in any CMS (content management system)	is critical. This is a long and tedious part. You need to organise yourself to limit time loss.
 
 ==Formats
@@ -650,9 +675,9 @@ The images represent a large size and also one of the largest time required for 
 == Directory structure
 In Aquilegia,there are two directories for images:
 * The 'display' directory (/h/d), where are stored all images displayed in a page.
-* The 'full size' directory (/h/f), where are stored larger images seen when you click an image.
-For environment with space constraint, the 'full size' directory could be the same as the 'display', so this is the same image shown, but with different zoom.
-Some images linking to pdf files of without full size links need not be stored in 'full size' directory.
+* The 'full size' directory (/h/f), where are stored larger images seen when you click an image (if this is allowed).
+For environment with space constraints, the 'full size' directory could be the same as the 'display', so this is the same image shown, but with different zoom.
+Some images in '/h/d' linking to pdf files of without full size links need not be stored in 'full size' directory.
 It is possible to have sub directories, provided the hierarchy is the same in both display and full size, say an image in /h/d/subdir will link to /h/f/subdir. Yet the sub directories are not completely managed in Aquilegia editor.
 
 == Metadata

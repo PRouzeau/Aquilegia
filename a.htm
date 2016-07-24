@@ -5,7 +5,7 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width">
-		<meta name="description" content="Documentation of RepRap Firmware, Web Interface and Duet Electronics">
+		<meta name="description" content="Aquilegia documentation">
 		<meta name="author" content="Pierre Rouzeau">
 		<title id="title">RepRap Firmware, Duet and web interface</title>
 		<!-- Favicon -->
@@ -21,17 +21,17 @@
 				<div id ="aql_header"> <!-- A header < div> is required No parameter needed -->
 					<form  id="hform" method="get" autocomplete="on" >
 						<div style ="float:right;">
-							<button type="button" id="btn_aql_zo"><span class="hicon aqi zoom-out" title="Zoom"></span></button>  
-							<button type="button" id="btn_aql_zi"><span class="hicon aqi zoom-in" title="Zoom"></span></button>  
-						<!-- <button type="button" title="Close"><span class="hicon aqi close" aria-hidden="true"></span></button> -->
+							<button type="button" id="btn_aql_zo"><span class="hicon aqi qzoom-out" title="Zoom"></span></button>  
+							<button type="button" id="btn_aql_zi"><span class="hicon aqi qzoom-in" title="Zoom"></span></button>  
+						<!-- <button type="button" title="Close"><span class="hicon aqi qclose" aria-hidden="true"></span></button> -->
 						</div>
-						<button type="button" id="btn_hlp_back" title="Previous page"><span class="hicon aqi back"></span></button>
+						<button type="button" id="btn_hlp_back" title="Previous page"><span class="hicon aqi qback"></span></button>
 						<button type="button" id="btn_hlp_print" title="Print current page">
-							<span class="hicon aqi print"></span></button>		
+							<span class="hicon aqi qprint"></span></button>		
 						<button type="button" id="btn_hlp_toc" title="Table of content" class="">Table of content</button>
 						<div style="display:inline-block;"> <!-- to have the button moved with the input -->
 							<input  style="display:inline;" type="text" placeholder="Search" id="hsearch">
-							<button style="display:inline;" type="submit" id="btn_hlp_search" title="Search"><span class="hicon aqi search"></span></button>
+							<button style="display:inline;" type="submit" id="btn_hlp_search" title="Search"><span class="hicon aqi qsearch"></span></button>
 						</div>	
 						<label id="tthlplbl">RepRap Firmware Help</label>
 					</form>
@@ -48,7 +48,7 @@
 			<img id="aql_img0" src="" alt="" />
 			<div id="aql_img_b" onclick="aqlimgdesc(event, this);"></div>
 		</div>
-		<div id="aql_alert" class="warning" onclick="this.style.display = 'none'">
+		<div id="aql_alert" class="qwarning" onclick="this.style.display = 'none'">
 			<div id="halert"></div>
 			<div id="halertext">Alert !</div>
 		</div>

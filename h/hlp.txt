@@ -48,7 +48,7 @@ Your privacy policy here (linked in the hlpfoot page above, look the link in pur
 
 ■menu
 help menu
-(:notoc:)(:nodef:)(:notitle:)(:nofoot:)
+(:notoc:)(:nodef:)(:notitle:)
 ==First title
 *%first page%%
 *%second page%%

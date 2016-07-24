@@ -215,16 +215,16 @@ button:focus {outline:0;} /* remove chrome annoyance */
 /* sprite made on http://instantsprite.com/, 48px images, 10pixels spacing 10 icons: 10*48+9*10: 570px
 buttons with 28px sprites -> 28/48*570=332px, space 33px (=28/48*58)*/
 .aqi			{ background:url(hsprite.png);} 
-.aqi.back		{ background-position:-1% 0px;} /* sprite 0 */
-.aqi.search 	{ background-position: 10.4% 1px;} /* sprite 1 */
-.aqi.print		{ background-position: 21.2% 1px;} /* sprite 2 */
-.aqi.zoom-in 	{ background-position: 33.1% 1px;} /* sprite 3 */
-.aqi.zoom-out	{ background-position: 44.2% 1px;} /* sprite 4 */
-.aqi.close 		{ background-position: 55.6% 1px;} /* sprite 5 */
-.aqi.warning	{ background-position: 65.8% 1px;} /* sprite 6 */
-.aqi.info		{ background-position: 76.9% 1px;} /* sprite 7 */
-.aqi.expand 	{ background-position: 87.9% 1px; opacity:0.5;} /* sprite 8 */
-.aqi.collapse	{ background-position: 99.1% 1px; opacity:0.5;} /* sprite 9 */
+.aqi.qback		{ background-position:-1% 0px;} /* sprite 0 */
+.aqi.qsearch 	{ background-position: 10.4% 1px;} /* sprite 1 */
+.aqi.qprint		{ background-position: 21.2% 1px;} /* sprite 2 */
+.aqi.qzoom-in 	{ background-position: 33.1% 1px;} /* sprite 3 */
+.aqi.qzoom-out	{ background-position: 44.2% 1px;} /* sprite 4 */
+.aqi.qclose		{ background-position: 55.2% 1px;} /* sprite 5 */
+.aqi.qwarning	{ background-position: 65.8% 1px;} /* sprite 6 */
+.aqi.qinfo		{ background-position: 76.9% 1px;} /* sprite 7 */
+.aqi.qexpand 	{ background-position: 87.9% 1px; opacity:0.5;} /* sprite 8 */
+.aqi.qcollapse	{ background-position: 99.1% 1px; opacity:0.5;} /* sprite 9 */
 /* position in % 100%/(nbicon-1)*(icon position)+base, ex: icon 5 = 100/9*5-1.5%  */
 
 #aql_page .hicon,

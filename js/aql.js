@@ -98,17 +98,19 @@ function hlp_open() { //at first call to showHlp, after file load. Will never tr
 function hlp_is_open() { //detect help windows is open 
 	return ($0("aql_cont").style.display != 'none');
 }
-function hlp_close() { //occurs when back button didn't get proper hash (no aqlC.prefix)
+function hlp_close(nohashchange) { //occurs when back button didn't get proper hash (no aqlC.prefix)
 	for (var i=0, l=$(".mainapp").length; i<l; i++) 
 		$(".mainapp").eq(i).css('display',aqlO.mainApp[i]);
 	$0("aql_cont").style.display = 'none';	
-	document.body.style.overflow = aqlO.overflow;		
+	document.body.style.overflow = aqlO.overflow;
+	if (!nohashchange) // Shall not modify an address if we are in an application
+		history.pushState("", "", aqlO.linkbase);
 }
 
 function z(val) {return (val||'');} // Make empty strings of undefined
 function zo(obj) {return (obj==undefined)? new Object():obj;} // Make empty object of undefined
 
-$(document).ready(function(){
+document.addEventListener("DOMContentLoaded", function(e) {
 	if ($(".aqltab>button").length) 
 		aqlO.tabbed	= true; 
 	if ($(".mainapp").length) 
@@ -150,15 +152,15 @@ $(document).ready(function(){
 		aqlO.zoom = aqlO.zoom*0.87;
 		document.head.querySelector("[name=viewport]").content = aqlzoom();
     };	
-	$(".hlpstart").click(function(e){ //APPLICATION  call widget  set class '.hlpstart' in widget
+	$(".aqlstart").click(function(e){ //APPLICATION  call widget  set class '.hlpstart' in widget
 		var hpage =  $(e.target).data('hpage'); 
 		showHlp(hpage, true);
     }); 
 	$0("btn_hlp_back").onclick = function(){ history.back(); }; 
 	$0("btn_hlp_toc").onclick = function(){	showHlp(); }; //only for non-tabbed page 
 	$0("btn_hlp_print").onclick = function(){ hlpPrint(); }; 
-	if ($0("btn_hlp_close", true)) // only for in-application
-		$0("btn_hlp_close").onclick = function(){ hlp_close(); }; 
+	if ($0("btn_aql_close", true)) // only for in-application
+		$0("btn_aql_close").onclick = function(){ hlp_close(); }; 
 	$0("hform").onsubmit = function(e){ 
 		e.preventDefault(); //prevent submission of search, treated within Javascript 
 		var stext = $0("hsearch").value; // search key
@@ -166,17 +168,19 @@ $(document).ready(function(){
 	};
 	$(window).bind("popstate", function(){ //back or forward button activated
 		var u = window.location.hash.split('#'+aqlC.prefix)[1]; // don't do anything of address not compliant
-		if (u)
+		if (u) {
+			if (aqlO.inApp && !hlp_is_open()) hlp_open(); // we are in the app
 			showHlp(decodeURIComponent(u), false, true); // 2nd param stop restacking address
+		}	
 		else 
 			if (aqlO.inApp) {
-				if (hlp_is_open())	hlp_close();
+				if (hlp_is_open()) hlp_close(true);
 			}	
 			else 
 				showHlp(); //reopen on default
 	});
 	var url = window.location.href; 
-	aqlO.linkbase = url.split('#', 1)[0];
+	aqlO.linkbase = url.split('#', 1)[0]; //mmm: the base  main contain more than a page link?
 	if (url.match('#'+aqlC.prefix))  //deep linking: beware, this intercept all hash code for whole APPLICATION page 
 		if (url.split('#'+aqlC.prefix)[1]) { //note that the prefix name is unrelated to page file location
 			showHlp(decodeURIComponent(url.split('#'+aqlC.prefix)[1]));
@@ -197,7 +201,7 @@ function hlpCreEvents() { // shall be run after the html component creation (aft
 	$(".hlptt").click(function(e){ //id incorporate page name to differentiate menu from page 
 		var idx = this.id;
 		$(this).parent().find(".hlpsec").filter(":first" ).toggle();
-		$("span", this).toggleClass("expand collapse");
+		$("span", this).toggleClass("qexpand qcollapse");
 		if (!tabHlp[aqlO.lastP].clp) tabHlp[aqlO.lastP].clp ={}; // memorize toggling in hash table
 		tabHlp[aqlO.lastP].clp[idx] = (tabHlp[aqlO.lastP].clp[idx]) ? !tabHlp[aqlO.lastP].clp[idx] : true;
 	});
@@ -421,12 +425,12 @@ function hlpnoload(page, xhra, err) { //message if page cannot load
 }
 
 function hlpalert(txt) { // not recursive, not dynamic, last alert wins
-	if ((arguments[1]=='I' && $0("aql_alert").classList.contains("warning")) || 
-		(!arguments[1] && $0("aql_alert").classList.contains("info")) )
-		aqltoggleclass ($0("aql_alert"), "warning", "info");	
+	if ((arguments[1]=='I' && $0("aql_alert").classList.contains("qwarning")) || 
+		(!arguments[1] && $0("aql_alert").classList.contains("qinfo")) )
+		aqltoggleclass ($0("aql_alert"), "qwarning", "qinfo");	
 	$0("halert").innerHTML = (arguments[1]=='I')? 
-		"<span class='hicon aqi info'></span> &emsp;&emsp; Information" :
-		"<span class='hicon aqi warning'></span> &emsp;&emsp; Aquilegia (help module) alert";
+		"<span class='hicon aqi qinfo'></span> &emsp;&emsp; Information" :
+		"<span class='hicon aqi qwarning'></span> &emsp;&emsp; Aquilegia (help module) alert";
 	$0("halertext").innerHTML = txt;
 	$0("aql_alert").style.display = "block"; //display alert window
 }
@@ -740,8 +744,8 @@ var titlenum="", title, titlenolnk, level,  l1=1, l2=1, l3=1;
 var ttl=[0,0,0], collapsible, clpdisp, icon, lead, clpclass; // collapsible sections
 var i, j, toc="";
 	if (titles.length) { // shall run to have anchors even if no toc
-		var icondown = '<span class="licon aqi expand"></span>';
-		var iconup   = '<span class="licon aqi collapse"></span>';
+		var icondown = '<span class="licon aqi qexpand"></span>';
+		var iconup   = '<span class="licon aqi qcollapse"></span>';
 		for (j=0; j<titles.length ; j++){
 			level = Math.min (titles[j].match(/=/g).length,4); //Count '=' for css class definition 
 			collapsible = titles[j].match (/^[=]{2,4}([>|<])/);
