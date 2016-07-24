@@ -405,7 +405,7 @@ function hlpStore(page, index) { //Store in hash table.  index exists only for i
 		if (lines[1].substr(0,2)=='->') // if  redirect
 			tabHlp[index2].p = page; 
 		else
-			tabHlp[index2].p = page.replace(/^.*[\n \t]*/,"");  // 2nd line is title, removed and next lines
+			tabHlp[index2].p = page.replace(/^.*[\n \t]*/,"\n");  // 2nd line is title, removed and next lines
 		tabHlp[index2].title=lines[1].replace(/^\s*=*\s*(.+?)\s*$/, '$1'); // second line is title line
 		return true;
 	} 
@@ -511,7 +511,7 @@ imgtg = '">'; //Target:  on Duet, opening another window makes like if it was ex
 	if (tabHlp[hpage]==undefined) 
 		hlpalert(T("Internal error program, page undefined in aqlTrans function"));
 	if (!direct ('nodef')) // don't load default page - default may contains directives
-		data=z(zo(tabHlp['hlpdef']).p)+data; //add default page at start - this is different from a header, as it goes in 'intro' block ???
+		data=z(zo(tabHlp['hlpdef']).p)+"\n"+"♂"+data; //add default page at start - this is different from a header, as it goes in 'intro' block ???
 	myclass  = direct('class');  // all directives after loading default pages
 	hlpfoot  = direct('hlpfoot'); 
 	hlphead  = direct('hlphead'); 
@@ -648,6 +648,7 @@ imgtg = '">'; //Target:  on Duet, opening another window makes like if it was ex
 	//--------------------------------------------------------------------------------	
 	data=data.replace(/^([\t \n]|<br>)*/,""); // remove leading spaces and newline (due notably to directives)
 	data=data.replace(/\n/g,'<br>'); // all line feed taken into account 
+	data=data.replace(/(<br>)*♂(<br>)*/,""); // remove newlines between default page and page- was needed for markup interpreter
 	data+="(:clear:)"; // to have the window height adjusting to height.
 	data=data.replace(/[\t ]*\(:clear:\)[\t ]*(<br>)*/gm, cleardiv); // clear image
 	//== introduction =============================================================
