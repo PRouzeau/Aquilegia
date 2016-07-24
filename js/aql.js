@@ -132,6 +132,7 @@ $(document).ready(function(){
 			var href = target.getAttribute('href');
 			if (href[0] == "#") {
 				e.preventDefault(); // stop jumping to anchor
+				history.pushState("", "", aqlO.linkbase+href); // to have the anchor in history and url field for back
 				aqlScrollAnchor (href);
 			} 
 		}	
@@ -154,7 +155,7 @@ $(document).ready(function(){
 		showHlp(hpage, true);
     }); 
 	$0("btn_hlp_back").onclick = function(){ history.back(); }; 
-	$0("btn_hlp_toc").onclick = function(){	showHlp('home'); }; //only for non-tabbed page 
+	$0("btn_hlp_toc").onclick = function(){	showHlp(); }; //only for non-tabbed page 
 	$0("btn_hlp_print").onclick = function(){ hlpPrint(); }; 
 	if ($0("btn_hlp_close", true)) // only for in-application
 		$0("btn_hlp_close").onclick = function(){ hlp_close(); }; 
@@ -168,8 +169,11 @@ $(document).ready(function(){
 		if (u)
 			showHlp(decodeURIComponent(u), false, true); // 2nd param stop restacking address
 		else 
-			if (hlp_is_open())
-				hlp_close();
+			if (aqlO.inApp) {
+				if (hlp_is_open())	hlp_close();
+			}	
+			else 
+				showHlp(); //reopen on default
 	});
 	var url = window.location.href; 
 	aqlO.linkbase = url.split('#', 1)[0];
@@ -179,7 +183,7 @@ $(document).ready(function(){
 			return
 		}	
 	if (!aqlO.inApp) // if a plain page, we start anyway
-		showHlp('home');	
+		showHlp();	//open on default
 });
 
 function hlpCreEvents() { // shall be run after the html component creation (after set content)
@@ -202,6 +206,7 @@ function hlpCreEvents() { // shall be run after the html component creation (aft
 //==== functions which may be called from html ================================= 
 window.showHlp = function() { // main function calling help page
 var lines, hlpLoading, lnk=arguments[0], itab=0;
+	if (!lnk) lnk = 'home';
 	var openWin = arguments[1]; //if true we are opening help window. sent after text load
 	var stateChange = arguments[2]; // if true, we shall not do again a hash change
 	var mt = lnk.match (/(.[^!]*)!?(.*)/); // with '!' as anchor char
@@ -215,8 +220,8 @@ var lines, hlpLoading, lnk=arguments[0], itab=0;
 			dataType: "text",
 			global: false,
 			success: function(response, status) { 
-				if (z(response).substr(0,5)=="<!DOC") //if file not found Duet server DO answer with a 404 page and status = "success"
-					hlpnoload(aqlO.url+'hlp.txt', "", ""); // so we intercept the html page - weird
+				if (z(response).substr(0,2)=="<!") //if file not found servers DO answer with a 404 page and status = "success"
+					hlpnoload(aqlO.url+'hlp.txt', "", ""); // so we intercept the html page
 				else {	//var h=[]; // First line is the title and used for specific search.
 					var h=z(response).split(/■/); //U+25A0
 					for (var i=1; i<h.length; i++) 
@@ -270,7 +275,7 @@ function aqlLoadExt (hlpLoading, runFunc, lnk, openWin) { // load external page
 		dataType: "text",
 		global: false,
 		success: function(response, status) { // callback function while page loaded
-			if (response.substr(0,5)=="<!DOC") { //if no page DWC DO answer with a 404 page and success!
+			if (response.substr(0,2)=="<!") { //if no page DWC DO answer with a 404 page and success!
 				arrayAdd (aqlO.nFound, hlpLoading);
 				hlpnoload(aqlO.url+hlpLoading, "", "");
 			}	
@@ -327,7 +332,7 @@ function aqllabelimg() { // fill in the image objects
 	var val, ext, idx="", t, arr, page = z(zo(tabHlp['imglist']).p);
 	arr = page.replace(/[\r*#]/g,'').replace(/[\n]/g,',').split(','); // eliminate CR, bullet/numbered list prefix - newline is separator
 	for (var i=0; i<arr.length; i++) {
-		if (val=arr[i].trim()) {
+		if (val=arr[i].trim()) { //??
 			ext = val.substr(-4).toLowerCase();
 			if (ext==".png"||ext==".svg"||ext==".jpg") 
 				aqlImg[idx=val] = {}; // new image object
@@ -395,12 +400,12 @@ function hlpStore(page, index) { //Store in hash table.  index exists only for i
 			names.shift(); // remove index name.
 			tabHlp[index2].groups = names;
 		}	
-		page = page.replace(/(.*\n)/,"") // remove 1rst line:  page and group names
-					.replace(/\n*$/,'\n');  // remove last multiples newlines
+		page = page.replace(/^.*\n/,"") // remove 1rst line:  page and group names and first newline
+				.replace(/[\n \t]*$/,""); // clean page end
 		if (lines[1].substr(0,2)=='->') // if  redirect
 			tabHlp[index2].p = page; 
 		else
-			tabHlp[index2].p = page.replace(/(.*\n)/,""); // 2nd line is title, removed
+			tabHlp[index2].p = page.replace(/^.*[\n \t]*/,"");  // 2nd line is title, removed and next lines
 		tabHlp[index2].title=lines[1].replace(/^\s*=*\s*(.+?)\s*$/, '$1'); // second line is title line
 		return true;
 	} 
@@ -421,7 +426,7 @@ function hlpalert(txt) { // not recursive, not dynamic, last alert wins
 		aqltoggleclass ($0("aql_alert"), "warning", "info");	
 	$0("halert").innerHTML = (arguments[1]=='I')? 
 		"<span class='hicon aqi info'></span> &emsp;&emsp; Information" :
-		"<span class='hicon aqi warning'> &emsp;&emsp; Aquilegia (help module) alert";
+		"<span class='hicon aqi warning'></span> &emsp;&emsp; Aquilegia (help module) alert";
 	$0("halertext").innerHTML = txt;
 	$0("aql_alert").style.display = "block"; //display alert window
 }
@@ -526,7 +531,7 @@ imgtg = '">'; //Target:  on Duet, opening another window makes like if it was ex
 	});
 	//-- Sub pages inclusion -- don't retrieve the titles ---------------------------------
 	data=data.replace(/\(:include\s([\w-]*?):\)/g,  function(mt, p1) {
-		return z(zo(tabHlp[hlpNamePage(p1)]).p);
+		return z(zo(tabHlp[hlpNamePage(p1)]).p)+"\n"; // newlines were cleaned during storage
     });
 	//-- block markups -------------------------------------------------------------------
 	untoken (tmp,'▲'); // untoken codeblocks after after page inclusion, to be retokenized for global page
@@ -554,19 +559,19 @@ imgtg = '">'; //Target:  on Duet, opening another window makes like if it was ex
 		return '♦';  //U+2666
 	}); 
 	//-- External links and image markup --- no link within titles  ---------------
-	var repdf = /(\d+)([LC]{0,1})%pdf%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //capture image->pdf
+	var repdf = /(\d+)([LRC]{0,1})%pdf%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //capture image->pdf
 	data=data.replace(repdf, function(m, p1,p2,p3,p4,p5) {
 		return '<a href="'+aqlO.url+aqlC.docDir+z(p3)+z(p2)+imgtg+ 
 		'<img class="hlpimg'+z(p2)+'" src="'+aqlO.url+aqlC.dispDir+z(p3)+z(p5)+imgwd(p1)+
 		'</a>';
 	});
-	rgximg  = /(\d+)([LC]{0,1})%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //capture image ->bigger image
+	rgximg  = /(\d+)([LRC]{0,1})%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //capture image ->bigger image
 	data=data.replace(rgximg, function(m, p1,p2,p3,p4,p5) { 
 		return '<a href="javascript:aqlimg(\''+z(p3)+z(p5)+'\');">'+
 		'<img class="hlpimg'+z(p2)+'" src="'+aqlO.url+aqlC.dispDir+z(p3)+z(p5)+imgwd(p1)+
 		"</a>";
 	});
-	rgximg = /(\d+)([LC]{0,1})%%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //capture image without link	
+	rgximg = /(\d+)([LRC]{0,1})%%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //capture image without link	
 	data=data.replace(rgximg, function(m, p1,p2,p3,p4,p5) {
 		return '<img class="hlpimg'+z(p2)+'" src="'+aqlO.url+aqlC.dispDir+z(p3)+z(p5)+imgwd(p1);
 	});
@@ -641,8 +646,8 @@ imgtg = '">'; //Target:  on Duet, opening another window makes like if it was ex
 		return p1+ hlpCall(hlpNamePage(p2), p2+aqlC.slink);
 	}); 
 	//--------------------------------------------------------------------------------	
+	data=data.replace(/^([\t \n]|<br>)*/,""); // remove leading spaces and newline (due notably to directives)
 	data=data.replace(/\n/g,'<br>'); // all line feed taken into account 
-	data=data.replace(/^[\t ]*(<br>)*/,""); // remove leading spaces and newline (due notably to directives)
 	data+="(:clear:)"; // to have the window height adjusting to height.
 	data=data.replace(/[\t ]*\(:clear:\)[\t ]*(<br>)*/gm, cleardiv); // clear image
 	//== introduction =============================================================
@@ -945,7 +950,7 @@ function searchHlp() { // Search a text in all help file
 		fText = "(:notitle:)\n<hr>"+T("<b>{0}</b> found in following pages:", stext)+"<hr>";
 		for (i=0; i<idxTbT; i++)
 			fText+="%"+tabHlp[tbFoundTitle[i]].title+"%"+tbFoundTitle[i]+'\n';
-		fText+="<hr>";
+		fText+="<hr>\n";
 		for (i=0; i<idxTb; i++)
 			fText+="%"+tabHlp[tbFound[i]].title+"%"+tbFound[i]+'\n';
 	}
@@ -1000,11 +1005,16 @@ function hlpLoadExt(runFunc)  {
 		$.ajax(aqlO.url + lnk +'.txt', {  // load help content
 			dataType: "text",
 			global: false,
-			success: function(response) { // callback function while page loaded
-				hlpStore (response,lnk);
-				if(tabHlp[lnk]) { // page may not be created if empty, not format compliant, etc.
-					tabHlp[lnk].ext="(ext)";
-					hlpChklnk(aqlTrans(z(tabHlp[lnk].p),lnk), lnk); // add new links of this page		
+			success: function(response, status, error) { // callback function while page loaded
+				if (z(response).substr(0,2)=="<!") { // 404 page
+					arrayAdd (aqlO.nFound, lnk);	
+				}
+				else {	
+					hlpStore (response,lnk);
+					if(tabHlp[lnk]) { // page may not be created if empty, not format compliant, etc.
+						tabHlp[lnk].ext="(ext)";
+						hlpChklnk(aqlTrans(z(tabHlp[lnk].p),lnk), lnk); // add new links of this page		
+					}
 				}
 				hlpLoadAll.Eidx++;
 				hlpLoadExt(runFunc); 

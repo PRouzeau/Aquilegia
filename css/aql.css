@@ -371,11 +371,10 @@ buttons with 28px sprites -> 28/48*570=332px, space 33px (=28/48*58)*/
 #aql_page h1, h2 {  /* h1 for the main title */
 	font-size: 24px; 
 	line-height: 1.2; 
-	margin: 16px 8px 12px 0; 
-/*	padding-left :12px; */
 	padding: 4px 12px 2px 12px;
 }
 #aql_page h1 { 
+	margin: 10px 8px 16px 0;
 	box-shadow: 1px 1px 2px #F8F8F8;
 	box-shadow: 1px 1px 2px var(--aql-h1-shcolor); 	
 	color: var(--aql-h1-color); /* default black*/
@@ -384,6 +383,7 @@ buttons with 28px sprites -> 28/48*570=332px, space 33px (=28/48*58)*/
 	display:block; 
 }
 #aql_page h2 { 
+	margin: 16px 8px 12px 0; 
 	box-shadow: 1px 1px 2px #F8F8F8;	
 	box-shadow: 1px 1px 2px var(--aql-h2-shcolor); 	 
 	font-size: 22px;
@@ -490,7 +490,8 @@ div.spacer2 {
 	margin-left: 18px;
 }
 
-.hlpimg { 
+.hlpimg,
+.hlpimgR { 
 	float:right;
 	display:block;
 	border:none;
