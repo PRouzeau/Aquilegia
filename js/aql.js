@@ -401,7 +401,7 @@ function hlpStore(page, index) { //Store in hash table.  index exists only for i
 			tabHlp[index2].groups = names;
 		}	
 		page = page.replace(/^.*\n/,"") // remove 1rst line:  page and group names and first newline
-				.replace(/[\n \t]*$/,""); // clean page end
+				.replace(/[\n \t]*$/,"\n"); // clean page end
 		if (lines[1].substr(0,2)=='->') // if  redirect
 			tabHlp[index2].p = page; 
 		else
@@ -531,7 +531,7 @@ imgtg = '">'; //Target:  on Duet, opening another window makes like if it was ex
 	});
 	//-- Sub pages inclusion -- don't retrieve the titles ---------------------------------
 	data=data.replace(/\(:include\s([\w-]*?):\)/g,  function(mt, p1) {
-		return z(zo(tabHlp[hlpNamePage(p1)]).p)+"\n"; // newlines were cleaned during storage
+		return z(zo(tabHlp[hlpNamePage(p1)]).p); // newlines were cleaned during storage
     });
 	//-- block markups -------------------------------------------------------------------
 	untoken (tmp,'▲'); // untoken codeblocks after after page inclusion, to be retokenized for global page
