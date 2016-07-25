@@ -1,0 +1,10 @@
+imglist
+Image list
+Metadata for images- default.png contains default values
+See http://aquilegia.blue/#hlp/images_list
+(:nosearch:)(:notoc:)
+
+default.png
+auth:Unknown, license:CC BY-SA 3.0; GFDL1.2, instructions: see http://yoursite.org
+
+
