@@ -29,12 +29,12 @@ First line is page title  -Leading '=' are removed if present. Compulsory conten
 Home page name is 'home'. Compulsory page in 'hlp.txt', as it indicate help file existence and allow start.
 
 In an independant page file 'mypage.txt', there is no separator character before page name.
-For independant pages, file names shall be lowercase and spaces are replaced by '_', e.g. text1%my_Page,  %Text 2%my_page and %My Page%% all link to my_page.txt. The page name in the file (after name normalization) shall be identical to file name (without file extension).
+For independant pages, file names shall be lowercase and spaces are replaced by '_', e.g. %text1%my_Page,  %Text 2%my_page and %My Page%% all link to my_page.txt. The page name in the file (after name normalization) shall be identical to file name (without file extension).
 
 ==Links and images
 links shall end by a space, end of line or double quote (where applicable):
 <<
-  aWord%a_link
+  %aWord%a_link
   %internal link%another_link   //'internal link' Max 10 words in the link text - NO SPACE between '%' and text
   %other link%Another_link!A_title_in_page  // link to a title within the page
   %This page%%  // 'This page' text link to this_page 
@@ -118,12 +118,29 @@ Table of content is created automatically, but this can be prevented by a page o
 >>
 
 == Selected paragraph
-You can set one or more variable in your Javascript code to select what paragraph shall be displayed. As an example, on the 3D printing example, the board is recognised by the application and its identificator can select applicable paragraphs.
+You can set one or more variable in your Javascript code to select what paragraph shall be displayed. As an example, on the 3D printing example, the board is recognised by the application and its identificator select applicable paragraphs while running in application.
+You can have up to 4 selecting keys, which are set in a Javascript array.
 
-SelectName/= This is a text which is displayed if the identifier variable is equal to 'SelectName' or empty. If identifier defined, other selecting text are not displayed.
-Name shall start at first column. no space. Alphanumeric with underscore dot and dash only =/
+The text can be either displayed or removed if a key exist.
+You can have multiple selectors for one paragraph.
+<<
+Key1,Key2+/=
+This is a text which is displayed only if one of the key exists.
+=/
+Key1,Key2-/=
+This is a text which is removed if one of the key exists.
+=/
+Key name shall start at first column, use commas to separate keys. There shall be **no space** in the selecting part. Characters allowed in keys are alphanumeric (not accented) with underscore dot and dash only.
+Start and end newlines of the selected paragraph will be removed, so you can improve the visual aspect for large paragraphs. 
 
-If you need to apply multiple conditions, create combined selector, as 'machine1option2'.
+On the documentation site example, the board selection is done with a dropbox, the Javascript reading it to fill the key array.
+If the array is empty (default), all text is displayed.
+The 'name' (not the id) of the selecting dropbox(es) (if any) are "aqlkey0" to "aqlkey3". Id are not used.
+
+For positive selection, it is recommended to have a 'catch all' key to display all paragraphs if needed, at least during development phase. This catch all key may be removed from dropbox choice later.
+As an example, in DWC/RRF documentation, it looks like
+allb,Duet_0.6+/= Text to be displayed =/
+>>
 
 == Other markup
 <<
