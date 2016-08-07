@@ -36,7 +36,7 @@ function linknorm (p2) {
 
 function knownpages (data, text, page) {
 	text2 = text.replace(/ /g, '_'); 
-	exch2 = new RegExp('\\[\\['+text2+'(#(.+?))?\\|(.+?)\\]\\]','g');
+	exch2 = new RegExp('\\[\\['+text2+'(#([^\\[\\n]+?))?\\|([^\\[\\n]+?)\\]\\]','g');
 	return data.replace(exch2, function (mt,p1,p2,p3) {
 		var px = (p2) ? '!'+linknorm (p2): "";
 		return '%'+p3+'%'+page+px;
@@ -56,11 +56,11 @@ function convertwiki(source) {
 			p1 = p1.trim().replace(/ /g,"_"); 
 			return '(:category '+p1+':)';
 		}); // Category not used in Aquilegia - just for future
-		data=data.replace(/\[\[(.+?)\s*\|\s*(.+?)\]\]/g, function (mt,p1,p2) {
+		data=data.replace(/\[\[([^\[\n]+?)\s*\|\s*(.+?)\]\]/g, function (mt,p1,p2) {
 			p1 = p1.trim().replace (/[\t ]/g, "_");
 			return ' [['+p1+"|"+p2.trim()+']] ';
 		}); 
-		data=data.replace(/\[\[([^\|\n]+?)\]\]/g, function (mt,p1) {
+		data=data.replace(/\[\[([^\|\[\n]+?)\]\]/g, function (mt,p1) {
 			var px = p1.trim().replace (/[\t ]/g, "_");
 			return ' [['+px+"|"+p1.trim()+']] ';
 		}); 
@@ -103,7 +103,7 @@ function convertwiki(source) {
 //data=data.replace(/\[\[[Ff]ile:([\#\.\:\-\_\(\)_a-zA-Z0-9éèêëàâïôœçùÀÉÊ\s]+.)(png|jpg|svg|JPG|PNG|SVG)[\#\.\:\-\_\(\)a-zA-Z0-9éèêëàâïôœçùÀÉÊ\|\s]+\]\]/g, '320%$1$2'); // image
 	//	var reimg =/\[\[[Ff]ile:([\#\.\,\:\-\_\(\)\wéèêëàâïôœçùÀÉÊ\s]+.)([pP][nN][gG]|[jJ][pP][gG]|[sS][vV][gG])[\#\.\:\-\_\(\)\w\,\-\.\#\:éèêëàâïôœçùÀÉÊ\|\s]+\]\]/g;
 	
-		var reimg =/\[\[[Ff]ile:([\#\.\,\:\-\_\(\)\w\u00C0-\u017F\s]+.)([pP][nN][gG]|[jJ][pP][gG]|[sS][vV][gG]).*?(\|(\d*)px.*?)?\]\]/g;
+		var reimg =/\[\[[Ff]ile:([\#\.\,\:\-\_\(\)\w\u00C0-\u017F\s]+\.)([pP][nN][gG]|[jJ][pP][gG]|[sS][vV][gG]).*?(\|(\d*)px.*?)?\]\]/g;
 		data=data.replace(reimg, function(m, p1,p2,p3,p4){
 			p4 = (p4)?p4:"320";
 			return p4+"%"+(p1||"")+(p2||"");
@@ -112,7 +112,7 @@ function convertwiki(source) {
 		data=data.replace(lnkRegexp, '"$2 http://reprap.org/wiki/$1"'); // link with text
 		var lnkRegexp2 = /\[\[(.+?)\]\]/g;
 		data=data.replace(lnkRegexp2,'"$1 http://reprap.org/wiki/$1"'); // link self text
-		data=data.replace(/\[(http(s?)\:\/\/([\da-z\.-]+)\.([a-z\.]{1,6})[\S]*)\s((.*?))\]/g, '"$5 $1"'); // web link
+		data=data.replace(/\[(http(s?)\:\/\/([\w\.-]+)\.([\w\.]{1,6})[\S]*)\s((.*?))\]/g, '"$5 $1"'); // web link
 		data=data.replace(/<pre>(([^>]|=[^<])*)<\/pre>/g,'<<$1>>'); // preformatted 
 		data=data.replace(/{{.+?}}/g,''); //eliminate remaining directives - don't work with nested directives	
 	}		
