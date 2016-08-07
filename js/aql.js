@@ -897,7 +897,7 @@ function hlpSetContent (hpage, x, stateCh) {
 			if (aqlO.lastP=='aqlsearch') { // if linked from search page, highlight search on called page 
 				var pos=0, j=-1, tabSearch=[];
 				//htext = htext.replace (/<a (href|id)=.*?>/g, function (mt) { // tokenize links/anchors
-				htext = htext.replace (/<(a h|a na|div|img|\/|table|h|tr|th|td).*?>/g, function (mt) { // tokenize some html markup
+				htext = htext.replace (/<(a h|a id=|a na|div|img|\/|table|h|tr|th|td).*?>/g, function (mt) { // tokenize some html markup
 					xlnk.push(mt);
 					return '♣';
 				});
