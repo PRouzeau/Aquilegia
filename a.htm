@@ -19,7 +19,7 @@
 		    <!-- Here shall be your general header ---------------------------------------- -->
 			<div id="aql_page"> <!--A physical height shall be defined -- substract the expected top bar height -->
 				<div id ="aql_header"> <!-- A header < div> is required No parameter needed -->
-					<form  id="hform" method="get" autocomplete="on" >
+					<form  id="hform" name ="hform" method="get" autocomplete="on" >
 						<div style ="float:right;">
 							<button type="button" id="btn_aql_zo"><span class="hicon aqi qzoom-out" title="Zoom"></span></button>  
 							<button type="button" id="btn_aql_zi"><span class="hicon aqi qzoom-in" title="Zoom"></span></button>  
@@ -27,12 +27,20 @@
 						</div>
 						<button type="button" id="btn_hlp_back" title="Previous page"><span class="hicon aqi qback"></span></button>
 						<button type="button" id="btn_hlp_print" title="Print current page">
-							<span class="hicon aqi qprint"></span></button>		
+							<span class="hicon aqi qprint"></span></button>	
+						<button type="button" id="btn_aql_bk" title="What links here?">
+							<span class="hicon aqi qlink"></span></button>		
 						<button type="button" id="btn_hlp_toc" title="Table of content" class="">Table of content</button>
 						<div style="display:inline-block;"> <!-- to have the button moved with the input -->
 							<input  style="display:inline;" type="text" placeholder="Search" id="hsearch">
 							<button style="display:inline;" type="submit" id="btn_hlp_search" title="Search"><span class="hicon aqi qsearch"></span></button>
 						</div>	
+						<select id="aqlkey0" name="aqlkey0" onchange="showHlp('hlplast')">
+							<option value="allb">All boards</option>
+							<option value="Duet_WiFi_1.0">Duet WiFi</option>
+							<option value="Duet_0.85">Duet 0.8.5</option>
+							<option value="Duet_0.6">Duet 0.6</option>
+						</select> 
 						<label id="tthlplbl">RepRap Firmware Help</label>
 					</form>
 				</div>
@@ -52,6 +60,7 @@
 			<div id="halert"></div>
 			<div id="halertext">Alert !</div>
 		</div>
+		<div id="aql_bk"></div> <!-- backlink list -->
 		<!-- Scripts placed at the end of the document so the pages load faster -->
 		<script src="js/jquery-2.2.1.min.js"></script>
 		<script src="js/flat.js"></script>
