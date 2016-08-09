@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
     };	
 	$0("btn_aql_bk").onclick = function(){ // Call backlinks window - also do that with hover ? 
 		if (getComputedStyle($0("aql_bk")).display=="none") //style not initialised by JS->call function 
-			hlpLoadAll("hlpListBack");
+			hlpLoadAll(hlpListBack);
 		else
 			$0("aql_bk").style.display="none";
     };
@@ -168,7 +168,8 @@ document.addEventListener("DOMContentLoaded", function(e) {
 		showHlp(hpage, true);
     }); 
 	$0("btn_hlp_back").onclick = function(){history.back();}; 
-	$0("btn_hlp_toc").onclick = function(){showHlp();}; //only for non-tabbed page 
+	if ($0("btn_hlp_toc", true)) //only for non-tabbed page 
+		$0("btn_hlp_toc").onclick = function(){showHlp();};
 	$0("btn_hlp_print").onclick = function(){hlpPrint();}; 
 	if ($0("btn_aql_close", true)) // only for in-application
 		$0("btn_aql_close").onclick = function(){hlp_close();}; 
@@ -462,7 +463,7 @@ function aqlSendSearch(stext) { // Run the search from text field data
 		$0("aql_body").innerHTML = "<br><strong>&nbsp; "+T("Searching '{0}', please wait...",stext)+"</strong>"; // user feedback
 		tabHlp['aqlsearch'].title = accentsNorm(stext.toLowerCase()); // accented letters normalised and everything in lowercase
 		setTimeout(function() { // to display immediately message while loading all stuff - time=0 don't work
-			hlpLoadAll("aqlShowSearch"); //load all pages before searching
+			hlpLoadAll(aqlShowSearch); //load all pages before searching
 		}, 50);
 	}
 }
@@ -997,7 +998,7 @@ function hlpPrint() { // print the body of the help windows - reinterpret with o
 window.hlpLoadAll= function() { // used for search and diagnostics - build an index
 	var runFunc = arguments[0]; // function started when loading complete
 	if (aqlO.loadAll) 
-		window[runFunc]();	
+		runFunc();
 	else {
 		hlpLoadAll.refP = []; // store pages referenced as not in tabHlp (and not already searched)
 		hlpLoadAll.Eidx = 0; // index of not in tabHlp pages
@@ -1027,7 +1028,7 @@ function hlpLoadExt(runFunc)  {
 	if (hlpLoadAll.Eidx==hlpLoadAll.refP.length) {
 		aqlO.loadAll=true; // all pages are loaded in memory
 		aqlO.lastP = hlpLoadAll.curPage;
-		window[runFunc]();	
+		runFunc();
 	}	
 	else { 	// load file one after the other, less trouble than multiple runs
 		lnk = hlpLoadAll.refP [hlpLoadAll.Eidx];
@@ -1065,9 +1066,8 @@ function hlpChklnk(htext, id) { // stack pages not found in the hash table ( not
 		if (lnk.length > aqlC.linkMaxLength) {
 			if (id) hlpalert (T('Link "{0}" length exceed {1} in page {2}', lnk, aqlC.linkMaxLength, id)); // add some context !!
 		}	
-		else if (!tabHlp[lnk]) //not loaded page added on Ref stack
-			if ((aqlO.nFound.indexOf(lnk)<0) && (aqlO.nValid.indexOf(lnk)<0))
-				arrayAdd (hlpLoadAll.refP, lnk); // stack link as referenced (if not already referenced)
+		else if (!tabHlp[lnk] && (aqlO.nFound.indexOf(lnk)<0) && (aqlO.nValid.indexOf(lnk)<0))
+			arrayAdd (hlpLoadAll.refP, lnk); // stack link as referenced (if not already referenced)
 	}
 } 
 
@@ -1084,9 +1084,9 @@ var id, tabTrans = {};
 }
 
 function backlinks(tabH, link) {
-var backlnk, i, id, pagetx, nblink, text;
+var backlnk, i, id, pagetx, nblink;
 var	bsep = (arguments[2])? arguments[2]:", "; // backlinks separator
-    text = (arguments[2])?'':'<strong>'+z(zo(tabHlp[link]).ext)+link+' :</strong>';	
+var text = (arguments[2])?'':'<strong>'+z(zo(tabHlp[link]).ext)+link+' :</strong>';	
 	for (id in tabHlp) {
 		pagetx = tabH[id];
 		if (pagetx) {
@@ -1104,7 +1104,7 @@ var	bsep = (arguments[2])? arguments[2]:", "; // backlinks separator
 				text+=nblink+')'+bsep;
 		}	
 	}	
-	return (text + ((arguments[2])?'':'<br>'));
+	return text;
 }
 
 //== Utilities ===================================================================
@@ -1165,13 +1165,13 @@ var i, id, tabTrans = {};
 	for (id in tabHlp) // create hash table of converted markup
 		tabTrans[id] = (tabHlp[id]) ? aqlTrans(z(tabHlp[id].p), id):"";
 	for (id in tabHlp) // tabHlp is a hash table, so 'in' works
-		text += backlinks(tabTrans,id); //id +'<br>';
+		text += backlinks(tabTrans,id)+"<br>"; //id +'<br>';
 	text+='<hr><strong>Not found pages:</strong><br>'
 	for (i=0; i<aqlO.nFound.length; i++) //for..of may work, but compatibility is delicate
-		text += backlinks(tabTrans, aqlO.nFound[i]);
+		text += backlinks(tabTrans, aqlO.nFound[i])+"<br>";
 	text+='<hr><strong>Not valid pages:</strong><br>'	
     for (i=0; i<aqlO.nValid.length; i++) 
-		text += backlinks(tabTrans, aqlO.nValid[i]);
+		text += backlinks(tabTrans, aqlO.nValid[i])+"<br>";
 	$0("aql_body").innerHTML = text+'</div><br><br><br><br><br><br>'; 
 	aqlO.listAll = false; // re-allow normal interpretation
 }	
