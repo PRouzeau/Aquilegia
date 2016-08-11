@@ -1,7 +1,7 @@
 aquilegia_syntax
 Aquilegia syntax
-(:nosearch:)
-Revision - 26 June 2016 
+(:date 11 Aug 2016 01:34:)(:nosearch:)
+Revision - 11 August 2016 
 Encoding UTF-8 is imperative for program and pages. 
 Generally, most pages are in the file 'hlp.txt', but this is not compulsory. In 'hlp.txt' file page can be written in any order. 
 Independant pages are in text files with name 'mypage.txt' (file name is lowercase only, upper case are allowed in links). They work as other pages, the only difference is they are loaded only when you open them. 
@@ -47,16 +47,19 @@ links shall end by a space, end of line or double quote (where applicable):
   "# An inline note which will be displayed in the footnotes list"  first '#' defines inline note.
      Notes are listed separately from referenced links (n1, n2, etc.). They shall be written inline without newlines (or with continuation '_'). 
   
-  Images .jpg/.png/.svg  displayed in /h/d/, full size in /h/f/
+  Images .jpg/.png/.svg  displayed in /h/d/, full size in /h/f/. Extension shall be lowercase.
   400%image.png  // 400 pixels image linking to full size image, default float right
   120%sub/image.png  // 120 pixels image in '/h/d/sub/' directory linking to full size image in '/h/f/sub/'
-  180L%image.jpg  // L float image on left - uppercase only
-  280C%image.svg  // C center the image, no float - uppercase only
+  180L%image.jpg  // L float image on left
+  280C%image.svg  // C center the image, no float
+  40I%Initial.png // Inline image, base is bottom of text line, for Initial (dropcap)
+  "Image legend &lt;br>on two lines 180R%image.jpg" // Image with a legend at bottom
   45R%pdf%image.png  //  Thumbnail Images linking to pdf file  in '/h/pdf/' , float right
   %a text%image4.png // a text linking to an image (like 'Media:' in wikimedia) 
 and no link
   480%%myimage.png   // display images '''without''' linking to a larger image
   '.jpeg' extension is NOT accepted.
+  All images of a page (except Inline images) could have a border with directive (&#58;image border:)
 >>
 
 == Common markup
@@ -172,7 +175,10 @@ General directives:
 (&#58;allweb:)  // list all externals links (use (&#58;reflist:) directive location), used notably for printing
 (&#58;hlphead:) //Add a header atop title - parameter is header page, no parameter use 'hlphead' page. Example with parameter: (&#58;hlphead myheader:) No wiki interpretation, pure html.
 (&#58;hlpfoot:) //Add a footer in scrollable area - parameter is footer page, no parameter use 'hlpfoot' page. No wiki interpretation
+(&#58;date nn Mon 2016 23:59:) //last modification date - set by %Aquilegia editor%%
 (&#58;class mycssclass1 mycssclass2:) //page is in a container with defined class(es)
+(&#58;image border:) // Add a border to all images of the page (except Inline images)
+
 Neutralising directives have priority on others (whatever the order), as they are generally used to stop the general configuration in specific pages.
 (&#58;nodef:)   // don't load the default page (directives, logo, etc.) - for menu & special pages
 				// by default, content of 'hlpdef' page is automatically placed after the title.
@@ -182,6 +188,7 @@ Neutralising directives have priority on others (whatever the order), as they ar
 (&#58;notitle:) // remove the page title
 (&#58;nohead:)  // don't load the page header defined by 'hlphead'
 (&#58;nofoot:)  // don't load the page footer defined by 'hlpfoot'
+(&#58;nodate:)  // don't display date at bottom
 
 First encounter with a general directive trigger the action, so a repeat will have no effect.
 Directives placed in 'hlpdef' page will have effect on all pages, however they can be overriden by neutralising directives for special pages.
@@ -252,7 +259,7 @@ If this page exists, it replaces default print directives (no table of content, 
 === 'aqlprtall' page
 Page 'aqlprtall' list all pages to be printed in a global help printing, comma separated, no quotes - not tested yet??
 === 'imglist' page (external file)
-This contain the image data (author, descriptions, instructions) See %Images list%%
+This contain the image metadata (author, descriptions, instructions) See %Images list%%.
 === 'aqlpreview' page
 This page is created by %Aquilegia editor%% for preview.
 
@@ -317,3 +324,5 @@ Notably, you can only redistribute if it is not integrated in another ensemble o
 == About
 Program and documentation (c) Pierre ROUZEAU 
 Program licence program: "GPLv2 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html" or any later version - documentation: CC BY-SA  
+
+

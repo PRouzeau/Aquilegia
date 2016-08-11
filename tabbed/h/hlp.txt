@@ -46,7 +46,7 @@ ojhjhjk
 
 ■menu
 Default menu
-(:nodef:)(:notitle:)(:notoc:)
+(:nodef:)(:notitle:)(:notoc:)(:nodate:)
 default menu
 %Page Group1%%
 %Page Group2%%
@@ -54,7 +54,7 @@ default menu
 
 ■menu_group2
 Menu group2
-(:nodef:)(:notitle:)(:notoc:)
+(:nodef:)(:notitle:)(:notoc:)(:nodate:)
 Menu group2
 cccc
 vvvv

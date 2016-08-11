@@ -371,6 +371,7 @@ buttons with 28px sprites -> 28/48*628=366px, space 33px (=28/48*58)*/
 .hlpsign { /* for signature - in principle in the footer*/
 	float:right;
 	font-size:8px;
+	vertical-align: text-bottom;
 }
 
 /*-- Table of content links 2-4 --------*/
@@ -520,31 +521,49 @@ div.spacer2 {
 }
 
 .hlpimg,
+.hlpimgR,
+.hlpimgL,
+.hlpimgC {
+/* set here whatever you want for images format (border, etc) */
+}
+
+.aqlimgb,  /*classes adding border to images */
+.aqlimgCb {
+	border:solid 1px;
+	padding:4px !important; 
+}
+.aqlimgb { /* do not set margin on centered image, x-y shall be auto */
+	margin:4px !important; 
+}
+
+.hlpimg, /*hlpimg is the default image css (position not indicated)*/
 .hlpimgR { 
 	float:right;
 	display:block;
-	border:none;
 	padding:6px;
-	margin:0;
 }
-
 .hlpimgL { 
 	float:left;
 	display:block;
-	border:none;
 	padding:6px;
-	margin-left:24px;
 }
-
+.hlpimgI {  /*-- inline images no margin, no padding --*/
+	float:none;
+	padding:0;
+	vertical-align: bottom; /* inline images aligned on line bottom for initial (dropcap), etc. */
+}
 .hlpimgC {  /*-- centered images --*/
 	float:none;
 	text-align:center;
 	display:block;
-	border:none;
 	padding:6px;
 	margin:0 auto;
 }
-
+.aqllegend {
+	display:table;
+	margin:0 4px;
+	margin-top:-4px;
+}
 /*--- table -----------------------------------------------*/
 #aql_page table.left  {	float:left;}  /* NO SPACE between table and class name */
 #aql_page table.right { float:right;}
