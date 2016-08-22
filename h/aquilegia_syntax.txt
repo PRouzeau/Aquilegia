@@ -1,6 +1,6 @@
 aquilegia_syntax
 Aquilegia syntax
-(:date 11 Aug 2016 01:34:)(:nosearch:)
+(:date 22 Aug 2016 15:17:)(:nosearch:)
 Revision - 11 August 2016 
 Encoding UTF-8 is imperative for program and pages. 
 Generally, most pages are in the file 'hlp.txt', but this is not compulsory. In 'hlp.txt' file page can be written in any order. 
@@ -38,7 +38,7 @@ links shall end by a space, end of line or double quote (where applicable):
   %internal link%another_link   //'internal link' Max 10 words in the link text - NO SPACE between '%' and text
   %other link%Another_link!A_title_in_page  // link to a title within the page
   %This page%%  // 'This page' text link to this_page 
-  To be a valid link, link text shall NOT use chars [%,;<>"]. Page name can use accented characters and [-_.] 
+  To be a valid link, link text shall NOT use chars [%;<>"]. Page name can use accented characters and [-_.] 
   "Text of a web link http://mysite.org/index.htm?lang=fr"
   "# Referenced link http://othersite.net/"  '#' as first char transfer the link in the reference foot list and the local link is a serialised number which refer to the reference list.
   "http://nakedsitelink.org/mapage.htm" for a web link without text, address displayed
@@ -47,12 +47,12 @@ links shall end by a space, end of line or double quote (where applicable):
   "# An inline note which will be displayed in the footnotes list"  first '#' defines inline note.
      Notes are listed separately from referenced links (n1, n2, etc.). They shall be written inline without newlines (or with continuation '_'). 
   
-  Images .jpg/.png/.svg  displayed in /h/d/, full size in /h/f/. Extension shall be lowercase.
+  Images .jpg/.png/.svg  displayed in /h/d/, full size in /h/f/. File name shall be lowercase. Link case is indifferent.
   400%image.png  // 400 pixels image linking to full size image, default float right
   120%sub/image.png  // 120 pixels image in '/h/d/sub/' directory linking to full size image in '/h/f/sub/'
   180L%image.jpg  // L float image on left
   280C%image.svg  // C center the image, no float
-  40I%Initial.png // Inline image, base is bottom of text line, for Initial (dropcap)
+  40I%initial.png // Inline image, base is bottom of text line, for Initial (dropcap)
   "Image legend &lt;br>on two lines 180R%image.jpg" // Image with a legend at bottom
   45R%pdf%image.png  //  Thumbnail Images linking to pdf file  in '/h/pdf/' , float right
   %a text%image4.png // a text linking to an image (like 'Media:' in wikimedia) 
@@ -99,9 +99,9 @@ New list start new numbering - separate with one line
 
 == Titles and sections
 Text before first title is considered an introduction and set aside the table of content.
-It can contains images. it have own css class .hlpintro, different from the rest of the text which have css class .hlpbody. 
+It can contains images. it have own css class '.hlpintro', different from the rest of the text which have css class '.hlpbody'. 
 <<
-Titles: 
+3 title levels: 
 == First level title   Shall start at this level for proper numbering
 === Second level title  No links neither character formatting in titles
 ==== Third level title  
@@ -109,13 +109,20 @@ Titles:
 The titles automatically creates sections, which are indented one after the other, the class for section content is .hlpsec
 Title is html markup h1 to h4. h1 is for page title, h2 is first level page title.
 An anchor is created for each title, which can be linked from the page or from outside.
-Links or character formatting in titles will not be interpreted.
+Links or character formatting in titles will NOT be interpreted.
 
 Collapsible sections (associated with titles, available for all three levels)
 ==>    Collapsible section, expanded  when page first open
 ==<    Collapsible section, collapsed when page first open
 The collapse toggling is memorized as such when you come back to any page, it looks identical as when you leave it.
 You can nest collapsible sections but this not a good design. Collapsible title class is '.hlptt'  
+
+You can add an specific class to a given title (e.g.to give specific color) by writing the class after title markup and adding a "=" as separator.
+==>titleclass= A title
+'aql.css' predefined 5 background colors classes (h3 titles) '.ttclr1', '.ttclr2', etc. use:
+===ttclr3= Title  -- See 'aql.css' for definitions
+You will define css for a given level this way :
+#hlp_page h2.mytitleclass {css code}  -- you can also define for level h3 or h4.
 
 Table of content is created automatically, but this can be prevented by a page or global (in 'hlpdef' page) directive (&#58;notoc:). By default, table is floating on left, but it can float on right by modifying CSS float attribute of '.hlptoc' in 'aql.css' file. 
 >>
@@ -324,5 +331,7 @@ Notably, you can only redistribute if it is not integrated in another ensemble o
 == About
 Program and documentation (c) Pierre ROUZEAU 
 Program licence program: "GPLv2 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html" or any later version - documentation: CC BY-SA  
+
+
 
 
