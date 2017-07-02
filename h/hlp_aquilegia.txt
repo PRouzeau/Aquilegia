@@ -6,15 +6,14 @@ Copyright Pierre ROUZEAU 2016 - documentation license: CC BY-SA 3.0
 
 ■home
 Aquilegia, simple web application for documentation
-(:date 11 Aug 2016 01:22:)Aquilegia is a pure Javascript software which can deliver on any network a consistent set of documentation pages.
 It was originally targeted to be the help system of a web application, but it occurred it could be used for embedded servers.
 It is a very lightweight system needing no resource from a server (other than flat serving files), as everything is run in the browser. 
 It could be used to build basic utility website targeting only efficiency in information delivery.
 Those willing to modify the look may adapt css file, which is  small and easy to tune.
 
-==Functionalities
+== Functionalities
 It is not modular, but basic functionalities are there:
-===Edition
+=== Edition
 *Easy linking and page structure with simple %markup%aquilegia_syntax
 *Automatic table of content building with title anchors, deactivable on demand
 *Automatic nesting of sections based upon title level
@@ -48,7 +47,7 @@ It is not modular, but basic functionalities are there:
 == A demonstration
 This presentation is running Aquilegia, but is relatively small (17 pages), so a larger implementation may be seen here:
  "http://otocoup.com/aql". A small demo for tabbed presentation can be seen on "http://aquilegia.blue/tabbed"
-520L%Aquilegia_tabbed.png 
+520L%aquilegia_tabbed.png 
 (:clear:)
 ==A new tool for web sites?
 Surprisingly, while developing a Javascript web application, I did not found any tool to build the help pages associated with this application, running only on browser side.
@@ -57,7 +56,7 @@ The system significantly expanded when I decided to run it as the embedded help 
 Note that the first web application with the preliminary version of Aquilegia, made in 2014, while totally usable, was never published.
 
 ==What documentation size
-First implementation had around fifteen short pages, the second implementation (3D printer documentation) is presently 3300 lines and around  twenty pages, expected to grow to 30 to 40 pages. For larger page quantity, you can use a tabbed presentation with multiple home pages and menus, one for each tab, each page being attached to a tab. The system will default on the first tab 'home' page. 
+First implementation had around fifteen short pages, the second implementation (3D printer documentation) is presently 4500 lines and around forty pages, expected to grow to 50-60 pages. For larger page quantity, you can use a tabbed presentation with multiple home pages and menus, one for each tab, each page being attached to a tab. The system will default on the first tab 'home' page. 
 This presentation have 15 small pages.
 
 ==Another wiki ? No
@@ -69,8 +68,8 @@ Though, to ease shared edition and track history, there is a %separated web edit
 The "Wikimatrix site  http://www.wikimatrix.org/statistics.php" list more than one hundred Wiki mark-up variations, so why designing a new one?
 All the listed wiki markup in WikiMatrix are completely un-adapted to keyboards which are not English, with no exception. It occurs that as the majority of computer users, I am not using an English keyboard and had to deal with unpractical mark-ups for more than a decade. 
 With limited legacy, I decided to design a mark-up more adapted to the world, without adding difficulties for English keyboard users.
-For details about my motivations and reasoning, see my take about %Wiki markup%% .
-The %syntax used in Aquilegia%aquilegia_syntax
+For details about my motivations and reasoning, see my take about %Wiki markup%%.
+The %syntax used in Aquilegia%aquilegia_syntax.
 
 == On what servers
 Anything which can serve web pages with http&#58;// protocol is usable.
@@ -91,7 +90,7 @@ On the Duet printer board, it is integrated in the printer web interface built w
 JQuery is yet needed for operation.
 
 == Edition
-There is no integrated editor, so for development you shall use an external editor or install the %aquilegia editor%% for shared development with history tracking. An external editor may help you to correct orthographic and grammar errors. Swapping quickly between the browser view and your editor need %to be organised%edition.
+There is no integrated editor, so for development you shall use an external editor or preferably install the %aquilegia editor%% for shared development with history tracking. Use grammar correction. If using an external editor, swapping quickly between the browser view and your editor need %to be organised%edition.
 
 == Performance
 The interpretation time is too short to be noticeable by the user, so the overall performance depends from the server speed and the file sizes. See %performance page%speed.
@@ -100,7 +99,7 @@ The interpretation time is too short to be noticeable by the user, so the overal
 It is a pretty standard web application, so If the web server can serve multiple users, the application can. Not all embedded servers may be capable to serve multiple users. 
 
 == Internationalisation
-Accented letters for common European languages is accepted for page names, but the present implementation of the wiki mark-up is not adapted to languages using other alphabet. You can use most characters for text of links.
+Accented letters for common European languages is accepted for page names, but the present implementation of the wiki mark-up is not adapted to languages using other alphabet than latin. You can use most characters for text of links.
 All system strings are handled by a function (T(string)), so you may create a set of translated strings.
 
 == Licenses
@@ -129,15 +128,15 @@ I am not a professional programmer, but I anyway have comments, recommendations 
 
 ■hlpdef
 Default page - added at top of page below page title - this title will never be displayed - use for comments
-(:date 11 Aug 2016 01:22:)(:numtitle:)(:hlpfoot:)  56%%mylogo.jpg
+(:date 21 Aug 2016 14:18:)(:numtitle:)(:hlpfoot:)  56%%mylogo.jpg
 
 ■hlpfoot
 Foot page add text at the bottom of the page, outside the title sections, inside page css class. 
-(:date 11 Aug 2016 01:22:)<br><small>Copyright Pierre ROUZEAU 2016, except where credited. Licence CC BY-SA 3.0</small>  <a href="#hlp/privacy">Privacy</a>  <div class="hlpsign">delivered by <a href="http://aquilegia.blue">Aquilegia</a><div>
+(:date 5 Sep 2016 16:50:)<br><small>&copy;2016 Pierre ROUZEAU, except where credited. Licence CC BY-SA 3.0</small>  <a href="javascript:window.showHlp('privacy');">Privacy</a>  <div class="hlpsign">delivered by <a href="http://aquilegia.blue">Aquilegia</a><div>
 
 ■credits
 Credits
-(:date 11 Aug 2016 01:22:)This program was started from a blank page, but I have to give some credits:
+(:date 21 Aug 2016 14:18:)This program was started from a blank page, but I have to give some credits:
 *Icons from "Typicons http://www.typicons.com" licensed under CC-BY-SA
 *It is (yet) using "JQuery library https://jquery.com/"
 Program and wiki markup designed from scratch but I get infos and inspiration from:
@@ -149,11 +148,15 @@ Program and wiki markup designed from scratch but I get infos and inspiration fr
 
 ■images_list
 List to store images metadata
-(:date 11 Aug 2016 01:22:)See the general page about %images%%.
+(:date 5 Sep 2016 15:55:)See the general page about %images%%.
 A file named "imglist.txt" shall be written to store all images descriptions, licences, author and instructions.
-The beginning of this file (page) starts with directive (&#58;nosearch:), to not be visited by the search engine.
+The beginning of this file (page) starts with directive (&#58;nosearch:), to not be visited by the search engine. 
+The presence of this file is compulsory to link to large images. 
 You can write anything before the first image (detected by its file extension).
-Then you shall have for each file:
+You shall fill the default values in fictive 'default.png' image. 
+This file can be edited by %Aquilegia editor %aquilegia_editor.
+
+You shall have for each image:
 *its name (including sub-directory as needed), typically myimage.png or sub/myimage.jpg, without quotes
 *A text describing the content, which can be on multiple lines (they will be concatenated). The text CANNOT contain comma ',' or colon ':'.
 *Then the fields 'fieldname: field content' in any order, separated by line feeds OR commas
@@ -163,17 +166,16 @@ licence: one or multiple licences, use semi-colon for separation, not commas
 instructions: If owner do have specific requests, address, etc.
 fields can contain ':' chars after the first one (for web addresses).
 
-You can (shall) create a fictive image 'default.png', which contain default values.
-
-There is a function in the web editor image uploading page which can create this file or add automatically newly uploaded images without modifying the existing data.
+There is a function in the  %Aquilegia editor %aquilegia_editor which can create this file or add automatically not listed images (without metadata) without modifying the existing images metadata.
+In the editor, click [upload image] button which open the uploading page, then click button [update image list] (last button). You can then close the uploading page.
 
 ■name
 The name
-(:date 11 Aug 2016 01:22:)Development name was 'MiniHelp'. Obviously not very original, I quickly found that a few web sites were already using this name. In search of something symbolising the small size, I first looked at small rodents, only to find that every rodent name is already used for at least one software. The small flower named 'Aquilegia' was unused (with this English name). So, this was decided. Note that the French translation 'Ancolie' is already used for software. The photo is an "Aquilegia vulgaris https://en.wikipedia.org/wiki/Aquilegia". 
+(:date 21 Aug 2016 14:38:)Development name was 'MiniHelp'. Obviously not very original, I quickly found that a few web sites were already using this name. In search of something symbolising the small size, I first looked at small rodents, only to find that every rodent name is already used for at least one software. The small flower named 'Aquilegia' was unused (with this English name). So, this was decided.  Note that the French translation 'Ancolie' is already used for software. The photo is an "Aquilegia vulgaris https://en.wikipedia.org/wiki/Aquilegia". 
 
 ■privacy
 Privacy policy
-(:date 11 Aug 2016 01:22:)The only information I retain from your visit will be the usual statistics kept by the web server provider tools:
+(:date 21 Aug 2016 14:18:)The only information I retain from your visit will be the usual statistics kept by the web server provider tools:
 Your IP, the web address used to enter the site (with the page if defined), the time you stay and your browser and OS characteristics (if they are not kept secret).
 There is no commercial activity linked to this site and I do not search to identify or track you. The served content is entirely operated by myself and there is no publicity.
 This presentation runs entirely in your browser and did not return any information to the server. There is no cookie. 
@@ -184,14 +186,14 @@ In 15 years of Internet activity, I never displayed any publicity and so, never 
 
 ■menu
 help menu
-(:date 11 Aug 2016 01:22:)(:notoc:)(:nodef:)(:notitle:)(:nodate:)
-==General
+(:date 21 Aug 2016 15:07:)(:notoc:)(:nodef:)(:notitle:)(:nodate:)
+== General
 "Demonstration http://otocoup.com/aql"
 "Editor demo http://aquilegia.blue/edit"
 %Installation%%
 %Embedded servers%%
 
-==Edition
+== Edition
 %Aquilegia syntax%%
 %Table examples%%
 %Edition%%
@@ -202,7 +204,7 @@ help menu
 %Images%%
 %Images list%%
 
-==Development
+== Development
 %Wiki markup%%
 %Developer notes%%  
 %Performance%Speed
@@ -213,7 +215,7 @@ help menu
 
 ■writer_tools
 Writer tools
-(:date 11 Aug 2016 01:22:)*Tool searching internal dead links and listing backlinks (referers) 
+(:date 21 Aug 2016 14:18:)*Tool searching internal dead links and listing backlinks (referers) 
 *Tool listing all external links 
 *Tool searching dead image links and controlling the url length (for embedded servers with short link length limits)
 
@@ -222,18 +224,19 @@ Run the appropriate link then reload the page to run other tools.
 
 ■speed
 Aquilegia performance
-(:date 11 Aug 2016 01:22:)
+(:date 21 Aug 2016 15:08:)
 The wiki engine is fast and a page interpretation time may be below 50ms on the slowest devices. 
 In principle, the help pages are only requested after the main application have started, so JQuery shall already be loaded.  Aquilegia size is low. The help file size (text) may be from 100 to 400kB , depending the documentation size. On an ordinary remote web server, this got compressed 'on the fly' so the data transmitted are approximately 40% of the original size. However, embedded servers may not compress the files, so speed may be slower locally if you get your files from an SD card. If get from chip memory as on the ESP8266, that will be fast.  
 
 I have not done many tests, just basic evaluation. 
 My desktop computer is based upon an i530 processor. My phone is an old Sony Xperia Neo -Yes, my daily phone-. Not very up to date equipment, but that is good for tests.
-==The wiki engine
+
+== The wiki engine
 While it is using Regexes ("regular expressions https://en.wikipedia.org/wiki/Regular_expression") for wiki mark-up interpretation, it runs sufficiently fast for any present device, needing approximately 3ms for interpretation of an average page on a slow desktop computer and 30 ms on a slow mobile device. Not noticeable from user.
-==The files 
+== The files 
 The time to display pages is mostly the time needed to serve the site files, low for Aquilegia (65 ko not minified) and JQuery (70 ko), and more for the help file as the main help file shall be served in totality at first page opening. The independent pages are loaded on demand, but all pages are loaded when doing a search. The 4000 lines of the help file of the Duet uses 300 kB. There is an independent file for G-code using 100 kB. Note that wiki mark-up is more compact than html mark-up, so faster to transfer. Aquilegia presentation site is 17 pages, 800lines + 320 lines for syntax, total 80 kB with the syntax page. 
 
-==Remote server
+== Remote server
 I experienced faster load from remote site than locally from SD card on the Duet server. That may be explained partly because a standard server compress the pages 'on the fly', while an embedded web server may not. On a basic server, if a site is growing, it may be useful to precompress files to be served, but that need some adaptation of the web server to have it sending appropriate headers, see links. 
 Aquilegia may be installed on WiFi chips, so reducing the amount of transferred data may help on slow WiFi networks.
 On Duet 0.6 with a slow SD card, help system without app takes 1000 ms to load, while it takes 400ms when loaded after the application (Bootstrap based). App + aquilegia (so, starting on an help page ) takes 1600ms to load.
@@ -241,21 +244,22 @@ On my web provider (OVH), the same web app plus Aquilegia takes 300ms to load, w
 
 ■embedded_servers
 Embedded servers
-(:date 11 Aug 2016 01:22:)(:notoc:)
-==Duet web server
+(:date 5 Sep 2016 18:45:)(:notoc:)
+== Duet web server
 The Duet web server was designed on purpose for the Duet board and is fully integrated in the "RepRap Firmware  http://reprap.org/wiki/RepRap_Firmware". It also integrate a Telnet and FTP server. It is dedicated for the specific task of printing, so if you want to use the web server only, you will have to split it from the rest of the application. 
 The most recent RepRap Firmware code fork is the one of DC42 , "On Github  https://github.com/dc42/RepRapFirmware/tree/dev/src/Duet" On the same fork, you also have the version running on the "ESP 8266 https://github.com/dc42/RepRapFirmware/tree/dev/src/DuetNG".
+It shall be noted that the implementation on the ESP 8266 have some particularities, described in  %installation page%installation!extension_of_a_web_application.
 
 ==Other web servers
 The  Library  "libmicrohttpd http://www.gnu.org/software/libmicrohttpd/" which have at the end of the page a list of other http servers libraries.
 
 ■installation
 Installation of Aquilegia
-(:date 11 Aug 2016 01:22:)
+(:date 5 Sep 2016 18:49:)
 =='Flat' mode
 'Flat' Installation (without integration in a web application) is very simple, just copy the content of the www directory in your server web directory. html page is 'a.htm'
 Test first on a local machine before installing it on a server. See %edition%%.
-The html file shall be modified with author, title, etc. and you shall write your own content. It is advisable to reuse the Aquilegia 'hlp'.txt' as a template till a real template is available.
+The html file shall be modified with author, title, etc. and you shall write your own content. A basic template for 'hlp'.txt' is supplied.
 If installed on an apache server, you may create an .htaccess file redirecting to the 'a.htm' page, else name the page index.htm, this will allow direct connection without typing page name. 
 If used as an autonomous application, it is advisable to create your own "favicon https://en.wikipedia.org/wiki/Favicon", which will be displayed on the user bookmark. You are free to use Aquilegia Favicon if you want. 
 You may modify directories names in aql.js if you want.
@@ -266,11 +270,12 @@ The html template of the Web Application is nearly identical to the 'flat' versi
 You shall also create one or more buttons calling Aquilegia, this is done by giving buttons the class 'hlpstart'. 
 The Javascript is identical to the 'flat' version, Aquilegia know that is works aside a web application by detecting the 'mainapp' classes. 
 Note that Aquilegia open as a full size window, as attempts to make Aquilegia a part size modal window were failing with mobile browser zoom.
-Aquilegia need JQuery 2.2.1. 
+Aquilegia need JQuery 2.2.1 or 3.1.0. 
 Aquilegia need a function managing Text strings 'T()', see the file 'flat.js'. This function came from DWC where it handle translation, however string translation is not implemented in Aquilegia.
 You also need to normalize css to homogeneize behaviour between browsers. If using Bootstrap framework, this normalisation is incorporated, else include the 'normalise.css' file from Necolas (supplied with Aquilegia distribution).
 Note that if the web application is called with a deep link to an Aquilegia help page, the main application will be closed automatically and the requested Aquilegia help page will open directly. 
 Have a look how Aquilegia is integrated in 'Duet Web Control'.
+The Duet implementation on ESP8266 have a particularity, the local resources (textes and images) are on a SD card which is not directly accessible by http: protocol. All resources are called via Ajax calls with a specific syntax. So there are a few functions which are specific to this implementation, set in another javascript file 'aqlapp.js'. See the Duet Web Server fork for details. Aquilegia and application are in the memory attached to ESP8266.
 
 ==Cross origin data (for embedded web servers)
 If you want to use cross-origin data (all resources will be taken from another resources site), you need to copy the whole content of 'h/' directory on the remote server and define the cross-origin domain in the ad-hoc variable in aql.js. The ressources will be called with 'http://remotesite.net/h/' As you call resources from another server, the content of 'h/' directory shall be open for other sites, according to CORS (cross-origin resources) principles. The '.htaccess' ditributed with Aquilegia in 'h/' directory may work for a standard apache server (open to the whole world), but sometimes this is a bit more difficult and you may want to restrict access, please see "enable cors http://enable-cors.org/", "awesome toast https://awesometoast.com/cors/" or "Zinoui http://zinoui.com/blog/cross-domain-ajax-request", which also tells how to restrict access to known origin.
@@ -280,10 +285,10 @@ If you want to precompress your text of program files, have a look on "stack ove
 
 ■developer_notes
 Aquilegia developer notes  Pierre ROUZEAU CC BY-SA
-(:date 11 Aug 2016 01:22:)Autonomous Wiki markup based help system
+(:date 21 Aug 2016 15:09:)Autonomous Wiki markup based help system
 Everything in this help module is Javascript/html, as this application is designed for web servers which does not have server-side language.
 
-==Basic description
+== Basic description
 * An identification variable is used for selecting paragraphs, so the help can be auto-adaptive
 * Most help pages are included in one file (hlp.txt), which is easier to manage by writer and ease linking
 * Independant pages can be called, with file being mypage.txt (file name shall be lowercase, but link don't need be) but yet: they are not searched if they are not already loaded. They are not listed. 
@@ -400,16 +405,19 @@ There is a remarkable site to know what functions are implemented on browsers (a
 ==Rants
 Developing is sometimes quite frustrating and it appear difficult to understand the logic of the people who standardize Javascript or html as utterly basic information may sometimes not be available.
 Not sure that will be of any other use than venting my frustration but:
-*Why there is no reliable way to know that we are on a touchscreen based device ?
-*Why the user agent is not described in plain text  ?
+*Why there is "no simple way http://stackoverflow.com/questions/4817029/whats-the-best-way-to-detect-a-touch-screen-device-using-javascript" to know that we are on a touchscreen based device ?
+*Why the user agent is not described in plain text and "is tricky to obtain https://whichbrowser.net" ?
 *Why new url hash is still not set after hashchange event ? We shall practice divination ? 
 *Some standard behaviour shall be decided when a regular expression run away. Using a timeout is not quite repeatable.
-*Why the need to normalize default CSS values? This shall be part of the standard.
+*Why the need to "normalize default CSS https://necolas.github.io/normalize.css/" values? This shall be part of the standard.
 *Why no coherent Javascript zoom function on mobile? viewport behaviour differ for every browser. 
-*Why no simple way to know the position of an element ? 
+*Why no simple way to "http://stackoverflow.com/questions/15703625/get-screen-coordinates-of-dom-element know the position" of an element ? 
+*Why no direct reading of image binary (need a "trick with canvas http://stackoverflow.com/questions/934012/get-image-data-in-javascript") ?
+*Why "no standard http://stackoverflow.com/questions/5775469/whats-the-valid-way-to-include-an-image-with-no-src" for an empty image syntax ?
 *css calculation syntax is really picky (spaces around operator, no space before parenthesis).
-*css configuration for scrolling is really tricky, notably on mobile. Surprisingly, that was the most frustrating part of this development and I wasted way too hours on it.
-*Scrolling on textarea element did not work properly and what is used is a trick (cut the text at scrolled point, then readd it...)
+*css configuration for scrolling is really tricky, notably on mobile. Surprisingly, that was the most frustrating part of this development and I wasted way too hours on it and it work only with the help of Javascript (I had to intercept the anchor scroll).
+*Scrolling to a location on textarea element did not work properly and what is used is a trick (cut the text at scrolled point, then read the bottom, and add again the removed part...)
+
 
 ==My toolbox
 *Editor: Notepad++ 
@@ -422,27 +430,27 @@ Not sure that will be of any other use than venting my frustration but:
 *Icon design and manipulation: Pixelformer and IconFx
 *Schematics: Libre office draw
 *OS: Windows 10
-*Browser simulations: Edge (not very reliable...)
+*Browser simulations: None free available
 
 ■css
 Aquilegia css structure
-(:date 11 Aug 2016 01:22:)
+(:date 21 Aug 2016 15:01:)
 Most stuff is in css/aql.css
 the css directory also hold bullet icon and sprites.
 
 <a href="css/aql.css">css/aql.css</a>
 
-* %CSS classes of the Aquilegia layout%Aquilegia_CSS_Layout.png
-* %CSS classes of tables%Aquilegia_CSS_Tables.png
+* %CSS classes of the Aquilegia layout%aquilegia_css_layout.png
+* %CSS classes of tables%aquilegia_css_tables.png
 
 There is yet three predefined color sets: black and white, pastel blue and pastel green.
-On Edge and Opera mini, till implementation of CSS 'variables', if using the sets, user is stuck in black and white. However, having the variable list, hardcoding the colors in the css file body may be easy.
+On Opera mini, till implementation of CSS 'variables', if using the sets, user is stuck in black and white. However, having the variable list, hardcoding the colors in the css file body may be easy.
 
-There are details of the sprite management in the file
+There are details of the sprite management in the file.
 
 ■wiki_markup
 Wiki markup
-(:date 11 Aug 2016 01:22:)
+(:date 21 Aug 2016 14:18:)
 == Wiki mark-up history
 First Wiki was created in 1994, see "Wikipedia https://en.wikipedia.org/wiki/History_of_wikis"
 It was based on Hypertext concepts dating back to the 1980's.
@@ -522,13 +530,13 @@ I don't remember well(that was two year ago), but I think I started looking the 
 
 ■writer_advices
 Writer advices
-(:date 11 Aug 2016 01:22:)
+(:date 21 Aug 2016 15:01:)
 I am not a professional, but have created five web sites in nearly fifteen years. Not that many, but sufficient to gain some experience. The first is lost at sea but the others are still online. 
 You can take my advices as they are worth, those of an experienced hobbyist, who always try to do quality work, but don't care much about fanciness. 
-==Links, Links, Links
+== Links, Links, Links
 I wrote web technical documentation as a hobby  for around twelve years. I wrote two sites (in French) about hobby CNC (computer controlled machines), one after the other. First was  http://otocoup.com, a plain flat html site, then I used the wiki pmwiki for http://cncloisirs.com.  While CncLoisirs was initially reusing a big part of the content of Otocoup.com, its success and usability was immediate and much higher than its predecessor. The average depth of visit and time expensed on site by reader was three to four time better. A few reasons: shorter pages with good structure and a lot of interlinks between pages. You shall propose a new read at every corner, to capture interest of reader. Also, we all follow different intellectual paths depending our knowledge, experience and interest. User shall be free to follow own mind. So one of the key in documentation is links, links, links.  Aquilegia don't have categories, but there is %wiki trails%aquilegia_syntax!wiki_trails, where user can follow a path of **ordered** pages, as exists in a lot of wikis. This is user built, so the order can be more logical than automatically assembled categories. 
 
-==Referers (backlinks)
+== Referers (backlinks)
 Aquilegia propose a %basic tool%hlpdiag which list the pages with their referers (backlinks). This is very important, you shall target at the very minimum 3 links from other pages for each page of your documentation. However, applied on this very short presentation page set, it does not make a lot of sense. The same tool on the Duet documentation will be more explicit. To use it on your site, copy the page 'hlpdiag' as is. It call Aquilegia internal dedicated function. 
 
 ==Diagrams and schematics
@@ -541,7 +549,7 @@ For ".png" images, it is important to not resize schematics in a viewer tool but
  
 ■edition
 Text edition
-(:date 11 Aug 2016 01:22:)You have two options to edit Aquilegia help files:
+(:date 21 Aug 2016 15:01:)You have two options to edit Aquilegia help files:
 *Develop locally on one machine and use a standard editor
 *Use the %Aquilegia editor%% for shared edition, on a web server (which need php)
  
@@ -551,13 +559,13 @@ Using the web server editor need some installation but you will benefit of the h
 == Local editor
 For local edition, you shall organise a bit to ease your work and check quickly the result of your typing.
  
-===  What editor to use
+=== What editor to use
 All editors can work on '.txt' files, so you choice will generally be on something already available on your machine. Nothing sophisticated is required, but you shall use a software with orthographic AND grammar correction. 
-====Visual aspect
+==== Visual aspect
 By default, most editors open '.txt' documents in 'preformatted' style, which means they are using a fixed width font. This is hideous, so you may want to change that.
 The processus may depend from your editor, but you may want to use your own template for model/style. You have to create a preformatted style with a non fixed width font, then record it in your own template. You may or may not set this template as your default.
 
-====Quick save
+==== Quick save
 The second point is as you will swap between your browser and your editor to check the viewing, you want to save your file without being annoyed by a screen asking you confirmation of the file format. Often, on the saving window, you have to untick the saving option to not be asked every time the extension is not the default.
 
 ====Quick opening
@@ -574,7 +582,7 @@ Typically the processus will be [Ctrl][S] to save your file, then swapping to yo
  
 ■Aquilegia editor 
 Aquilegia editor
-(:date 11 Aug 2016 01:22:)Aquilegia editor is a separated web application for shared edition with history tracking of page files. It can upload images. It starts an independant session of Aquilegia when you ask a preview. It is installed in a directory '/edx' along other Aquilegia directories. It is using php and shall run on a standard web installation.
+(:date 21 Aug 2016 14:18:)Aquilegia editor is a separated web application for shared edition with history tracking of page files. It can upload images. It starts an independant session of Aquilegia when you ask a preview. It is installed in a directory '/edx' along other Aquilegia directories. It is using php and shall run on a standard web installation.
 
 ==Functionalities
 600%editor.png
@@ -602,7 +610,7 @@ Concurrent editions (multiple persons editing same file at the same moment) are 
 ===Reverting an edition
 There is not yet the possibility to automatically revert an edition (this is not a wiki and you are not supposed to be exposed to spammers), but if needed, you can get the whole/part text of any revision in the bottom windows of history view and paste it back in the editor./*beware of html entities*/
 
-===Editing externally and copying by FTP on the web server.
+===Editing externally with FTP transfer
 You can edit externally and copy your file on the server for others to check or comments.
 While opening a page, the editor look to the last saved file and detect differences with the new pasted file and **store the differences in the history**. That can be useful if you are editing externally as it allow to track history if you update the server regularly. Note that the file history difference is stored **only** when you load the modified file in the Aquilegia editor.
 
@@ -669,12 +677,12 @@ Instead of the main viewer, this is not a completely original work and it reuse 
 
 ■images
 Images in Aquilegia
-(:date 11 Aug 2016 01:22:)
-In principle, external images shall not be embedded in Aquilegia. This is possible by directly writing html in pages, but not recommended.
-The image management in any CMS (content management system)	is critical. This is a long and tedious part. You need to organise yourself to limit time loss.
+(:date 22 Aug 2016 19:19:)
+In principle, external images shall not be embedded in Aquilegia. This is anyway possible by directly writing html in pages, but not recommended.
+The image management in any CMS (content management system) is critical. This is a long and tedious part. You need to organise yourself to limit time loss.
 
 ==Formats
-Only png, jpg and svg images format are accepted, however some servers have troubles serving svg images, so it is recommended to not use this format. 'jpeg' extension is not allowed.
+Only 'png' and 'jpg' images format are accepted. svg is accepted by the markup, but some servers have troubles serving svg images, so it is recommended to not use this format. 'jpeg' extension is not allowed. Files name shall be lowercase.
 The images represent a large size and also one of the largest time required for page display. It is important to properly define size of the stored image in accordance with the effective displayed size. Images shall be compressed by specialised compressors. As an average, the size gain is more than 40%. Png images are most of the time very poorly optimised by the software which produce them, and the size gain (lossless) of a good compressor can be up to 70%. 
 
 == Directory structure
@@ -691,7 +699,8 @@ There are miscellaneous formats of metadata embedded in images. This is importan
 For jpg images, the most known metadata standards are EXIF (camera data) and IPTC (other data). PNG have own metadata format but unfortunately very few software allow its management or even transfer it while working the image. A new metadata format usable on most image formats (created by Adobe) was standardised under the name 'xmp' (extensible metadata platform). It have the advantage to be a unique format. However, it is not managed by common image managers. It is recommended to use "specialised editors https://en.wikipedia.org/wiki/Comparison_of_metadata_editors" to handle metadata. First you shall check if the compressors do respect the metadata to know when implement it.
 
 == Presented metadata
-To remain simple, the metadata presented by Aquilegia to the viewer is stored in a file named %imglist.txt%images_list. This list can be created automatically, but details shall be filled manually. There are default values, so filling the information may be reduced if your source is generally the same person. Yet there is no production of this metadata by extraction from the file, however this may be done for "jpeg IPTC https://en.wikipedia.org/wiki/IPTC_Information_Interchange_Model", but other formats are not easily manageable. Note that this file is only used to display metadata within the Aquilegia application. It is highly recommended to embed metadata in your images, so users downloading images will be capable to retrieve all needed information once the files are on their computers. See "Wikipedia metadata editor comparison https://en.wikipedia.org/wiki/Comparison_of_metadata_editors".
+The metadata presented by Aquilegia to the viewer is stored in a file named %imglist.txt%images_list. This list can be created automatically by %Aquilegia editor %aquilegia_editor with the image stored, but content details shall be filled manually. There are default values, which reduce the need of content writing if your source/license/description is common to most of your images. Yet there is no production of this metadata by extraction from the file, however I may develop later an extraction function for "jpeg IPTC https://en.wikipedia.org/wiki/IPTC_Information_Interchange_Model", but other formats are not easily manageable.
+Note that the 'imglist.txt' file is only used to display metadata within the Aquilegia application. This information will not be transferred when a user download an image, so it is highly recommended to embed metadata in your images. With embedded metadata, users downloading images will be capable to retrieve all needed information once the files are on their computers. See "Wikipedia metadata editor comparison https://en.wikipedia.org/wiki/Comparison_of_metadata_editors". Note that while very few software manage it, there is a standard for embedded metadata in 'png' images.
 
 == Batch processing
 Using an image viewer which allow "batch https://en.wikipedia.org/wiki/Batch_processing" image conversions as "Irfanview http://www.wikihow.com/Batch-Convert-Images-Using-IrfanView" ("video https://www.youtube.com/watch?v=h49naM9aI-A") is very useful. Note that IrfanView can also 'batch' rename files. Use reasonably short file names.
@@ -703,19 +712,19 @@ It is better to resize and compress Images prior to uploading to have optimised 
 You have one button to upload to 'display' directory and another to 'full size' directory. There is no management of sub-directory yet.
 A third button propose an automatic resizer which resize uploaded image to two predefined sizes sent respectively to display and full size directory, but this shall be only done in prototype phase:
 *All embedded metadata is lost in the resize.
-*The size of the image is far from optimum. 
+*The file size of the image is far from optimum. 
 Compression is done in the browser. The png compression is poor and a good compressor (lossless) can reduce the size of the png images produced by the editor resizer by 65%. jpg benefit of a good compressor (lossy) can be 35 to 40% compared to the editor resizer.
 
 ■known_problems
 Known problems
-(:date 11 Aug 2016 01:22:)*Zoom and scrolling on mobile is not perfect, but workable.
+(:date 21 Aug 2016 14:18:)*Zoom and scrolling on mobile is not perfect, but workable.
 *Malformed web links can crash browser. Left in place for diagnostic of wrong links. 
 *Some light servers don't cope well with svg files and they are not displayed. So yet it is recommended to avoid this format.
 *Some light servers don't work properly with target="_blank" on same domain and download images instead of displaying them.
 
 ■table_examples
 Table examples
-(:date 11 Aug 2016 01:22:)see %Aquilegia syntax%% 
+(:date 21 Aug 2016 14:18:)see %Aquilegia syntax%% 
 
 <<
 /:L Left floating table
@@ -771,17 +780,32 @@ uno :: due ::tre
 
 ■about
 About me and Aquilegia
-(:date 11 Aug 2016 01:22:)Aquilegia Copyright Pierre Rouzeau 2016
+(:date 21 Aug 2016 14:18:)Aquilegia Copyright Pierre Rouzeau 2016
 Hobbyist programmer, manufacturer, designer, builder, etc.
 For details about the motivations and history, have a look at %developer notes%%
 
 ■hlpdiag
 Writer tool box
-(:date 11 Aug 2016 01:22:)<a href="javascript:hlpLoadAll('hlpListAll');">List all pages (after loading external pages)</a>
+(:date 21 Aug 2016 14:18:)<a href="javascript:hlpLoadAll(hlpListAll);">List all pages (after loading external pages)</a>
 
-<a href="javascript:hlpLoadAll('hlpAllWeblnk');">List all web links (after loading external pages)</a> 
+<a href="javascript:hlpLoadAll(hlpAllWeblnk);">List all web links (after loading external pages)</a> 
 Links open in new window, so you can test one after the other while closing test window with [Ctrl]W.
 
-<a href="javascript:hlpLoadAll('hlpAllImglnk');">Check linked images (after loading external pages)</a> 
+<a href="javascript:hlpLoadAll(hlpAllImglnk);">Check linked images (after loading external pages)</a> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

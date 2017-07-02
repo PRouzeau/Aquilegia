@@ -3,7 +3,7 @@ You can look at it to see how it is build.
 The Aquilegia page file is also supplied as a detailed example
 All text before first page is comments and will not be displayed anywhere.
 see http://aquilegia.blue
-Copyright Pierre ROUZEAU 2016 - documentation license: CC BY-SA 3.0
+Copyright Pierre ROUZEAU 2016-2017 - documentation license: CC BY-SA 3.0
 
 ■home
 Home page title
@@ -30,12 +30,12 @@ Default page -added at top of page ATOP page title - this title will never be di
  Header in pure HTML - Called by the directive (:hlphead:) - 
 
 ■hlpdef
-Default page -added at top of page below page title - this title will never be displayed - use for comments
+Default page -added at top of page below page title - this title will never be displayed - use for comments - pure HTML
 (:numtitle:)(:hlphead:)(:hlpfoot:) 60%%mylogo.jpg /*here we have a header, footer, number all table of content and add a logo */
 
 ■hlpfoot
-Foot page add text at the bottom of the page, outside the title sections, inside page css class. 
-<br><small>Content copyright your organisation 2016, except where credited. Licence CC BY-SA</small>   <a href="#hlp/privacy">Privacy</a>   <div class="hlpsign">delivered by <a href="http://aquilegia.blue">Aquilegia</a><div>
+Foot page add text at the bottom of the page, outside the title sections, inside page css class. pure HTML 
+<br><small>Content &copy;2016 Your org., except where credited. Licence xx</small> <a href="javascript:window.showHlp('privacy');">Privacy</a> <div class="hlpsign">delivered by <a href="http://aquilegia.blue">Aquilegia</a><div>
 
 ■credits
 Credits

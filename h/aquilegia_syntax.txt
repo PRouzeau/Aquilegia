@@ -1,7 +1,7 @@
 aquilegia_syntax
 Aquilegia syntax
-(:date 22 Aug 2016 15:17:)(:nosearch:)
-Revision - 11 August 2016 
+(:date 5 Sep 2016 18:56:)(:nosearch:)
+Revision - 5 Sept 2016 
 Encoding UTF-8 is imperative for program and pages. 
 Generally, most pages are in the file 'hlp.txt', but this is not compulsory. In 'hlp.txt' file page can be written in any order. 
 Independant pages are in text files with name 'mypage.txt' (file name is lowercase only, upper case are allowed in links). They work as other pages, the only difference is they are loaded only when you open them. 
@@ -10,7 +10,7 @@ Independant pages are in text files with name 'mypage.txt' (file name is lowerca
 Any help page can be called either:
 * from a button with the parameter ‘data-hpage’ containing the page name
 * from html with  a href="javascript:window.showHlp('page');"
-* from html with a href on address, but this is not recommended
+DO NOT use html with a href on an http address, as this will not work on some implementations.
 
 == Markup
 in hlp.txt , first page character (Alt-254, unicode 0x25A0) is used for pages separation. 
@@ -65,7 +65,7 @@ and no link
 == Common markup
 <<---->>  horizontal line - shall start at first column
 ----
-<< /* simple or multiline comment, not displayed */ >>
+<< /* simple or multiline comment, not displayed */ >> Comments are read by search tool, so you can set key words in.
 
 <<**text strong**>> **text strong**
 
@@ -331,6 +331,8 @@ Notably, you can only redistribute if it is not integrated in another ensemble o
 == About
 Program and documentation (c) Pierre ROUZEAU 
 Program licence program: "GPLv2 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html" or any later version - documentation: CC BY-SA  
+
+
 
 
 
