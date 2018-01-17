@@ -11,3 +11,6 @@ Demonstration site at http://otocoup.com/DWC2  (link is case sensitive) - The do
 It needs Jquery core (version 2.2.1) <br>
 Code size is 47 kB, compile to 20 kB with Closure compiler (not zipped), but you shall add Jquery core 83KB and 8 kB css<br>
 
+![Aquilegia page view](Aquilegia_page_view.png?raw=true)
+
+
