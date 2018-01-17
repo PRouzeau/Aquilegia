@@ -6,6 +6,7 @@ Copyright Pierre ROUZEAU 2016 - documentation license: CC BY-SA 3.0
 
 ■home
 Aquilegia, simple web application for documentation
+(:date 2 July 2017:)Aquilegia is a pure Javascript software which can deliver on any network a consistent set of documentation pages.
 It was originally targeted to be the help system of a web application, but it occurred it could be used for embedded servers.
 It is a very lightweight system needing no resource from a server (other than flat serving files), as everything is run in the browser. 
 It could be used to build basic utility website targeting only efficiency in information delivery.
