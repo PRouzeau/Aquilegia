@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<!-- Aquilegia (c) Pierre ROUZEAU - License: GPLV2 or any later version - CC BY-SA 3.0 -->
+<!-- Aquilegia (c) Pierre ROUZEAU - License: GPL V3 or any later version - CC BY-SA 4.0 -->
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="Content-Type" content="text/html" />
 		<meta name="viewport" content="width=device-width">
-		<meta name="description" content="Aquilegia tabbed demo">
+		<meta name="description" content="Aquilegia template">
 		<meta name="author" content="Pierre Rouzeau">
-		<title id="title">Aquilegia documentation</title>
+		<title id="title">Aquilegia template</title>
 		<!-- Favicon -->
 		<link rel="shortcut icon" href="favicon.ico">
 		<!-- CSS -->
@@ -15,49 +15,54 @@
 		<link href="css/aql.css" rel="stylesheet"> <!-- !!! help system -->
 	</head>
 	<body>
-		<div id="aql_cont"> <!-- Main container height and width shall be less than 100% to avoid general scroll bar -->
+		<div id="aql_cont"> <!-- Main container height shall be less than 100% to avoid general scroll bar -->
 		    <!-- Here shall be your general header ---------------------------------------- -->
 			<div id="aql_page"> <!--A physical height shall be defined -- substract the expected top bar height -->
 				<div id ="aql_header"> <!-- A header < div> is required No parameter needed -->
-					<form  id="hform" name="hform" method="get" autocomplete="on"  style="">
-						<div style ="float:right; vertical-align:top;">
-							<button type="button" id="btn_aql_zo"><span class="hicon aqi qzoom-out" title="Zoom"></span></button>  
-							<button type="button" id="btn_aql_zi"><span class="hicon aqi qzoom-in" title="Zoom"></span></button> 
-						<!-- <button type="button" id="btn_hlp_close" title="Close"><span class="hicon aqi close" aria-hidden="true"></span></button>  -->
+					<form  id="hform" name ="hform" method="get" autocomplete="on" >
+						<div style ="float:right;">
+							<button type="button" id="btn_aql_zo"><span class="hicon aqi qzoom-out" title="Zoom out"></span></button>  
+							<button type="button" id="btn_aql_zi"><span class="hicon aqi qzoom-in" title="Zoom in"></span></button>  
+						<!-- <button type="button" title="Close"><span class="hicon aqi qclose" aria-hidden="true"></span></button> -->
 						</div>
 						<button type="button" id="btn_hlp_back" title="Previous page"><span class="hicon aqi qback"></span></button>
 						<button type="button" id="btn_hlp_print" title="Print current page">
-							<span class="hicon aqi qprint"></span></button>
+							<span class="hicon aqi qprint"></span></button>	
 						<button type="button" id="btn_aql_bk" title="What links here?">
-							<span class="hicon aqi qlink"></span></button>		
-						<div style="display:inline-block; vertical-align:top;"> <!-- to have the button moved with the input -->
+							<span class="hicon aqi qlink"></span></button>	
+						<!--This home button may be removed if there are language tabs -->
+						<button type="button" id="btn_hlp_toc" title="Table of content" class="">Home (en)</button>
+						<div style="display:inline-block;"> <!-- to have the button moved with the input -->
 							<input  style="display:inline;" type="text" placeholder="Search" id="hsearch">
 							<button style="display:inline;" type="submit" id="btn_hlp_search" title="Search"><span class="hicon aqi qsearch"></span></button>
-						</div>&nbsp;&nbsp;		
+						</div>	
 						<div class="aqltab"> <!--This div and its class defines tabbed presentation -->	
 							<button type="button" title="Table of content" class="aqlsel">Tab 1</button>
 							<button type="button" title="Table of content 2">This is a long Tab 2 title</button>
 							<button type="button" title="Table of content 3">Tab 3</button>
-						</div> <!-- containers are reorganised to have the page title over tabs -->			
-						<label id="tthlplbl" style="position:absolute; top:0px; left:296px; height:18px; overflow:hidden; text-overflow: ellipsis;" >RepRap Firmware Help</label>
+						</div> <!-- containers are reorganised to have the page title over tabs -->	
+						<label id="tthlplbl">Aquilegia template</label>
 					</form>
 				</div>
 				<div id ="aql_menu" class="hlpmenu" role="navigation" >
-					Menu text<br>default
+					Menu text 1234 1234 1234<br>default
 				</div>
-				<div id ="aql_body" role="main" style="top:60px;"> 
+				<div id ="aql_body" role="main" style="top:45px;"> 
 					<p>Default help text in help window</p>
 				</div>
 			</div>
 		</div>
-		<div id="aql_alert" class="qwarning" onclick="this.style.display = 'none'">
+		<div id="aql_img" onclick="history.back();">
+			<img id="aql_img0" src="" alt="" />
+			<div id="aql_img_b" onclick="aqlimgdesc(event, this);"></div>
+		</div>
+		<div id="aql_alert" class="aqlwarning" onclick="this.style.display = 'none'">
 			<div id="halert"></div>
 			<div id="halertext">Alert !</div>
 		</div>
 		<div id="aql_bk"></div> <!-- backlink list -->
 		<!-- Scripts placed at the end of the document so the pages load faster -->
-		<script src="js/jquery-2.2.1.min.js"></script>
-		<script src="js/flat.js"></script>
+		<script src="js/jquery-3.1.0.min.js"></script>
 		<script src="js/aql.js"></script>
 	</body>
 </html>

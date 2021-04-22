@@ -310,8 +310,8 @@ Any help page can be called either:
 There is an independent web page (convertwiki2.htm) to convert the syntax from mediawiki, cancel categories and templates. Not interpreting fully WikiMedia markup, text need manual intervention after conversion.
 
 ==Application test
-It is very interesting to note that this app can be executed directly by Firefox locally, simply executing the 'a.htm' file, while for edge and chrome, you need to use a http server and access page with http://localhost:nnnn, using by example miniweb server (which works on Windows 10).
-On Firefox, you may install Firebug for Javascript debugging, while on edge and Chrome, Firebug clones are pre-installed. Call debug window with [F12]. Note that Firebug will be abandoned due to Firefox engine modifications. 
+This app cannot any longer be executed locally by any browser without lowering security, you need to use a http server and access page with http://localhost:nnnn, using by example miniweb server (which works on Windows 10).
+On all modern browsers, debugging windows can be called with [F12].
 
 ==Wiki engine:
 ===Robustness
@@ -787,13 +787,15 @@ For details about the motivations and history, have a look at %developer notes%%
 
 ■hlpdiag
 Writer tool box
-(:date 21 Aug 2016 14:18:)<a href="javascript:hlpLoadAll(hlpListAll);">List all pages (after loading external pages)</a>
+(:date 12 Sep 2016 19:19:)
+Reload page after getting the diagnostic.
 
-<a href="javascript:hlpLoadAll(hlpAllWeblnk);">List all web links (after loading external pages)</a> 
+0|List all pages (after loading external pages)|
+
+1|List all web links (after loading external pages)|
 Links open in new window, so you can test one after the other while closing test window with [Ctrl]W.
 
-<a href="javascript:hlpLoadAll(hlpAllImglnk);">Check linked images (after loading external pages)</a> 
-
+2|Check linked images (after loading external pages)| 
 
 
 

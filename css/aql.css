@@ -1,5 +1,5 @@
 /* CSS for Aquilegia - Pierre Rouzeau GPL v2 or any later version CC BY-SA */
-/* CSS variables don't work on Edge, IE nor android browser, which will default to black and white
+/* CSS variables don't work on IE nor android browser, which will default to black and white
  they shall be adapted for Chrome - not yet done
  see https://wpdev.uservoice.com/forums/257854-microsoft-edge-developer/suggestions/6261292-css-variables */
 /*  black and white default style */
@@ -122,6 +122,12 @@ body { /* same as bootstrap default, in principle already in normalize.css */
 	margin:0;
 	padding: 0px 8px 3px 12px;
 	cursor:help;
+}
+/* ---- Main app buttons -----------------*/
+.btn.aqlstart {
+	padding-right:7px;
+	padding-left:7px;
+	margin-left:7px;
 }
 /* ------ general  -----------------------*/
 #aql_cont {
@@ -279,6 +285,11 @@ buttons with 28px sprites -> 28/48*628=366px, space 33px (=28/48*58)*/
 	padding:0 8px !important;
 }
 
+#btn_source {
+	width:auto !important; /*surpass button def (36px) */
+	padding:5px !important; 
+}
+
 #hform { 
 	min-width:100%;
 	vertical-align:top; 
@@ -368,10 +379,34 @@ buttons with 28px sprites -> 28/48*628=366px, space 33px (=28/48*58)*/
 	display:inline-block;
 }
 
+/*-- Miscellaneous --*/
 .hlpsign { /* for signature - in principle in the footer*/
 	float:right;
-	font-size:8px;
+	font-size:10px;
 	vertical-align: text-bottom;
+}
+
+/* floating component */
+.rfloat {
+	float:right;
+	display:inline-block;
+}
+
+.lfloat {
+	float:left;
+	display:inline-block;
+}
+
+/* right floating note */
+.rnote {
+	float:right;
+	display:inline-block;
+	background:#ffffcc;
+	padding:4px 7px 4px 7px;
+	border-color:#F8F8F8;
+	border-style:solid;
+    border-width:1px;
+	border-color:#222222;
 }
 
 /*-- Table of content links 2-4 --------*/
@@ -566,16 +601,21 @@ div.spacer2 {
 	margin:4px !important; 
 }
 
-.hlpimg, /*hlpimg is the default image css (position not indicated)*/
+/*hlpimg is the default image css (position not indicated)*/
+.hlpimg {
+	float:none;
+	display:block;
+	padding:3px;
+}
 .hlpimgR { 
 	float:right;
 	display:block;
-	padding:6px;
+	padding:3px;
 }
 .hlpimgL { 
 	float:left;
 	display:block;
-	padding:6px;
+	padding:3px;
 }
 .hlpimgI {  /*-- inline images no margin, no padding --*/
 	float:none;

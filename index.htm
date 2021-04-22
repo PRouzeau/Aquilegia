@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<!-- Aquilegia (c) Pierre ROUZEAU - License: GPLV2 or any later version - CC BY-SA 3.0 -->
+<!-- Aquilegia (c) Pierre ROUZEAU - License: GPL V3 or any later version - CC BY-SA 4.0 -->
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="Content-Type" content="text/html" />
 		<meta name="viewport" content="width=device-width">
-		<meta name="description" content="Aquilegia documentation">
+		<meta name="description" content="Aquilegia template">
 		<meta name="author" content="Pierre Rouzeau">
-		<title id="title">Aquilegia documentation</title>
+		<title id="title">Aquilegia template</title>
 		<!-- Favicon -->
 		<link rel="shortcut icon" href="favicon.ico">
 		<!-- CSS -->
@@ -21,27 +21,27 @@
 				<div id ="aql_header"> <!-- A header < div> is required No parameter needed -->
 					<form  id="hform" name ="hform" method="get" autocomplete="on" >
 						<div style ="float:right;">
-							<button type="button" id="btn_aql_zo"><span class="hicon aqi qzoom-out" title="Zoom"></span></button>  
-							<button type="button" id="btn_aql_zi"><span class="hicon aqi qzoom-in" title="Zoom"></span></button>  
+							<button type="button" id="btn_aql_zo"><span class="hicon aqi qzoom-out" title="Zoom out"></span></button>  
+							<button type="button" id="btn_aql_zi"><span class="hicon aqi qzoom-in" title="Zoom in"></span></button>  
 						<!-- <button type="button" title="Close"><span class="hicon aqi qclose" aria-hidden="true"></span></button> -->
 						</div>
 						<button type="button" id="btn_hlp_back" title="Previous page"><span class="hicon aqi qback"></span></button>
 						<button type="button" id="btn_hlp_print" title="Print current page">
 							<span class="hicon aqi qprint"></span></button>	
 						<button type="button" id="btn_aql_bk" title="What links here?">
-							<span class="hicon aqi qlink"></span></button>		
-						<button type="button" id="btn_hlp_toc" title="Table of content" class="">Table of content</button>
+							<span class="hicon aqi qlink"></span></button>	
+						<!--This home button may be removed if there are language tabs -->
+						<button type="button" id="btn_hlp_toc" title="Table of content" class="">Home (en)</button>
 						<div style="display:inline-block;"> <!-- to have the button moved with the input -->
 							<input  style="display:inline;" type="text" placeholder="Search" id="hsearch">
 							<button style="display:inline;" type="submit" id="btn_hlp_search" title="Search"><span class="hicon aqi qsearch"></span></button>
 						</div>	
-						<select id="aqlkey0" name="aqlkey0" onchange="showHlp('hlplast')">
-							<option value="allb">All boards</option>
-							<option value="Duet_WiFi_1.0">Duet WiFi</option>
-							<option value="Duet_0.85">Duet 0.8.5</option>
-							<option value="Duet_0.6">Duet 0.6</option>
-						</select> 
-						<label id="tthlplbl">RepRap Firmware Help</label>
+						<!--
+						<div class="aqltab"> <!--This div and its class defines tabbed presentation -- >	
+							<button type="button" title="Table of content" class="aqlsel">Home (en)</button>
+							<button type="button" title="Table des matières">Accueil (fr)</button>
+						</div> < !-- containers are reorganised to have the page title over tabs -->		
+						<label id="tthlplbl">Aquilegia template</label>
 					</form>
 				</div>
 				<div id ="aql_menu" class="hlpmenu" role="navigation" >
@@ -63,7 +63,6 @@
 		<div id="aql_bk"></div> <!-- backlink list -->
 		<!-- Scripts placed at the end of the document so the pages load faster -->
 		<script src="js/jquery-3.1.0.min.js"></script>
-		<script src="js/flat.js"></script>
 		<script src="js/aql.js"></script>
 	</body>
 </html>

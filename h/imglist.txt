@@ -8,6 +8,6 @@ This list shall contains metadata of the documentation images. If an image is no
 'default.png' is a fictive image and shall not exists on your system.
 
 default.png
-auth:Unknown, license:CC BY-SA 3.0; GFDL1.2, instructions: see http://yoursite.org
+auth:Your organisation, license:Your licence, instructions: see http://yoursite.org
 
 

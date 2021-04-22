@@ -5,6 +5,7 @@
 * Original work. Does include internal and external links, search tool and structure directives
 * See http://aquilegia.blue , https://github.com/PRouzeau/Aquilegia
 */
+/*!Aquilegia (c)Pierre ROUZEAU 2016 License GPL 2.0 or any later version 7 sept 2016*/
 /* strings to be translated :
 "There is no available help page for this element"
 "'hlp.txt' file loaded, but page :{0} was not found, check also html charset (shall be utf-8)"
@@ -30,25 +31,28 @@ var aqlO = {}; // object for variable parameters
 var aqlI = {}; // object for image parameters
 /** @private */
 var tabHlp={}; // storage of pages, groups, titles, search authorisation and title section toggle
+var aqlDNT = navigator.doNotTrack||window.doNotTrack||navigator.msDoNotTrack;
 aqlC.version = "Beta1";
 aqlC.linkMaxLength = 24; // maximum number of character for a link name (due to file length limitation= 30-2 for 'h/'-4 for'.txt')
 aqlC.sweb   	= '•'; // U+2022 symbol at the end of a web link - well supported by fonts, possible ○
 aqlC.slink  	= '▫'; // U+25AB symbol at end of ▫ isinternal link  well supported and on the left U+25C2 too much on the right - U+25B6;
 aqlC.excluAllWeb= /aquilegia/i; // Regex to exclude links from the all web link search, use '|' to exclude multiple words 
 aqlC.docDir   	= "pdf/"; // subdir of docs (pdf) linked to images, calling image (in aqlC.dispDir) shall have same name (but != extension)
-aqlC.prefix   	= "hlp/"; // Used for hash writing and deep linking - discriminate from Bootstrap pages - UNRELATED to aqlC.dir
+aqlC.prefix   	= "hlp"; // Used for hash writing and deep linking - discriminate from Bootstrap pages - UNRELATED to aqlC.dir
 aqlC.dir      	= "h/"; // directory where the help file is located
 aqlC.imgLocalDir= "f/"; // sub-directory of h/ for images when the resources are local - may be identical to thumbnail images to limit file size
 aqlC.dispDir 	= "d/"; // sub-directory of h/ for **displayed** images (they shall have same name as full images)
-aqlC.EndText	= '<br><br><br>'; // add empty lines at end of body text
-
-//-------------------------------------------
+aqlC.EndText	= '<br>'; // add empty lines at end of body text
+aqlC.Utils		= ["hlpLoadAll(hlpListAll)", "hlpLoadAll(hlpAllWeblnk);", "hlpLoadAll(hlpAllImglnk);"];
+aqlC.lastPageCookie = true; // store a cookie with last viewed page when activated (if DNT not set)
+//______________________________________________________________
 aqlO.imagesDir	= "f/"; // sub-directory of h/ for large images  ('full' images) use imgLocalDir if resources are local
+aqlO.source		= "http://aquilegia.blue/";
 //aqlO.domain  = "http://otocoup.com/aql/"; // define domain for remote help loading. Need CORS activated on directory
 aqlO.domain		= ""; // name of cross-origin domain from files are got - fall to "" if file cannot be get from domain.
 aqlO.url		= ""; //page url base set by the first showHlp, which loads file and check availability
 aqlO.linkbase	= ""; //page Url WITHOUT hash code
-aqlO.lastP 		= 'home'; //last page seen, at startup  there is no last page-> will go on toc
+aqlO.lastP 		= 'home'; //last page seen, at startup  there is no last page-> will go on home
 aqlO.nFound		= []; // pages which are not found
 aqlO.nValid		= []; // pages which are found but not valid
 aqlO.groups		= []; // Contains  documentation groups ->home_group & menu_group
@@ -67,8 +71,10 @@ aqlO.loadAll	= false; // not all pages are loaded (for search)
 aqlO.Imgsrc		= {}; // image data storage (cache)
 aqlO.bodyw		= 800; // in principle not needed, initialised by onresize before content build
 aqlO.nohttp		= false; //true  indicates that images are not loaded via http://
+aqlO.isOpen		= false;
+aqlO.keydown	= false; // stop multithrow
 
-//-------------------------------------------
+//_______________________________________________________
 var htextnohlp = T("There is no available help page for this element")+"<br>";
 //pages with same identity and hide others. If this is empty, all paragraph are shown
 var is_touch_device = 'ontouchstart' in document.documentElement; // may be not reliable, but simple
@@ -89,46 +95,45 @@ if (typeof String.prototype.startsWith != 'function') {
 function aqlzoom() { // work on Chrome, need some dezoom/zoom on Firefox/Android browser
 	return "width="+1080/aqlO.zoom+", initial-scale="+aqlO.zoom;
 }
+
 //TODO: define a standard to execute utility non static pages: Search,  display list, print list with showHlp()  instead of specialised functions
 /* var hlpT, hlptc; // debugging execution time (for regular expressions)
 function t(init) { //Send time to console. t(1); initialise, successives t(); gives time from initialisation
 	if (init) { hlpT=hlptimenow(); hlptc=0} console.log('point: ', (hlptc++)," :",Math.round(hlptimenow()-hlpT)); } //*/
 function hlptimenow() {return aqlO.perf? performance.now() : 0}; 
 
-function hlp_init() { //initialise before page loading
-	if (typeof aqlDefSelector == 'function') aqlDefSelector(); // Define  selector(s) This function may be defined in aqlapp.js or the application itself
-	if (typeof aqlInithttp == 'function') aqlInithttp(); // Define if we can use http for resources calls
-}
-
 function hlp_open() { //at first call to showHlp, after file load. Will never trigger without file.
-	var sl="";
-	if (aqlO.inApp) {
-		for (var i=0, l=$(".mainapp").length; i<l; i++) {
-			aqlO.mainApp[i] = $(".mainapp").eq(i).css('display');
-			$(".mainapp").eq(i).css('display','none');
-		}	
-		$0("aql_cont").style.display = 'block';	
+	if (!aqlO.isOpen) { // shall run only once to not crush main app parameters
+		aqlO.isOpen	=true;
+		var sl="";
+		if (aqlO.inApp) {
+			for (var i=0, l=$(".mainapp").length; i<l; i++) {
+				aqlO.mainApp[i] = $(".mainapp").eq(i).css('display');
+				$(".mainapp").eq(i).css('display','none');
+			}	
+			$0("aql_cont").style.display = 'block';	
+		}
+		aqlO.overflow = document.body.style.overflow;	
+		document.body.style.overflow = (is_touch_device) ? "auto" :"hidden";	
+		if (!is_touch_device) 
+			$0("hsearch").focus();	
+		aqlO.anchorOffset = $0("aql_body").getBoundingClientRect().top; // need window open to know
 	}
-	aqlO.overflow = document.body.style.overflow;	
-	document.body.style.overflow = (is_touch_device) ? "auto" :"hidden";	
-	if (!is_touch_device) 
-		$0("hsearch").focus();	
-	aqlO.anchorOffset = $0("aql_body").getBoundingClientRect().top; // need window open to know
-	
 }
 
 function hlp_close(nohashchange) { //occurs when back button didn't get proper hash (no aqlC.prefix)
 	for (var i=0, l=$(".mainapp").length; i<l; i++) 
-		$(".mainapp").eq(i).css('display',aqlO.mainApp[i]);
+		$(".mainapp").eq(i).css('display',"block");
 	$0("aql_cont").style.display = 'none';	
 	document.body.style.overflow = aqlO.overflow;
 	if (!nohashchange) // Shall not modify an address if we are in an application
 		history.pushState("", "", aqlO.linkbase);
+	aqlO.isOpen	= false;	
 }
 
 function hlp_txtajax (file) { // build the ajax call string to load a text file
 	var afile = aqlO.url + file + ".txt";
-	if (typeof aqlAjaxTxt == 'function')  
+	if (typeof aqlAjaxTxt === 'function')  
 		return aqlAjaxTxt (afile); // format the ajax call string
 	else 
 		return afile;
@@ -146,7 +151,7 @@ document.addEventListener("DOMContentLoaded", function(e) {
 		$0("aql_body").style.height = "auto";
 		$0("aql_menu").style.height = "auto";
 	}
-	window.onresize = function() { // also run by the openWin
+	window.onresize = function() { // also run by the init
 		var nomenu = (window.innerWidth<780)||!aqlO.dispMenu;
 		aqlO.bodyw = nomenu ? window.innerWidth : window.innerWidth-172;
 		$0('aql_menu').style.display =	  (nomenu) ? 'none' : "inline";
@@ -187,9 +192,14 @@ document.addEventListener("DOMContentLoaded", function(e) {
     };
 	$(".aqlstart").click(function(e){ //APPLICATION  call widget  set class '.hlpstart' in widget
 		var hpage = $(e.target).data('hpage'); 
-		showHlp(hpage, true);
+		showHlp(hpage);
     }); 
 	$0("btn_hlp_back").onclick = function(){history.back();}; 
+	if ($0("btn_source", true)) //only for in application
+		$0("btn_source").onclick = function(){
+			var xurl = aqlO.source+"#"+window.location.href.split('#')[1];
+			window.open(xurl, '_blank'); 
+		}; 
 	if ($0("btn_hlp_toc", true)) //only for non-tabbed page 
 		$0("btn_hlp_toc").onclick = function(){showHlp();};
 	$0("btn_hlp_print").onclick = function(){aqlPrint();}; 
@@ -200,36 +210,58 @@ document.addEventListener("DOMContentLoaded", function(e) {
 		var stext = $0("hsearch").value; // search key
 		aqlSendSearch(stext);
 	};
-	$(document).bind("keyup keydown", function(e){ // intercept ^P
-		if(e.ctrlKey && e.keyCode == 80) aqlPrint(); 
-	});
-	$(window).bind("popstate", function(){ //back or forward button activated
-		var u = window.location.hash.split('#'+aqlC.prefix)[1]; // don't do anything of address not compliant
-		if (u) {
-			if ($0("aql_img").style.display == "block") {
-				$0("aql_img").style.display = "none";
-			}	
-			else {
-				if (aqlO.inApp && $0("aql_cont").style.display == 'none') hlp_open(); // we are in the app
-				showHlp(decodeURIComponent(u), false, true); // 2nd param stop restacking address
+	document.onkeydown = function(e){ 
+		if (!aqlO.keydown && aqlO.isOpen) {
+			aqlO.keydown = true;
+			if (e.ctrlKey && e.keyCode == 80) { // intercept ^P
+				aqlPrint(); 
+			}
+			else if(e.ctrlKey && e.keyCode == 81) {  // intercept ^Q -> editor
+				var xaddr = window.location.href.split('#')[1];
+				var xpage = xaddr.split("!")[0].split("/")[1];
+				var yurl = aqlO.source+"edx/#";
+				yurl += tabHlp[xpage].ext=="(ext)" ? xaddr.split("/")[1] : "hlp/"+ xaddr.split("/")[1]; 
+				window.open(yurl, '_blank'); //  edx/#page!anchor   (external file) or   edx/#hlp/page!anchor
 			}
 		}	
-		else {
-			if (aqlO.inApp) 
-				if ($0("aql_cont").style.display != 'none') hlp_close(true);
+		aqlO.keydown = false;
+	};
+	document.onkeyup = function(e){ 
+		aqlO.keydown = false;
+	};
+	$(window).bind("popstate", function(){ //back or forward button activated
+		var paddr = window.location.hash.split('#'+aqlC.prefix)[1];
+		if (paddr) { // don't do anything of address not compliant 
+			if ($0("aql_img").style.display == "block") 
+				$0("aql_img").style.display = "none";
+			else {
+				aqladdsel(paddr); // not really needed here
+				showHlp(decodeURIComponent(paddr.split("/")[1]), true); // 2nd param stop restacking address
+			}
+		}	
+		else { // unvalid address for Aquilegia
+			if (aqlO.inApp) {
+				if (aqlO.isOpen) 
+					hlp_close(true);
+			}	
 			else 
 				showHlp(); //reopen on default
-		}	
+		}
 	});
-	var url = window.location.href; 
+	var url = window.location.href;
 	aqlO.linkbase = url.split('#', 1)[0]; //mmm: the base  main contain more than a page link?
-	if (url.match('#'+aqlC.prefix))  //deep linking: beware, this intercept all hash code for whole APPLICATION page 
-		if (url.split('#'+aqlC.prefix)[1]) { //note that the prefix name is unrelated to page file location
-			showHlp(decodeURIComponent(url.split('#'+aqlC.prefix)[1]));
-			return
-		}	
-	if (!aqlO.inApp) // if a plain page, we start anyway
-		showHlp();	//open on default
+	var paddr = url.split('#'+aqlC.prefix)[1]
+	var page="";
+	if (paddr)
+		page = paddr.split("/")[1];
+	if (!page && !aqlO.inApp) { // no address while not in app -> get cookie
+		paddr = unescape((document.cookie.match('(^|; )aqlpage=([^;]*)')||0)[2] || "/") ; // get cookie or "/"->always  open page
+		document.cookie = ""; // if calling a no longer existing page, you are locked, so neutralize cookie if rerun
+	}	
+	if (paddr) { //deep linking: beware, this intercept all hash code for whole APPLICATION page 
+		aqladdsel(paddr); // add selectors of the address - cookie have priority on selector if no page
+		showHlp(decodeURIComponent(paddr.split("/")[1])); //after the selectors - page can be empty
+	} 
 });
 
 function hlpCreEvents() { // shall be run after the html component creation (after set content)
@@ -242,15 +274,15 @@ function hlpCreEvents() { // shall be run after the html component creation (aft
 	$(".hlptt").unbind('click'); // troubles without that		
 	$(".hlptt").click(function(e){ //id incorporate page name to differentiate menu from page 
 		var idx = this.id;
-		$(this).parent().find(".hlpsec").filter(":first" ).toggle();
+		$(this).parent().find(".hlpsec").filter(":first").toggle();
 		$("span", this).toggleClass("qexpand qcollapse");
 		if (!tabHlp[aqlO.lastP].clp) tabHlp[aqlO.lastP].clp ={}; // memorize toggling in hash table
 		tabHlp[aqlO.lastP].clp[idx] = (tabHlp[aqlO.lastP].clp[idx]) ? !tabHlp[aqlO.lastP].clp[idx] : true;
 	});
 }
 
-//==== functions which may be called from html ================================= 
-window.showHlp = function(lnk, openWin, stateChange) { // main function calling help page
+//==== functions which may be called from html ===========================
+window.showHlp = function(lnk, stateChange) { // main function calling help page
 var lines, hlpLoading, itab=0;
 	if (!lnk) lnk = 'home';
 	var mt = lnk.match (/(.[^!]*)!?(.*)/); // with '!' as anchor char
@@ -258,12 +290,47 @@ var lines, hlpLoading, itab=0;
 	if (hlpLoading=='hlplast') // if call for last page
 		hlpLoading = aqlO.lastP;
     if (!tabHlp['home']) { // test if 'toc' page which always exist is loaded
-		hlp_init(); // required to have appropriate Ajax call
+		aqlLoadMain (lnk); // will restart with page internal links
+	} else if (!tabHlp[hlpLoading] && hlpLoading!='aqlsearch' && hlpLoading!='imgm') 
+		aqlLoadExt(hlpLoading, showHlp, lnk) // page not in hash table, so load as external attempt
+	else { // help already loaded
+		if (!aqlO.isOpen) {// Before setContent to have events defined for collapsing sections in menu
+			if (tabHlp['menu']) {
+				$0('aql_menu').innerHTML = aqlTrans(z(tabHlp['menu'].p), 'menu');
+				aqlO.dispMenu=true;
+			}
+			window.onresize(); // to define properties at start, according  aqlO.dispMenu
+			if (hlpLoading=='aqlsearch' && !tabHlp['aqlsearch']) { // search deep linking
+				aqlSendSearch(mt[2].replace('%20',' ')); // will create tabHlp ['search']
+				return;
+			}	
+		}	
+		//stop reloading of page (if calling a local anchor, notably)  if hlplast we may be recycling after select change
+		if ((hlpLoading!=aqlO.lastP)||(!aqlO.isOpen)||hlpLoading=='aqlsearch'||lnk=="hlplast")
+			hlpSetContent (hlpLoading, mt[2], stateChange);  // change content as needed
+		if (!aqlO.isOpen) // Help window first opening
+			hlp_open();
+		if (mt[2])	// Scroll to anchor if required
+			if (hlpLoading=="imgm")
+				aqlimg (mt[2]);
+			else	
+				aqlScrollAnchor ('#'+aqlC.prefix+aqlbsel()+hlpLoading+'!'+mt[2].toLowerCase());
+		else // if anchor empty, go to top
+			$0("aql_body").scrollTop =0;
+	}		
+}
+
+function aqlLoadMain (lnk) {
+	var canStart = true;
+	if (typeof aqlAppStart === 'function') 
+		canStart = aqlAppStart (aqlLoadMain, lnk); // if false, rerun 
+	
+	if (canStart) {
 		aqlO.url = aqlO.domain+aqlC.dir;
 		aqlO.loadTime = hlptimenow(); 
 		$.ajax(hlp_txtajax('hlp'), {  // load help content
 			dataType: "text",
-			global: false,
+			timeout:2000,
 			success: function(response) { 
 				if (z(response).substr(0,2)=="<!") //if file not found servers DO answer with a 404 page and status = "success"
 					hlpnoload(aqlO.url+'hlp.txt', "", ""); // so we intercept the html page
@@ -274,55 +341,32 @@ var lines, hlpLoading, itab=0;
 					aqlO.loadTime = Math.round (hlptimenow()-aqlO.loadTime); 	
 					if(tabHlp['home']) {
 						aqlO.groups = aqlList("aqlgroups"); // load groups from page 
-						showHlp(lnk, true); //rerun after load: 2nd parameter tells to open the help window 'lnk' contain anchor 	
+						showHlp(lnk); //rerun after load: 2nd parameter tells to open the help window 'lnk' contain anchor 	
 					}	
 					else
 						hlpalert(T("'hlp.txt' file loaded, but page :{0} was not found, check also html charset (shall be utf-8)",'home'));	
 				}	
 			},
-			error: function(xhr, status, error) { // callback function while page NOT loaded
+			error: function(xhr, status, error) { // callback function while page NOT loaded - on DWC error is not descriptive
 				if (aqlO.domain.trim()) {  //test if we are trying from a remote address
 					aqlO.domain=""; // aqlO.url will be re allocated at rerun
 					aqlO.imagesDir = aqlC.imgLocalDir; // change directory on local (to have same as thumbs dir)
+					if (settings.aqlRemote) // - to rework - that is an in-app specific to DWC ??
+						settings.aqlRemote = false;
 					showHlp(lnk); // rerun in local if fail to load on remote
 				}	
 				else 
 					hlpnoload(aqlO.url+'hlp.txt', xhr.responseText, error); 
 			} 
 		});
-	} else if (!tabHlp[hlpLoading] && hlpLoading!='aqlsearch'&& hlpLoading!='imgm') 
-		aqlLoadExt(hlpLoading, showHlp, lnk, openWin) // page not in hash table, so load as external attempt
-	else { // help already loaded
-		if (openWin) {// Before setContent to have events defined for collapsing sections in menu
-			if (tabHlp['menu']) {
-				$0('aql_menu').innerHTML = aqlTrans(z(tabHlp['menu'].p), 'menu');
-				aqlO.dispMenu=true;
-			}
-			window.onresize(); // to define properties at start, according  aqlO.dispMenu
-			if (hlpLoading=='aqlsearch' && !tabHlp['aqlsearch']) { // search deep linking	
-				aqlSendSearch(mt[2].replace('%20',' ')); // will create tabHlp ['search']
-				return;
-			}	
-		}	
-		//stop reloading of page (if calling a local anchor, notably)  if hlplast we may be recycling after select change
-		if ((hlpLoading!=aqlO.lastP)||openWin||hlpLoading=='aqlsearch'||lnk=="hlplast")
-			hlpSetContent (hlpLoading, mt[2], stateChange);  // change content as needed
-		if (openWin) // Help window first opening
-			hlp_open();
-		if (mt[2])	// Scroll to anchor if required
-			if (hlpLoading=="imgm")
-				aqlimg (mt[2]);
-			else	
-				aqlScrollAnchor ('#'+aqlC.prefix+hlpLoading+'!'+mt[2].toLowerCase());
-		else // if anchor empty, go to top
-			$0("aql_body").scrollTop =0;
-	}		
+	}	
 }
 
-function aqlLoadExt (hlpLoading, runFunc, lnk, openWin) { // load external page
+
+function aqlLoadExt (hlpLoading, runFunc, lnk) { // load external page
 	$.ajax(hlp_txtajax(hlpLoading), {  // load help content
 		dataType: "text",
-		global: false,
+		timeout:2000,		
 		success: function(response) { // callback function while page loaded
 			if (response.substr(0,2)=="<!") { //if no page DWC DO answer with a 404 page and success!
 				arrayAdd (aqlO.nFound, hlpLoading);
@@ -332,7 +376,7 @@ function aqlLoadExt (hlpLoading, runFunc, lnk, openWin) { // load external page
 				if (hlpStore (response, hlpLoading)) { // wrong storage handle own error message - do not overwrite
 					if(tabHlp[hlpLoading]) { // page may not be created if empty, not format compliant, etc.
 						tabHlp[hlpLoading].ext="(ext)";
-						runFunc(lnk, openWin); //rerun after load 'lnk' contain anchor
+						runFunc(lnk); //rerun after load 'lnk' contain anchor
 					}
 					else
 						hlpnoload(aqlO.url+hlpLoading, "Page empty or corrupted", "");
@@ -346,7 +390,24 @@ function aqlLoadExt (hlpLoading, runFunc, lnk, openWin) { // load external page
 	});
 }
 
-//==== Other functions =====================================================================================
+//==== Other functions ==========================================
+//_ Selectors in address ___________________________
+function aqlbsel () { // create address selector segment
+	var a = aqlO.selKey.join(":");
+	return a ? ":"+a+"/" : "/";
+}
+
+function aqladdsel (paddr) { // add selectors found in address bar to selector array.
+	var tabsel = z(paddr.split("/")[0].split(":")[1]).split(":");
+	for (var i=0; i< tabsel.length; i++) {
+		if (tabsel[i] && aqlO.selKey.indexOf(tabsel[i])==-1)
+			aqlO.selKey.push (tabsel[i]); // add keys found in address
+		if (tabsel[i] && document.hform.elements["aqlkey"+i])
+			document.hform.elements["aqlkey"+i].value = tabsel[i];
+	}		
+}
+
+//_ Images display ___________________________________
 function aqlimg (imgname) {
 	$0("aql_img_b").aqlimgfile = imgname; //this is a global... 
 	if (Object.getOwnPropertyNames(aqlI).length == 0)
@@ -373,9 +434,13 @@ function aqldispimg() { // display large image
 		this.height = this.naturalHeight/ratio;
 		this.style.marginTop = Math.floor((h-this.height+1)/2+8)+"px";
 		this.style.marginLeft = Math.floor((w-this.width+1)/2+8)+"px";
-		history.pushState("", "", aqlO.linkbase+'#'+aqlC.prefix+"imgm!"+$0("aql_img_b").aqlimgfile);
-		$0("aql_img").style.display = "block";	// display the image element - which is part of the frame
+		history.pushState("", "", aqlO.linkbase+'#'+aqlC.prefix+"/imgm!"+$0("aql_img_b").aqlimgfile);
+		$0("aql_img").style.display = "block";	
 	}
+	$0("aql_img0").onerror = function() { 
+		this.onerror = "";
+		this.src = aqlO.url+aqlC.dispDir+imgn; // start alternative (disp) image loading
+	}	
 	if (aqlO.nohttp && !aqlO.domain) //??
 		loadImg ($0("aql_img0"),"f"+imgn, aqlO.url+aqlO.imagesDir+imgn);
 	else
@@ -511,7 +576,7 @@ function hlpDefAnchor (hpage, a) { // for anchors special chars are replaced by 
     a= a.replace (/[^\w-]/g, function (match) { //replace special char by'.'+hex code. DOTS and COLON ARE ESCAPED 
 		return ('.' + match.charCodeAt(0).toString(16)); //code char -> .Hex 
 	});
-	return aqlC.prefix+hpage+'!'+a; // no # in the name, only in the href call
+	return aqlC.prefix+aqlbsel()+hpage+'!'+a; // no # in the name, only in the href call
 }
 function hlpAnchor (hpage, a) {
 	return '<a id="'+ hlpDefAnchor(hpage,a)+'"></a>';
@@ -523,17 +588,18 @@ function hlpCall (page, text) {
 	return '<a href="javascript:window.showHlp(\''+page+'\');">'+text.trim()+'</a>'; 
 }
 
-function aqlTrans (data, hpage) {//simple wiki markup w/ pdf, images references & web links
+function aqlTrans (data, hpage, isHeadFoot) {//simple wiki markup w/ pdf, images references & web links
 // \s capture the \n, so [\t ] is used to catch spaces only
 var intro, ptitle, numtitle, myclass, hlpfoot, hlphead, allweb, hlpdiag;  //blocs and directives
-var trail, imgpar, imgborder, pgdate; //blocs and directives
+var trail, imgpar, imgborder, pgdate, cssblock; //blocs and directives
 var notoc, notitle, nofoot, nohead, nodate; // parameters of directives
 var refidx=0, notesidx=0, weblnk, weblnk1, weblnk2; //notes and web link lists
-var codeblocks=[],tmp=[],titles=[],weblinks=[],weblinkis=[],tables=[],refs=[],notes=[]; //data storage while tokenising
-var i, j, cleardiv="<div style='clear:both;'></div>" , now = hlptimenow(); 
+var codeblocks=[], tmp=[], titles=[], weblinks=[], weblinkis=[], tables=[]; //data storage while tokenising
+var timg1=[], timg2=[], refs=[],notes=[]; //data storage while tokenising
+var i, j, cleardiv="<div style='clear:both;'></div>" , now = hlptimenow(), tmpstr; 
 var imgdisp, rgximg, rgximglnk, ptarget ='" target="_blank">', imgsrc; // image links
 //ptarget = '">'; //Target:  on Duet, opening another window makes like if it was external link - make it an option ?? 
-//-- Functions -------------------------------------------------------------------------------------
+//_ Functions ______________________________________________________
 	function direct (dir) { //search directive once:  return parameters as a unique string. return empty string if not found
 		var a="", par1=""; 
 		var redir = RegExp("\\(:"+dir+"(([\\t ]+[\\w-:,;]*)*?):\\)[ ]*(<br>)*[ ]*"); //clean \n and spaces, don't remove \n as separator for titles
@@ -566,9 +632,10 @@ var imgdisp, rgximg, rgximglnk, ptarget ='" target="_blank">', imgsrc; // image 
 	function imgwd (width) { // calculate maximum allowed image width - and close html string
 		return '" style="width:'+ Math.min(aqlO.bodyw*0.92, z(width)) +'px;"/>';
 	}
-//-------------------------------------------------------------------------------------------------	
+//_ Program ___________________________________________________________
 	if (tabHlp[hpage]==undefined) 
 		hlpalert(T("Internal Aquilegia error, page undefined in aqlTrans function"));
+	//_ directives before page inclusion, avoiding included page directives ---- 
 	pgdate	 = direct('date').trim(); // date of main page captured, not of included pages	
 	if (!direct ('nodef')) // don't load default page - default may contains directives
 		data=z(zo(tabHlp['hlpdef']).p)+"\n"+"♂"+data; //add default page at start - this is different from a header, as it goes in 'intro' block ???
@@ -592,20 +659,12 @@ var imgdisp, rgximg, rgximglnk, ptarget ='" target="_blank">', imgsrc; // image 
 		tmp.push(mt); // is that really useful for a quite rare encounter (only in syntax page ??)
 		return '▲';
 	});
-	//-- Sub pages inclusion -- don't retrieve the titles ---------------------------------
+	//_ Sub pages inclusion __ don't retrieve the titles ____________________________
 	data=data.replace(/\(:include\s([\w-]*?):\)/g,  function(mt, p1) {
 		return z(zo(tabHlp[hlpNamePage(p1)]).p); // newlines were cleaned during storage
     });
-	//-- block markups -------------------------------------------------------------------
-	untoken (tmp,'▲'); // untoken codeblocks after after page inclusion, to be retokenized for global page
-	data = data.replace (/<<\n?([\s\S]*?)>>(\n(?=\w))?/g, function (mt, p1) { //don't remove newline if not word char
-		var iclass = (p1.indexOf('\n')<0) ? ' class="inline"' :''; // if no newline -> inline stuff
-		codeblocks.push('<pre'+iclass+'><code>'+ p1 +'</code></pre>'); // in a <pre> block, '/n' are taken into account
-		return '▲'; //U+25B2
-	});
-	data=data.replace(/\/\*.*?\*\//g, ''); // /*Comments*/  non greedy
-//	data=data.replace(/%([A-F0-9]{2})/g,'·$1'); //replace % by char 250 for Hex encoding- protection of URI encoding as % is used in markup -- left for unrecognised web links .. any use ??
-	data=data.replace(/_\n/g,''); // continue without taking into account line feed - NO added space (for tables)
+	
+	//_ Select displayed blocks -- Block tokenisation shall occur after selection __________
 	for (i=0; i< 4; i++) //four keys maxi - get them from select box
 		if (document.hform.elements["aqlkey"+i])
 			aqlO.selKey[i] = document.hform.elements["aqlkey"+i].value.trim().toLowerCase();	
@@ -618,12 +677,33 @@ var imgdisp, rgximg, rgximglnk, ptarget ='" target="_blank">', imgsrc; // image 
 			res = (aqlO.selKey.indexOf(fkey[i].toLowerCase().trim())>=0)? ((p2=="+")?p3:"") : res;
 		return res;
 	});
-	//-- Title tokenisation -------------------------------------------------------------
-	data = data.replace (/^={2,4}[>|<]?[\t ]*([^\n]+)/gm, function (mt) {
+	
+	// untoken codeblocks after after page inclusion, to be retokenized for global page ____
+	untoken (tmp,'▲'); 
+	
+	//_ Token codeblocks after inclusion and selection ____________________________
+	data = data.replace (/<<\n?([\s\S]*?)>>(\n(?=\w))?/g, function (mt, p1) { //don't remove newline if not word char
+		var iclass = (p1.indexOf('\n')<0) ? ' class="inline"' :''; // if no newline -> inline stuff
+		p1 = p1.replace("<","&lt;").replace(">","&gt;"); // to stop html interpretation
+		codeblocks.push('<pre'+iclass+'><code>'+ p1 +'</code></pre>'); // in a <pre> block, '/n' are taken into account
+		return '▲'; //U+25B2
+	});
+	data=data.replace(/\/\*.*?\*\//g, ''); // /*Comments*/  non greedy
+//	data=data.replace(/%([A-F0-9]{2})/g,'·$1'); //replace % by char 250 for Hex encoding- protection of URI encoding as % is used in markup -- left for unrecognised web links .. any use ??
+	data=data.replace(/_\n/g,''); // continue without taking into account line feed - NO added space (for tables)
+	//_ Title tokenisation Shall be  done after selection_____________________________________
+	data = data.replace (/^={2,4}[>|<]?[\t ]*([^\n]+)/gm, function (mt) { //markup injection prevented in titles
 		titles.push(mt); 
 		return '♦';  //U+2666
 	}); 
-	//-- External links and image markup --- no link within titles  ---------------
+	//_ Allowed html markup are tokenized (markups, not blocks) then '<','>' changed to html entities __
+	var htmark = [["sub","b"],["sup","p"],["small","l"],["del","d"],["q","q"]];
+	for (i=0; i< htmark.length; i++) {
+		data = data.replace	(new RegExp("<"+htmark[i][0]+">","g"), "☼"+htmark[i][1])
+					.replace (new RegExp("</"+htmark[i][0]+">","g"), "↕"+htmark[i][1]);
+	}
+	data = data.replace(/</g,"&lt;").replace(/>/g,"&gt;"); // prevent markup injection 
+	//_ External links and image markup -- block tokenised - no link nor markup in titles  _____________
 	rgximg = /"([^"\n]*?)(\d+)([LRCIlrci]?)%(%|pdf%)?(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)\s?"/g; //capture image WITH legend
 	data=data.replace(rgximg, function(m, p1,p2,p3,p4,p5,p6,p7) { // simple '%'  ->bigger image
 		p3 = p3.toUpperCase();
@@ -633,7 +713,8 @@ var imgdisp, rgximg, rgximglnk, ptarget ='" target="_blank">', imgsrc; // image 
 			imgwd(p2)+"<p class='aqllegend'>"+z(p1)+"</p></div>";
 		res = (p4=="pdf%") ? '<a href="'+aqlO.url+aqlC.docDir+z(p5)+z(p4).slice(0,-1)+ptarget+res+"</a>" : res;
 		res = (p4=="%")? res : '<a href="javascript:aqlimg(\''+z(p5)+z(p7)+'\');">'+res+"</a>";
-		return res;
+		timg1.push(res);
+		return '♪';	
 	});
 	rgximg = /(\d+)([LRCIlrci]?)%(%|pdf%)?(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //capture image
 	data=data.replace(rgximg, function(m, p1,p2,p3,p4,p5,p6) { // simple '%'  ->bigger image
@@ -647,11 +728,12 @@ var imgdisp, rgximg, rgximglnk, ptarget ='" target="_blank">', imgsrc; // image 
 		var res = '<img class="'+iclass+'hlpimg'+z(p2)+'" data-name="'+z(p4)+z(p6)+'" src="'+imgsrc+imgwd(p1);	
 		res = (p3=="pdf%") ? '<a href="'+aqlO.url+aqlC.docDir+p4+z(p3).slice(0,-1)+ptarget+res+"</a>" : res;
 		res = (p3=="%")? res : '<a href="javascript:aqlimg(\''+p4+z(p6)+'\');">'+res+"</a>";
-		return res;
+		timg2.push(res);
+		return '♫';	
 	});
 	rgximglnk = /%([^%\n]*?)%(([\w-\.]*\/){0,4}[\w-\.]+\.)(png|jpg|svg)/g; //word -> image	AFTER  images
 	data=data.replace(rgximglnk,'<a href="javascript:aqlimg(\'$2$4\');">$1</a>'); //word link to image (= 'Media:' markup on wikimedia)
-	//-- Web links ------------------------------------------------------------------------------------------
+	//_ Web links -- block tokenised ___________________________________________________
 	//var rlk1= /%([^%\n]*)%"(http(s?)\:[^"]*)"/g; //this Regex capture not valid web addresses - may check validity at later phase? 
 	var rlk2= /"(#?)([^"\n]*?)[\t ]*(http(s?)\:\/\/)(([\da-z\.-]+)\.([a-z\.]{2,6})[^"\n]*)"/g;  //could we get optional http if run before image link ?  
 	var rlk3= /(http(s?)\:\/\/)(([\w\.-]+)\.([\w\.\?\=]{2,6})[\S]*[^.\s])/g; // Isolated link without " "  -  cancel last  dot
@@ -677,15 +759,16 @@ var imgdisp, rgximg, rgximglnk, ptarget ='" target="_blank">', imgsrc; // image 
 		weblinkis.push (weblnk);
 		return '▼'; //U+25BC  
 	});
-	//-- simple markups -------------------------------------------------------------
+	//_ simple markups _________________________________________________
 	data=data.replace(/^----/gm,'<hr>'); // shall precede -- something-- markup, if defined anyday
-	data=data.replace(/<q>([\s\S]*?)<\/q>/g, function(mt, p1) { //  quote and blockquote
+	data=data.replace(/☼q([\s\S]*?)↕q/g, function(mt, p1) { //  quote and blockquote - <q> markup already tokenized
 		return (z(p1).match(/\n/))?'<blockquote>'+z(p1)+'</blockquote>':mt; // became a block quote if there is \n in
 	});
 	data=data.replace(/\/\/(([^\/]|\/[^\/])*)\/\//g, '<em>$1</em>');//  //Emphasize(italic)//
-	data=data.replace(/__(([^_]|_[^_])*)__/g, '<u>$1</u>');//  __underline__
-	data=data.replace(/\b([a-y]+)\^\^(([^\^]|\^[^\^])*)\^\^/g, '<span style="background:$1">$2</span>'); // color^^highlight^^
-	data=data.replace(/\^\^(([^\^]|\^[^\^])*)\^\^/g, '<mark>$1</mark>'); // yellow ^^highlighting^^
+	data=data.replace(/__(([^_]|_[^_])*?)__/g, '<u>$1</u>');//  __underline__
+	data=data.replace(/\b([a-y]+)\^\^(([^\^]|\^[^\^])*?)\^\^/g, '<span style="background:$1">$2</span>'); // color^^highlight^^
+	data=data.replace(/\^\^(([^\^]|\^[^\^])*?)\^\^/g, '<mark>$1</mark>'); // yellow ^^highlighting^^
+	data=data.replace(/(#[a-fA-F0-9]+|[a-zA-Z]+)##([^\n]*?)##/g, '<span style="color:$1">$2</span>'); // color##text##
 	data=data.replace(/^:([^\/:].*)\n/gm,'<div class="hlpindent">$1</div>'); //: indented para - beware table markup
 	data=data.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>'); // **strong** characters BEFORE bullet list
 	data=data.replace(/^\*[\t ]*(.*)\n/gm,'<ul><li>$1<\/li><\/ul>'); // bullet list
@@ -695,8 +778,10 @@ var imgdisp, rgximg, rgximglnk, ptarget ='" target="_blank">', imgsrc; // image 
 	data=data.replace(/<\/h([345r])>\n/g,'</h$1>'); // remove line feeds from title lines
 	data=data.replace(/<\/ul>\n/g,'</ul>').replace(/<\/ul>\n/g,'</ul>'); //remove line feed twice after li
 	data=data.replace(/<\/ol>\n/g,'</ol>').replace(/<\/ol>\n/g,'</ol>'); //remove line feed twice after li
-	
-	//-- internal links --------------------------------------------------------------
+	data=data.replace(/(\d)\|(.*?)\|/g, function(mt, p1, p2) { // run utility functions - 9 max
+		return '<a href="javascript:'+aqlC.Utils[p1]+'">'+p2+'</a>';
+	});  
+	//_ internal links ______________________________________________________
 	var re0 = /([\s>])\"#[\t ]*?([^<>;\n]+?)"/g; // notes
 	var re1 = /%([\w\u00C0-\u017F][^%\n]*?)%(([\w-\u00C0-\u017F]*![\w-_:\/.\u00C0-\u017F]*[\w-_:\/\u00C0-\u017F]+)|([\w-_:\/\u00C0-\u017F]+))/g;
 	var re3 = /%([\w\u00C0-\u017F].*?)%%/g;
@@ -711,35 +796,42 @@ var imgdisp, rgximg, rgximglnk, ptarget ='" target="_blank">', imgsrc; // image 
 	data=data.replace(re3, function (mt, p1) {
 		return hlpCall(hlpNamePage(p1), p1+aqlC.slink);
 	});
-	//-- tables ----------------------------------------------------------------------------------------------
+	//_ tables -- block tokenised  AFTER  markup & links ___________________________
 	data = data.replace (/^\/:([\s\S]*?)^:\//gm, function (mt, p1) { 
 		tables.push(aqlTable(p1)); 
 		return '♠'; //U+2660
 	});
-	//----------------------------------------------------------------------------------	
+	//____________________________________________________________________
 	data=data.replace(/^([\t \n]|<br>)*/,""); // remove leading spaces and newline (due notably to directives)
 	data=data.replace(/\n/g,'<br>'); // all line feed taken into account 
 	data=data.replace(/(<br>)*♂(<br>)*/,""); // remove newlines between default page and page- was needed for markup interpreter
 	data+="(:clear:)"; // to have the window height adjusting to height.
 	data=data.replace(/[\t ]*\(:clear:\)[\t ]*(<br>)*/gm, cleardiv); // clear image
-	//== introduction =============================================================
-	var npos = data.search (/♦/g);  // Isolate text which is before first title (== title)
-	intro = (npos>=0) ? data.substr (0,npos): data;
-	data  = (npos>=0) ? data.substr (npos)  : '';	
-	ptitle = (notitle)? "":'<h1 role="banner">'+tabHlp[hpage].title+'</h1>'; //???
-	intro = '<div class="hlpintro">'+ptitle+intro+'</div>'+((intro)?cleardiv:""); 
-		//We  clear intro only if there is text inside - title is always in the intro
-	//== Titles and associated blocks, Table of content ===========================
-	var axz = aqlTocSection (data, titles, hpage, notoc, numtitle); 
-	data = axz.toc+intro+'<div class="hlpbody">'+axz.data+'</div>'; 
+	
+	//Define right floating block - html code inside ok, as tokenized above ??
+	data=data.replace(/\(:(lfloat|rfloat|rnote)\s([\w-\s\:\.\"\/☼↕▲♥♠▼♪♫<>&;]*?):\)/g,  function(mt, p1, p2) {
+		return "<div class=\""+p1+"\">"+p2+"</div>"; // 
+    });
+	//== introduction ====================================================
+	if (!isHeadFoot) {
+		var npos = data.search (/♦/g);  // Isolate text which is before first title (== title)
+		intro = (npos>=0) ? data.substr (0,npos): data;
+		data  = (npos>=0) ? data.substr (npos)  : '';	
+		ptitle = (notitle)? "":'<h1 role="banner">'+tabHlp[hpage].title+'</h1>'; //???
+		intro = '<div class="hlpintro">'+ptitle+intro+'</div>'+((intro)?cleardiv:""); 
+			//We  clear intro only if there is text inside - title is always in the intro
+		//== Titles and associated blocks, Table of content =======================
+		var axz = aqlTocSection (data, titles, hpage, notoc, numtitle); 
+		data = axz.toc+intro+'<div class="hlpbody">'+axz.data+'</div>'; 
+	}
 	//===============================================================
 	data = data.replace (/(<br>)*♦(<br>)*/g, '♦'); // clean newlines before/after titles
-	data = data.replace (/<br><br><br>/g, '<br><div class="spacer2"></div>'); // not classy, but using <p></p>
-	data = data.replace (/<br><br>/g, '<br><div class="spacer1"></div>'); // in a wiki is fairly difficult.
+	data = data.replace (/<br><br><br>/g, '<br><div class="spacer2"></div>'); // not classy, but using <p> in a wiki is difficult.
+	data = data.replace (/<br><br>/g, '<br><div class="spacer1"></div>');  
 	untoken(titles,'♦');
 	if (refs.length && !data.match(/\(:reflist:\)/g))
 		data += '<br><strong>Internet links</strong>(:reflist:)'; // if no refs and links, add at page end
-	data = addlistref (refs, /\(:reflist:\)/,'xref'); // directive for referenced links
+	data = addlistref (refs, /\(:reflist:\)/,'xref'); // Directive for referenced links
 	data = addlistref (notes, /\(:notes:\)/,'notes'); // Directive for notes	
 	data = aqlTrail (data, hpage);
 	if (hlpdiag)
@@ -747,8 +839,10 @@ var imgdisp, rgximg, rgximglnk, ptarget ='" target="_blank">', imgsrc; // image 
 			'ms  '+hlpCall ("hlptest", "__")+'  Board: '+ z(aqlO.selKey[0]) + '</small>'; 
 	data = data.replace ('<br>♠','♠');
 	untoken(tables,'♠');
-	untoken(weblinks,'♥');
+	untoken(weblinks,'♥'); 
 	untoken(weblinkis,'▼');  	
+	untoken(timg1,'♪'); // images links	
+	untoken(timg2,'♫');  	
 	//data = data.replace(/·/g,'%'); // replace char 250 by % (for URI encoding)	after untoken of weblinks 
 	data = delDirect (data);
 	 //remove all remaining directives - when doubled
@@ -758,12 +852,24 @@ var imgdisp, rgximg, rgximglnk, ptarget ='" target="_blank">', imgsrc; // image 
 			.replace (/<hr>\s*(<br>)*/g, '<hr>') // remove leading newlines after a line
 			.replace (/(<br>)*<\/code><\/pre>\s*<br>/g, '</code></pre>'); // eliminate 1 newline before & after </pre>
 	data += "<br>"; // <br>needed as directive removal eat them
-	if (!nodate) data += "&nbsp;<small>Date:"+pgdate+"</small>";
-	if (!nofoot) data += delDirect(z(zo(tabHlp[hlpfoot]).p)); //no wiki markup interpretation of the footer nor header
-	if (!nohead) data = delDirect(z(zo(tabHlp[hlphead]).p))+data;
+	for (i=0; i< htmark.length; i++) { // set back allowed html markup
+		data = data.replace	(RegExp("☼"+htmark[i][1],"g"),"<"+htmark[i][0]+">")
+					.replace (RegExp("↕"+htmark[i][1],"g"),"</"+htmark[i][0]+">");
+	}
+	if (!isHeadFoot) {
+		if (!nodate) data += "&nbsp;<small>Last edit: "+pgdate+"</small><br>";
+		if (!nofoot && hlpfoot) {
+			tmpstr= aqlTrans(z(zo(tabHlp[hlpfoot]).p), hlpfoot, true);
+			data+=tmpstr;
+		}
+		if (!nohead && hlphead) {
+			tmpstr = aqlTrans(z(zo(tabHlp[hlphead]).p), hlphead, true);
+			data=tmpstr+data;
+		}
+		data += aqlC.EndText;
+	}
 	if (myclass) // add global personnal class - around footer and header also ??
 		data = '<div class="'+ myclass.trim()+'">'+ data +'</div>'; 
-	data += aqlC.EndText;
 	//alert (data.replace (/<br>/g, '\n'));
 	return data;
 }
@@ -821,6 +927,7 @@ var i, j, toc="", tsp;
 			tabttl	= titles[j].match (/^[=]{2,4}[>|<]?[\t ]*(([^=].*?)=)?[\t ]*(.*?)[\t ]*$/);
 			title	= tabttl[3];
 			ttclass = tabttl[2] ? " " + tabttl[2] : "";  
+			title	= title.replace (/<.*>/g,""); // stop injection markup 
 			titlenolnk = title.replace (/(.*)%(.*)%.[^\s]*(.*)/,'$1$2$3'); // get text of a link (and text around) ??
 			if (titlenolnk) title = titlenolnk;  // replace text with link
 			if (numtitle)
@@ -934,7 +1041,7 @@ function aqlList (idx) { // return an array from a page list, comma or line sepa
 }
 
 function hlpSetContent (hpage, x, stateCh) {
-	var dpage, htext="", n="", idx, len, str,i, itab, mnu, xlnk=[];
+	var dpage, htext="", n="", idx, len, str,i, itab, mnu, xlnk=[], hash;
 	idx = (hpage=='hlplast') ? aqlO.lastP : hpage; // if call for last page
 	if (idx == 'hlpall') { // all pages in one go - for printing - modify to print any list ?? Integrate with aqlPrint function
 		var allHlp = aqlList("aqlprtall"); // contains a list of pages to print - pass as parameter (in anchor ?)
@@ -1002,8 +1109,12 @@ function hlpSetContent (hpage, x, stateCh) {
 	hlpCreEvents(); // We have new html components with events (toggled sections), reloading delete events
 	//console.log (aqlO.linkbase+'#'+aqlC.prefix+idx); // block android
 	var anchor = (idx=='aqlsearch') ? '!'+tabHlp[idx].title:""; // search word as anchor
-	if (!stateCh) // 2nd argument is statechange
-		history.pushState("", "", aqlO.linkbase+'#'+aqlC.prefix+idx+anchor);
+	if (!stateCh) {// 2nd argument is statechange
+		hash = aqlbsel()+idx+anchor;
+		history.pushState("", "", aqlO.linkbase+'#'+aqlC.prefix+hash);
+		if (!aqlDNT && aqlC.lastPageCookie) // only store cookie if DNT not activated (and option activated)
+			document.cookie = "aqlpage="+escape(hash)+";" // store last hash in a cookie
+	}	
 }
 
 function fillImg() { // run after normal page load or print page area load
@@ -1036,15 +1147,15 @@ function searchHlp() { // Search a text in all help file
 		}
 	}
 	if (idxTbT>0 || idxTb>0) {
-		fText = "(:notitle:)\n<hr>"+T("<b>{0}</b> found in following pages:", stext)+"<hr>";
+		fText = "(:notitle:)\n---- "+T("**{0}** found in following pages:", stext)+"\n---- \n";
 		for (i=0; i<idxTbT; i++)
 			fText+="%"+tabHlp[tbFoundTitle[i]].title+"%"+tbFoundTitle[i]+'\n';
-		fText+="<hr>\n";
+		fText+="---- \n";
 		for (i=0; i<idxTb; i++)
 			fText+="%"+tabHlp[tbFound[i]].title+"%"+tbFound[i]+'\n';
 	}
 	else 
-		fText = "<hr>  "+T("<b>{0}</b> was not found", stext)+"\n<hr>";
+		fText = "\n---- \n"+T("**{0}** was not found", stext)+"\n---- \n";
 	return fText; // return a html text with links list
 }
 
@@ -1062,7 +1173,7 @@ function aqlPrint() { // print the body of the help window - reinterpret with op
 	window.print();
 };
 
-//-- Loading external pages --------------------------------------------------------------
+//_ Loading external pages _______________________________________
 window.hlpLoadAll= function(runFunc) { // used for search and diagnostics - build an index
 	if (aqlO.loadAll) 
 		runFunc();
@@ -1101,7 +1212,6 @@ function hlpLoadExt(runFunc)  {
 		lnk = hlpLoadAll.refP [hlpLoadAll.Eidx];
 		$.ajax(hlp_txtajax(lnk), {  // load help content
 			dataType: "text",
-			global: false,
 			success: function(response, status, error) { // callback function while page loaded
 				if (z(response).substr(0,2)=="<!") { // 404 page
 					arrayAdd (aqlO.nFound, lnk);	
@@ -1141,8 +1251,10 @@ function hlpChklnk(htext, id) { // stack pages not found in the hash table ( not
 function hlpListBack() { // list backlinks
 var id, tabTrans = {};	
 	aqlO.listAll = true; // unactivate toc and pre block
-	for (id in tabHlp) // create hash table of converted markup
-		tabTrans[id] = (tabHlp[id]) ? aqlTrans(z(tabHlp[id].p), id):"";
+	for (id in tabHlp) {// create hash table of converted markup
+		if (id!="home"&&id!="menu")
+			tabTrans[id] = (tabHlp[id]) ? aqlTrans(z(tabHlp[id].p), id):"";
+	}	
 	$0("aql_bk").innerHTML = "What links here:<br>"+backlinks(tabTrans,aqlO.lastP,"<br>");
 	aqlO.listAll = false; // reactivate toc and pre block	
 	setTimeout(function() { // when interpretation too fast, we are still in click event, which close the just open window
@@ -1287,4 +1399,14 @@ function hlpcheckImg(url, id) {
 		$0("aql_body").innerHTML+=txt; 
 	}
 	img.src = url; // start loading
+}
+// Translation function - future use, yet it only concatenates parameters
+function T(text) {
+	var entry = text;
+	// Format it with the given arguments
+	var args = arguments;
+	return entry.replace(/{(\d+)}/g, function(match, number) {
+		number = parseInt(number) + 1;
+		return typeof args[number] != 'undefined' ? args[number] : match;
+	});
 }

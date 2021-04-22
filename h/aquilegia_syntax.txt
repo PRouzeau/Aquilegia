@@ -1,7 +1,7 @@
 aquilegia_syntax
 Aquilegia syntax
-(:date 5 Sep 2016 18:56:)(:nosearch:)
-Revision - 5 Sept 2016 
+(:date 4 Sep 2018:)(:nosearch:)
+Revision - 4 Sept 2018 
 Encoding UTF-8 is imperative for program and pages. 
 Generally, most pages are in the file 'hlp.txt', but this is not compulsory. In 'hlp.txt' file page can be written in any order. 
 Independant pages are in text files with name 'mypage.txt' (file name is lowercase only, upper case are allowed in links). They work as other pages, the only difference is they are loaded only when you open them. 
@@ -180,9 +180,9 @@ General directives:
 (&#58;numtitle:) // number the titles, also in table of content - not numbered by default
 (&#58;hlpdiag:) // add line to page indicating some timing and a link to test page
 (&#58;allweb:)  // list all externals links (use (&#58;reflist:) directive location), used notably for printing
-(&#58;hlphead:) //Add a header atop title - parameter is header page, no parameter use 'hlphead' page. Example with parameter: (&#58;hlphead myheader:) No wiki interpretation, pure html.
-(&#58;hlpfoot:) //Add a footer in scrollable area - parameter is footer page, no parameter use 'hlpfoot' page. No wiki interpretation
-(&#58;date nn Mon 2016 23:59:) //last modification date - set by %Aquilegia editor%%
+(&#58;hlphead:) //Add a header atop title - parameter is header page, no parameter use 'hlphead' page. Example with parameter: (&#58;hlphead myheader:) now there IS Wiki interpretation. Here calling a missing page crash Aquilegia.
+(&#58;hlpfoot:) //Add a footer in scrollable area - parameter is footer page, no parameter use 'hlpfoot' page. Now there IS wiki interpretation. Here calling a missing page crash Aquilegia.
+(&#58;date nn Mon 2016 23:59:) //last modification date - set by %Aquilegia editor%% or manually.
 (&#58;class mycssclass1 mycssclass2:) //page is in a container with defined class(es)
 (&#58;image border:) // Add a border to all images of the page (except Inline images)
 
@@ -206,6 +206,14 @@ Local directives, to be set alone in line.
 (&#58;reflist:) //list all referenced external links - shall be placed where the list have to be displayed
 				// if there are referenced links and this directive is absent, list goes at page end.
 (&#58;notes:) //list all inline notes - shall be placed where the list have to be displayed
+
+Block directives
+(&#58;rfloat this is a
+right floating set:) //Right float a block, can have multiple lines
+(&#58;lfloat this is a left floating set:) //left float a block
+(&#58;rnote this is a right floating
+framed note with light yellow
+background and a border:) //Right float a note block, can have multiple lines
 
 General directives of included pages will not be taken into account, but local directives will be.
 >>
@@ -256,9 +264,9 @@ Note that bullets will be removed for menu display.
 If you want to include systematically something at the start of all your pages, you can write it in the default page 'hlpdef', which is added, if existing, at the start of every page, after the title. It will be processed as the rest of the page.
 This is the place where you want to set the general directives, like (&#58;numtitle:) if you want to number automatically all your titles. This can be deactivated on individual pages by the directive (&#58;nonum:), which have precedence. You may deactivate all tables of content by setting  (&#58;notoc:), or you can deactivate them individually for some pages like, typically, the home/table of content page...
 ===Header page  'hlphead'
-Default header page, called by directive 'hlphead' before the title sections, but within the page class. Wiki markup is NOT interpreted, so the content shall be plain html.
+Default header page, called by directive 'hlphead' before the title sections, but within the page class. Wiki markup IS now interpreted.
 ===Footer page  'hlpfoot'
-Default footer page, called by directive 'hlpfoot' after the title sections, but within the page class. Wiki markup is NOT interpreted, so the content shall be plain html.
+Default footer page, called by directive 'hlpfoot' after the title sections, but within the page class. Wiki markup IS now interpreted.
 ===Search page  'aqlsearch'
 This page is not a static page, it is filled with the result of the search
 ===Printed page header 'printheader'
@@ -292,6 +300,9 @@ table floating left 'L', 'R' right(default) or 'C' centered
 = text centered  ::*bold left aligned ::_
  text right aligned:: row on two lines ::
 :/  
+
+If there is no caption, at least one space shall be set after the 'L' or 'R' floating instruction.
+To set table on the left or right without floating text, add a line with (:clear:) directive after the table.
  
 col msg :::row msg    give one cell + common cells on other columns (to title first column and all others)
  
@@ -326,11 +337,11 @@ There is no integrated editor, so you shall either install the %Aquilegia editor
 What you write with Aquilegia remain your entire property and you retain all your rights with no requirements.  
 Usage is free for everyone own work.
 However, if you redistribute Aquilegia and its documentation, you have to comply with its licenses, see next paragraph.
-Notably, you can only redistribute if it is not integrated in another ensemble or if the ensemble have same licenses (GPL for program and CC BY-SA for the documentation). Source code free distribution and crediting author is compulsory.
+Notably, you can only redistribute if it is not integrated in another ensemble or if the ensemble have same licenses (GPL v3 for program and CC BY-SA 4.0 for the documentation). Source code free distribution and crediting author is compulsory.
   
 == About
 Program and documentation (c) Pierre ROUZEAU 
-Program licence program: "GPLv2 http://www.gnu.org/licenses/old-licenses/gpl-2.0.html" or any later version - documentation: CC BY-SA  
+Program licence program: "GPLv3 http://www.gnu.org/licenses/old-licenses/gpl-3.0.html" or any later version - documentation: CC BY-SA 4.0 
 
 
 

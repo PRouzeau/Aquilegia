@@ -1,6 +1,7 @@
-9 July 2016 (c) Pierre ROUZEAU  CC BY-SA  - some pages by others - credited
+4 Sept 2018 (c) Pierre ROUZEAU  CC BY-SA  - some pages by others - credited
 Aquilegia help file.
 You can write any comments before the first page.
+/*defining a group for any page select the group menu */
 
 ■home
 Home page for tabbed presentation
@@ -19,6 +20,7 @@ Groups for tabbed presentation
 ■home_group2, group2
 Home page for tab group 2
 /*Avoid 'table of content' as title, as will be used elsewhere as general title*/(:notoc:)(:nonum:)
+/*It is an absolute requirement to define the group for the home page, this is what switch the menu */
 
 Tab 2 home page
 jmlkmlùm ùmlùm ùmlùml ùmlùml lù
@@ -83,15 +85,17 @@ Page with group 3
 
 
 ■hlpfoot
-Foot page add text at the bottom of the page, outside the title section, inside the page css class.
- <div class="hlpsign" role="contentinfo">delivered by <a href="http://aquilegia.blue" target=\"_blank\">Aquilegia</a> &nbsp; <div>
+Foot page add text at the bottom of the page, outside the title sections, inside page css class, code interpreted. 
+(:nodef:)(:rfloat <sub>delivered by "Aquilegia http://aquilegia.blue"</sub>&emsp;:)<small>Content &copy;2018 Your org., except where credited. Licence xx</small> %Privacy%% &emsp;   
 
 ■hlpdiag
 Writer tool box
-<a href="javascript:hlpLoadAll('hlpListAll');">List all pages (after loading external pages)</a>
+Reload page after getting the diagnostic.
 
-<a href="javascript:hlpLoadAll('hlpAllWeblnk');">List all web links (after loading external pages)</a> 
+0|List all pages (after loading external pages)|
+
+1|List all web links (after loading external pages)|
 Links open in new window, so you can test one after the other while closing test window with [Ctrl]W.
 
-<a href="javascript:hlpLoadAll('hlpAllImglnk');">Check linked images (after loading external pages)</a>
+2|Check linked images (after loading external pages)| 
 
